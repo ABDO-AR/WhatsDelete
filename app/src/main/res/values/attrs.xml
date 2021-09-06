@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="ar_background" format="reference"/>
+    <attr name="splash_background_attrs" format="reference"/>
+    <attr name="card_background_attrs" format="reference"/>
+    <attr name="next_on_board_button_background_attrs" format="reference"/>
+</resources>

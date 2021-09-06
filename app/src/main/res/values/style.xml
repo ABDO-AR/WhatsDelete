@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources >
+
+    <style name="card_background_dark">
+        <item name="android:background">@drawable/card_background_board_dark</item>
+    </style>
+
+    <style name="next_on_board_button_background_dark">
+        <item name="android:background">@drawable/image_button_frame_dark</item>
+    </style>
+
+    <style name="splash_background_dark">
+        <item name="android:background">@drawable/splash_background_dark</item>
+    </style>
+
+    <style name="ar_background_dark">
+        <item name="android:background">@color/dark_grey</item>
+    </style>
+
+    <style name="card_background_light">
+        <item name="android:background">@drawable/card_background_board</item>
+    </style>
+
+    <style name="next_on_board_button_background_light">
+        <item name="android:background">@drawable/image_button_frame</item>
+    </style>
+
+    <style name="splash_background_light">
+        <item name="android:background">@drawable/splash_background</item>
+    </style>
+
+    <style name="ar_background_light">
+        <item name="android:background">@color/white</item>
+    </style>
+
+</resources>
