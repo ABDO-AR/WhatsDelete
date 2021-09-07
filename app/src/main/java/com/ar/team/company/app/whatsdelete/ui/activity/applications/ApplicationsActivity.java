@@ -17,18 +17,16 @@ import com.ar.team.company.app.whatsdelete.model.Application;
 import java.util.List;
 import java.util.Objects;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class ApplicationsActivity extends AppCompatActivity {
 
     // This For Control The XML-Main Views:
-    @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private ActivityApplicationsBinding binding;
-    @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private ApplicationsViewModel model;
     // Apps:
     private ApplicationsAdapter adapter;
     private List<Application> applications;
     // TAGS:
-    @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private static final String TAG = "ApplicationsActivity";
 
     @Override
