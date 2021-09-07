@@ -39,16 +39,14 @@ public class ApplicationsViewModel extends AndroidViewModel {
         List<PackageInfo> packs = manager.getInstalledPackages(0);// Get all apps.
         // Developing:
         for (PackageInfo packageInfo : packs) { // For loop on list of applications info.
-            // Initializing:
+            // Checking(Removing System Apps):
             if ((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 0) {
-
+                // Initializing:
                 String appName = packageInfo.applicationInfo.loadLabel(manager).toString(); // Getting app name.
                 Drawable appIcon = packageInfo.applicationInfo.loadIcon(manager); // Getting app icon as drawable.
                 Drawable appLogo = packageInfo.applicationInfo.loadIcon(manager);
                 // Developing:
-
                 apps.add(new Application(appName, packageInfo.packageName, appIcon, appLogo));// add the new app.
-
             }
         }
         // Setting the apps values:

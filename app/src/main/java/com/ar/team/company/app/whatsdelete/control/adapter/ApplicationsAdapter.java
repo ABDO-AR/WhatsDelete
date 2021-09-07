@@ -5,11 +5,14 @@ import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ar.team.company.app.whatsdelete.R;
+import com.ar.team.company.app.whatsdelete.control.preferences.ARPreferencesManager;
+import com.ar.team.company.app.whatsdelete.databinding.ActivityApplicationsBinding;
 import com.ar.team.company.app.whatsdelete.databinding.SingleAppItemBinding;
 import com.ar.team.company.app.whatsdelete.model.Application;
 
@@ -22,13 +25,24 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
     // Fields:
     private final Context context;
     private final List<Application> applications;
+    private final ARPreferencesManager manager;
+    private final Apps apps;
+    // Preferences:
+    private String currentPackages;
     // TAGS:
     private static final String TAG = "ApplicationsAdapter";
 
     // Constructor:
-    public ApplicationsAdapter(Context context, List<Application> applications) {
+    public ApplicationsAdapter(Context context, List<Application> applications, Apps apps) {
+        // Initializing:
         this.context = context;
         this.applications = applications;
+        this.manager = new ARPreferencesManager(context);
+        // Interface:
+        this.apps = apps;
+        // Preferences:
+        this.currentPackages = manager.getStringPreferences(ARPreferencesManager.PACKAGE_APP_NAME);
+        // Notify:
         notifyDataSetChanged();
     }
 
@@ -51,11 +65,48 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
         // Initializing:
         Application application = applications.get(position);
         Drawable appIcon = application.getIcon();
+        // OurInterface:
+        apps.onAppClicked(applications, position, holder.binding);
         // Developing:
         holder.binding.appIconImageView.setImageDrawable(appIcon);
         holder.binding.appNameTextView.setText(application.getName());
+        if (currentPackages.contains(application.getPackageName())) application.setChecked(true);
+        // PreparingSwitch:
+        if (application.isChecked()) holder.binding.singleAppSwitch.setChecked(true);
+        // Checking Apps:
+        holder.binding.singleAppSwitch.setOnCheckedChangeListener((compoundButton, b) -> appsListener(application, position, b));
         // Debugging:
         Log.d(TAG, "onBindViewHolder: View Holder Bind Successfully");
+    }
+
+    // OnApps change listening:
+    private void appsListener(Application app, int pos, boolean checked) {
+        // Developing:
+        if (checked) {
+            if (!currentPackages.contains(app.getPackageName())) {
+                // Adding:
+                currentPackages += app.getPackageName() + ",";
+                // Setting:
+                manager.setStringPreferences(ARPreferencesManager.PACKAGE_APP_NAME, currentPackages);
+            }
+        } else {
+            if (currentPackages.contains(app.getPackageName())) {
+                // Initializing:
+                String filtersPackageName = currentPackages.replace(app.getPackageName() + ",", "");
+                currentPackages = filtersPackageName; // Set the new filtered packages.
+                // Developing:
+                manager.setStringPreferences(ARPreferencesManager.PACKAGE_APP_NAME, filtersPackageName);
+            }
+        }
+        // Checking:
+        app.setChecked(checked);
+        // This line only for make things clear:
+        Log.d(TAG, "appsListener: --------------------------------------------------------------");
+        // Debugging:
+        Log.d(TAG, "appsListener(SP): " + manager.getStringPreferences(ARPreferencesManager.PACKAGE_APP_NAME));
+        Log.d(TAG, "appsListener(CP): " + currentPackages);
+        // Notify:
+        // ERROR (UNDER-DEVELOPMENT) THE SAME AS NEWS-X AND COMPLETE ALL SELECTED
     }
 
     @Override
@@ -79,6 +130,11 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
         public SingleAppItemBinding getBinding() {
             return binding;
         }
+    }
+
+    // OurInterface:
+    public interface Apps {
+        void onAppClicked(List<Application> apps, int pos, SingleAppItemBinding appBinding);
     }
 
     // Getters:

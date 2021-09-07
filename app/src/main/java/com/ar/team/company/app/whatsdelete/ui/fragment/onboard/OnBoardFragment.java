@@ -28,6 +28,7 @@ import com.ar.team.company.app.whatsdelete.control.preferences.ARPreferencesMana
 import com.ar.team.company.app.whatsdelete.databinding.FragmentOnBoardBinding;
 import com.ar.team.company.app.whatsdelete.model.Board;
 import com.ar.team.company.app.whatsdelete.ui.activity.applications.ApplicationsActivity;
+import com.ar.team.company.app.whatsdelete.utils.ARUtils;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
@@ -152,7 +153,7 @@ public class OnBoardFragment extends Fragment {
             binding.onBoardPager.setCurrentItem(index);
         } else {
             manager.setBooleanPreferences(ARPreferencesManager.APP_INIT, true);
-            startActivity(new Intent(requireContext(), ApplicationsActivity.class));
+            startActivity(ARUtils.runNewTask(requireContext(), ApplicationsActivity.class));
         }
     }
 

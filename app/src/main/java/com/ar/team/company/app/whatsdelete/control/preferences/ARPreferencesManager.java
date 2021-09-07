@@ -13,6 +13,7 @@ public class ARPreferencesManager {
     public static final String PREFERENCES_NAME = "ar.Shared.Preferences.Name";
     // PreferencesKeys:
     public static final String APP_INIT = "ar.Shared.Preferences.Init.App.Created";
+    public static final String PACKAGE_APP_NAME = "ar.Shared.Preferences.Package.App.Name.Value";
 
     // Constructor:
     public ARPreferencesManager(Context context) {
@@ -45,7 +46,7 @@ public class ARPreferencesManager {
     // Getter(Preferences):
     public String getStringPreferences(String key) {
         // Developing:
-        return preferences.getString(key, "Empty");
+        return preferences.getString(key, "Empty,");
     }
 
     public Integer getIntegerPreferences(String key) {

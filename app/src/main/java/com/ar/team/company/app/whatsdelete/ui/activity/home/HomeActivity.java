@@ -35,6 +35,8 @@ import com.ar.team.company.app.whatsdelete.ui.fragment.home.VoiceFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.Objects;
+
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -45,8 +47,8 @@ public class HomeActivity extends AppCompatActivity {
     private HomeViewModel model;
     // TAGS:
     private HomeAdapter adapter;
-    private  ARPreferencesManager  manager;
-    private ActionBarDrawerToggle drawerToggle ;
+    private ARPreferencesManager manager;
+    private ActionBarDrawerToggle drawerToggle;
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private Toolbar toolbar;
@@ -59,15 +61,14 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityHomeBinding.inflate(getLayoutInflater()); // INFLATE THE LAYOUT.
         View view = binding.getRoot(); // GET ROOT [BY DEF(CONSTRAINT LAYOUT)].
-
+        Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(view); // SET THE VIEW CONTENT TO THE (VIEW).
         // Initializing:
 
-        viewPager =  findViewById(R.id.home_view_pager);
-        tabLayout =  findViewById(R.id.home_tab_layout);
-        toolbar =  findViewById(R.id.toolbar);
-
-        //setSupportActionBar(toolbar);
+        viewPager = findViewById(R.id.home_view_pager);
+        tabLayout = findViewById(R.id.home_tab_layout);
+        toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
 
         manager = new ARPreferencesManager(this);
@@ -84,18 +85,18 @@ public class HomeActivity extends AppCompatActivity {
         binding.drawerLayout.addDrawerListener(drawerToggle);
 
 
-
+        startActivity(new Intent(this, ApplicationsActivity.class));
 
 
         // Setup drawer view
         setupDrawerContent(binding.nvView);
 
-        adapter.AddFragment(new ChatFragment()," Chat ");
-        adapter.AddFragment(new StatusFragment()," Status ");
-        adapter.AddFragment(new ImagesFragment()," Images ");
-        adapter.AddFragment(new VideosFragment()," Videos ");
-        adapter.AddFragment(new VoiceFragment()," Voice ");
-        adapter.AddFragment(new DocumentFragment()," Document ");
+        adapter.AddFragment(new ChatFragment(), " Chat ");
+        adapter.AddFragment(new StatusFragment(), " Status ");
+        adapter.AddFragment(new ImagesFragment(), " Images ");
+        adapter.AddFragment(new VideosFragment(), " Videos ");
+        adapter.AddFragment(new VoiceFragment(), " Voice ");
+        adapter.AddFragment(new DocumentFragment(), " Document ");
 
         //set Adapter
         //  binding2.homeViewPager.setAdapter(adapter);
@@ -107,12 +108,10 @@ public class HomeActivity extends AppCompatActivity {
         model = new ViewModelProvider(this).get(HomeViewModel.class);
 
 
-
     }
 
     @Override
-    protected void onStart()
-    {
+    protected void onStart() {
         super.onStart();
         // DefState:
         boolean state = manager.getBooleanPreferences(ARPreferencesManager.APP_INIT);
@@ -139,8 +138,9 @@ public class HomeActivity extends AppCompatActivity {
     private ActionBarDrawerToggle setupDrawerToggle() {
         // NOTE: Make sure you pass in a valid toolbar reference.  ActionBarDrawToggle() does not require it
         // and will not render the hamburger icon without it.
-        return new ActionBarDrawerToggle(this,  binding.drawerLayout,toolbar,R.string.drawer_open,  R.string.drawer_close);
+        return new ActionBarDrawerToggle(this, binding.drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
     }
+
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -151,12 +151,13 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 });
     }
+
     public void selectDrawerItem(MenuItem menuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
 
         Fragment fragment = null;
         Class fragmentClass;
-        switch(menuItem.getItemId()) {
+        switch (menuItem.getItemId()) {
             case R.id.nav_chat:
                 fragmentClass = ChatFragment.class;
 
@@ -208,6 +209,7 @@ public class HomeActivity extends AppCompatActivity {
 
         return true;
     }
+
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -227,8 +229,7 @@ public class HomeActivity extends AppCompatActivity {
                 Toast.makeText(this, "done", Toast.LENGTH_SHORT).show();
                 break;
         }
-        if (drawerToggle.onOptionsItemSelected(item))
-        {
+        if (drawerToggle.onOptionsItemSelected(item)) {
             Toast.makeText(this, "done", Toast.LENGTH_SHORT).show();
             return true;
         }

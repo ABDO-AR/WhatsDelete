@@ -10,14 +10,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.ar.team.company.app.whatsdelete.control.adapter.ApplicationsAdapter;
 import com.ar.team.company.app.whatsdelete.databinding.ActivityApplicationsBinding;
+import com.ar.team.company.app.whatsdelete.databinding.SingleAppItemBinding;
 import com.ar.team.company.app.whatsdelete.model.Application;
 import com.ar.team.company.app.whatsdelete.ui.activity.home.HomeActivity;
+import com.ar.team.company.app.whatsdelete.utils.ARUtils;
 
 import java.util.List;
 import java.util.Objects;
 
 @SuppressWarnings("FieldCanBeLocal")
-public class ApplicationsActivity extends AppCompatActivity {
+public class ApplicationsActivity extends AppCompatActivity implements ApplicationsAdapter.Apps {
 
     // This For Control The XML-Main Views:
     private ActivityApplicationsBinding binding;
@@ -39,20 +41,33 @@ public class ApplicationsActivity extends AppCompatActivity {
         model = new ViewModelProvider(this).get(ApplicationsViewModel.class);
         // Developing:
         model.getAppsModel().observe(this, this::appsObserver);
-
-        binding.nextBoardLayout.setOnClickListener(view1 -> {
-            startActivity(new Intent(ApplicationsActivity.this, HomeActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
-        });
+        // Developing(Views):
+        binding.nextBoardLayout.setOnClickListener(v -> startActivity(ARUtils.runNewTask(this, HomeActivity.class)));
     }
 
     // Observing:
     private void appsObserver(List<Application> applications) {
         // Initializing:
         this.applications = applications;
-        this.adapter = new ApplicationsAdapter(this, this.applications);
+        this.adapter = new ApplicationsAdapter(this, this.applications, this);
         // Developing:
         binding.appsRecyclerView.setAdapter(adapter);
         binding.appsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    @Override // OnAppClicked:
+    public void onAppClicked(List<Application> apps, int pos, SingleAppItemBinding appBinding) {
+        // Developing:
+        binding.allAppsSwitch.setOnCheckedChangeListener((c, checked) -> appsChanged(apps, checked));
+    }
+
+    private void appsChanged(List<Application> apps, boolean checked) {
+        // Developing:
+        for (Application app : apps) {
+            // Setting:
+            app.setChecked(checked);
+            // Notifying:
+            adapter.notifyDataSetChanged();
+        }
+    }
 }
