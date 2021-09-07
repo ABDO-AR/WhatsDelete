@@ -4,8 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -50,5 +48,7 @@ public class ApplicationsActivity extends AppCompatActivity {
         // Developing:
         binding.appsRecyclerView.setAdapter(adapter);
         binding.appsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        // Debugging:
+        Log.d(TAG, "appsObserver: Start Getting Data Activate");
     }
 }
