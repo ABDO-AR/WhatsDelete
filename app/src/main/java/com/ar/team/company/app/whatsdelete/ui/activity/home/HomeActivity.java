@@ -49,9 +49,6 @@ public class HomeActivity extends AppCompatActivity {
     private HomeAdapter adapter;
     private ARPreferencesManager manager;
     private ActionBarDrawerToggle drawerToggle;
-    private ViewPager viewPager;
-    private TabLayout tabLayout;
-    private Toolbar toolbar;
 
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private static final String TAG = "HomeActivity";
@@ -63,14 +60,9 @@ public class HomeActivity extends AppCompatActivity {
         View view = binding.getRoot(); // GET ROOT [BY DEF(CONSTRAINT LAYOUT)].
         Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(view); // SET THE VIEW CONTENT TO THE (VIEW).
+        // Setting
+        setSupportActionBar(binding.mainContentLayout.toolbar);
         // Initializing:
-
-        viewPager = findViewById(R.id.home_view_pager);
-        tabLayout = findViewById(R.id.home_tab_layout);
-        toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-
-
         manager = new ARPreferencesManager(this);
         adapter = new HomeAdapter(getSupportFragmentManager());
 
@@ -85,7 +77,6 @@ public class HomeActivity extends AppCompatActivity {
         binding.drawerLayout.addDrawerListener(drawerToggle);
 
 
-        startActivity(new Intent(this, ApplicationsActivity.class));
 
 
         // Setup drawer view
@@ -100,10 +91,10 @@ public class HomeActivity extends AppCompatActivity {
 
         //set Adapter
         //  binding2.homeViewPager.setAdapter(adapter);
-        viewPager.setAdapter(adapter);
+        binding.mainContentLayout.homeViewPager.setAdapter(adapter);
 
         //connect for Tab layout with viewPager
-        tabLayout.setupWithViewPager(viewPager);
+        binding.mainContentLayout.homeTabLayout.setupWithViewPager(binding.mainContentLayout.homeViewPager);
 
         model = new ViewModelProvider(this).get(HomeViewModel.class);
 
@@ -138,7 +129,7 @@ public class HomeActivity extends AppCompatActivity {
     private ActionBarDrawerToggle setupDrawerToggle() {
         // NOTE: Make sure you pass in a valid toolbar reference.  ActionBarDrawToggle() does not require it
         // and will not render the hamburger icon without it.
-        return new ActionBarDrawerToggle(this, binding.drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
+        return new ActionBarDrawerToggle(this, binding.drawerLayout, binding.mainContentLayout.toolbar, R.string.drawer_open, R.string.drawer_close);
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
