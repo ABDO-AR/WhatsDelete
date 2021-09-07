@@ -4,6 +4,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -17,12 +18,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("unused")
 public class ApplicationsViewModel extends AndroidViewModel {
 
     // Fields:
     private final MutableLiveData<List<Application>> data = new MutableLiveData<>();
     private final LiveData<List<Application>> applications = data;
+    // TAGS:
+    private static final String TAG = "ApplicationsViewModel";
 
     // Def constructor for context:
     public ApplicationsViewModel(@NonNull @NotNull android.app.Application application) {
@@ -51,6 +53,8 @@ public class ApplicationsViewModel extends AndroidViewModel {
         }
         // Setting the apps values:
         data.setValue(apps);
+        // Debugging:
+        Log.d(TAG, "getAppsModel: Data got Successfully");
         // Returning:
         return applications;
     }

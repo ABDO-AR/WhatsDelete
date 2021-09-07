@@ -2,6 +2,7 @@ package com.ar.team.company.app.whatsdelete.control.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -21,6 +22,8 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
     // Fields:
     private final Context context;
     private final List<Application> applications;
+    // TAGS:
+    private static final String TAG = "ApplicationsAdapter";
 
     // Constructor:
     public ApplicationsAdapter(Context context, List<Application> applications) {
@@ -34,8 +37,12 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
     @NotNull
     @Override
     public ApplicationsViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+        // Initializing:
         LayoutInflater inflater = LayoutInflater.from(context);
         SingleAppItemBinding binding = SingleAppItemBinding.inflate(inflater, parent, false);
+        // Debugging:
+        Log.d(TAG, "onCreateViewHolder: View Holder Created Successfully");
+        // Returning:
         return new ApplicationsViewHolder(binding);
     }
 
@@ -47,6 +54,8 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
         // Developing:
         holder.binding.singleAppSwitch.setText(application.getName());
         holder.binding.singleAppSwitch.setCompoundDrawablesWithIntrinsicBounds(appIcon, null, null, null);
+        // Debugging:
+        Log.d(TAG, "onBindViewHolder: View Holder Bind Successfully");
     }
 
     @Override
