@@ -1,15 +1,12 @@
 package com.ar.team.company.app.whatsdelete.ui.activity.applications;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
-import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 
 import com.ar.team.company.app.whatsdelete.control.adapter.ApplicationsAdapter;
 import com.ar.team.company.app.whatsdelete.databinding.ActivityApplicationsBinding;
@@ -22,14 +19,14 @@ import java.util.Objects;
 @SuppressWarnings("FieldCanBeLocal")
 public class ApplicationsActivity extends AppCompatActivity {
 
+    // TAGS:
+    private static final String TAG = "ApplicationsActivity";
     // This For Control The XML-Main Views:
     private ActivityApplicationsBinding binding;
     private ApplicationsViewModel model;
     // Apps:
     private ApplicationsAdapter adapter;
     private List<Application> applications;
-    // TAGS:
-    private static final String TAG = "ApplicationsActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +41,7 @@ public class ApplicationsActivity extends AppCompatActivity {
         model.getAppsModel().observe(this, this::appsObserver);
 
         binding.nextBoardLayout.setOnClickListener(view1 -> {
-            startActivity(new Intent(ApplicationsActivity.this , HomeActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+            startActivity(new Intent(ApplicationsActivity.this, HomeActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
         });
     }
 
