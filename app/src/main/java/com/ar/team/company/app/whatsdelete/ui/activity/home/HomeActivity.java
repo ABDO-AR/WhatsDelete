@@ -1,13 +1,9 @@
 package com.ar.team.company.app.whatsdelete.ui.activity.home;
 
-
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -18,39 +14,33 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.appcompat.widget.Toolbar;
-
 import com.ar.team.company.app.whatsdelete.R;
-import com.ar.team.company.app.whatsdelete.control.adapter.HomeAdapter;
+import com.ar.team.company.app.whatsdelete.control.adapter.PagerAdapter;
 import com.ar.team.company.app.whatsdelete.control.preferences.ARPreferencesManager;
 import com.ar.team.company.app.whatsdelete.databinding.ActivityHomeBinding;
 
 import com.ar.team.company.app.whatsdelete.ui.activity.applications.ApplicationsActivity;
-import com.ar.team.company.app.whatsdelete.ui.fragment.home.ChatFragment;
-import com.ar.team.company.app.whatsdelete.ui.fragment.home.DocumentFragment;
-import com.ar.team.company.app.whatsdelete.ui.fragment.home.ImagesFragment;
-import com.ar.team.company.app.whatsdelete.ui.fragment.home.StatusFragment;
-import com.ar.team.company.app.whatsdelete.ui.fragment.home.VideosFragment;
-import com.ar.team.company.app.whatsdelete.ui.fragment.home.VoiceFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-
+@SuppressWarnings("FieldCanBeLocal")
 public class HomeActivity extends AppCompatActivity {
 
     // This For Control The XML-Main Views:
-    @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private ActivityHomeBinding binding;
-    @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private HomeViewModel model;
-    // TAGS:
-    private HomeAdapter adapter;
+    // Drawer(&TabLayout):
+    private PagerAdapter adapter;
     private ARPreferencesManager manager;
     private ActionBarDrawerToggle drawerToggle;
-
-    @SuppressWarnings({"unused", "FieldCanBeLocal"})
+    // TabMediator:
+    private TabLayoutMediator mediator;
+    // TAGS:
     private static final String TAG = "HomeActivity";
 
     @Override
@@ -58,47 +48,34 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityHomeBinding.inflate(getLayoutInflater()); // INFLATE THE LAYOUT.
         View view = binding.getRoot(); // GET ROOT [BY DEF(CONSTRAINT LAYOUT)].
-        Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(view); // SET THE VIEW CONTENT TO THE (VIEW).
-        // Setting
+        // Initializing(UI):
+        initUI();
+        // Initializing(MAIN-FIELDS):
+        model = new ViewModelProvider(this).get(HomeViewModel.class);
+        // Initializing(MEDIATOR):
+        mediator = new TabLayoutMediator(binding.mainContentLayout.homeTabLayout, binding.mainContentLayout.homeViewPager, (tab, position) -> tab.setText(adapter.getHeaders(position)));
+        // Initializing(FIELDS):
+        manager = new ARPreferencesManager(this);
+        adapter = new PagerAdapter(getSupportFragmentManager(), getLifecycle());
+        // AttachMediator:
+        binding.mainContentLayout.homeViewPager.setAdapter(adapter);
+        mediator.attach();
+    }
+
+    // Initializing(UserInterface):
+    private void initUI() {
+        // Setting The New ActionBar:
         setSupportActionBar(binding.mainContentLayout.toolbar);
         // Initializing:
-        manager = new ARPreferencesManager(this);
-        adapter = new HomeAdapter(getSupportFragmentManager());
-
         drawerToggle = setupDrawerToggle();
-        // Setup toggle to display hamburger icon with nice animation
-        drawerToggle.setDrawerIndicatorEnabled(true);
-        //drawerToggle.set
-
-        drawerToggle.syncState();
-
-        // Tie DrawerLayout events to the ActionBarToggle
+        // DrawerToggle(Properties):
+        drawerToggle.setDrawerIndicatorEnabled(true); // Enabling Drawer Indicator For Animations(InButton).
+        drawerToggle.syncState(); // Sync Drawer Toggle State.
+        // Developing:
         binding.drawerLayout.addDrawerListener(drawerToggle);
-
-
-
-
-        // Setup drawer view
+        // Setup DrawerView:
         setupDrawerContent(binding.nvView);
-
-        adapter.AddFragment(new ChatFragment(), " Chat ");
-        adapter.AddFragment(new StatusFragment(), " Status ");
-        adapter.AddFragment(new ImagesFragment(), " Images ");
-        adapter.AddFragment(new VideosFragment(), " Videos ");
-        adapter.AddFragment(new VoiceFragment(), " Voice ");
-        adapter.AddFragment(new DocumentFragment(), " Document ");
-
-        //set Adapter
-        //  binding2.homeViewPager.setAdapter(adapter);
-        binding.mainContentLayout.homeViewPager.setAdapter(adapter);
-
-        //connect for Tab layout with viewPager
-        binding.mainContentLayout.homeTabLayout.setupWithViewPager(binding.mainContentLayout.homeViewPager);
-
-        model = new ViewModelProvider(this).get(HomeViewModel.class);
-
-
     }
 
     @Override
@@ -107,125 +84,96 @@ public class HomeActivity extends AppCompatActivity {
         // DefState:
         boolean state = manager.getBooleanPreferences(ARPreferencesManager.APP_INIT);
         // Developing:
-        if (!state)
-            startActivity(new Intent(this, ApplicationsActivity.class));
-
+        if (!state) startActivity(new Intent(this, ApplicationsActivity.class));
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
+        // Sync The Toggle State After OnRestoreInstanceState Has Occurred:
         drawerToggle.syncState();
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NotNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggles
+        // Pass Any Configuration Change To The Drawer Toggles:
         drawerToggle.onConfigurationChanged(newConfig);
     }
 
+    /**
+     * NOTE: Make Sure You Pass In A Valid Toolbar Reference. ActionBarDrawToggle() Does Not Require It.
+     * And Will Not Render The Hamburger Icon Without It.
+     */
     private ActionBarDrawerToggle setupDrawerToggle() {
-        // NOTE: Make sure you pass in a valid toolbar reference.  ActionBarDrawToggle() does not require it
-        // and will not render the hamburger icon without it.
-        return new ActionBarDrawerToggle(this, binding.drawerLayout, binding.mainContentLayout.toolbar, R.string.drawer_open, R.string.drawer_close);
+        // Initializing:
+        int s1 = R.string.drawer_open;
+        int s2 = R.string.drawer_close;
+        // Returning:
+        return new ActionBarDrawerToggle(this, binding.drawerLayout, binding.mainContentLayout.toolbar, s1, s2);
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        selectDrawerItem(menuItem);
-                        return true;
-                    }
-                });
+        // Setup Listeners:
+        navigationView.setNavigationItemSelectedListener(this::selectDrawerItem);
     }
 
-    public void selectDrawerItem(MenuItem menuItem) {
-        // Create a new fragment and specify the fragment to show based on nav item clicked
-
-        Fragment fragment = null;
-        Class fragmentClass;
-        switch (menuItem.getItemId()) {
-            case R.id.nav_chat:
-                fragmentClass = ChatFragment.class;
-
-                break;
-            case R.id.nav_status:
-                fragmentClass = StatusFragment.class;
-
-                break;
-            case R.id.nav_images:
-                fragmentClass = ImagesFragment.class;
-
-                break;
-            case R.id.nav_videos:
-                fragmentClass = VideosFragment.class;
-
-                break;
-            case R.id.nav_voice:
-                fragmentClass = VoiceFragment.class;
-
-                break;
-            case R.id.nav_documents:
-                fragmentClass = DocumentFragment.class;
-                break;
-            default:
-                fragmentClass = ChatFragment.class;
+    public boolean selectDrawerItem(MenuItem menuItem) {
+        // Initializing:
+        TabLayout.Tab tab = binding.mainContentLayout.homeTabLayout.getTabAt(0);
+        // GetCorrectFragment(ID):
+        int itemId = menuItem.getItemId();
+        // Checking:
+        if (itemId == R.id.nav_chat) {
+            tab = binding.mainContentLayout.homeTabLayout.getTabAt(0);
+            binding.nvView.setCheckedItem(R.id.nav_chat);
+        } else if (itemId == R.id.nav_status) {
+            tab = binding.mainContentLayout.homeTabLayout.getTabAt(1);
+            binding.nvView.setCheckedItem(R.id.nav_status);
+        } else if (itemId == R.id.nav_images) {
+            tab = binding.mainContentLayout.homeTabLayout.getTabAt(2);
+            binding.nvView.setCheckedItem(R.id.nav_images);
+        } else if (itemId == R.id.nav_videos) {
+            tab = binding.mainContentLayout.homeTabLayout.getTabAt(3);
+            binding.nvView.setCheckedItem(R.id.nav_videos);
+        } else if (itemId == R.id.nav_voice) {
+            tab = binding.mainContentLayout.homeTabLayout.getTabAt(4);
+            binding.nvView.setCheckedItem(R.id.nav_voice);
+        } else if (itemId == R.id.nav_documents) {
+            tab = binding.mainContentLayout.homeTabLayout.getTabAt(5);
+            binding.nvView.setCheckedItem(R.id.nav_documents);
         }
-
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        // Insert the fragment by replacing any existing fragment
-        //    getSupportFragmentManager().beginTransaction().replace(R.id.flContent, fragment).commit();
-
-        // Highlight the selected item has been done by NavigationView
-        menuItem.setChecked(true);
-        // Set action bar title
+        // Developing:
+        Objects.requireNonNull(tab).select();
+        // Set ActionBar Title:
         setTitle(menuItem.getTitle());
-        // Close the navigation drawer
-        binding.drawerLayout.closeDrawers();
+        // Close The NavigationDrawer:
+        binding.drawerLayout.closeDrawer(GravityCompat.START);
+        // Returning:
+        return true;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // InflatingHomeMenu:
         getMenuInflater().inflate(R.menu.navigation_drawer, menu);
-
-        return true;
+        // Returning:
+        return super.onCreateOptionsMenu(menu);
     }
 
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        // The action bar home/up action should open or close the drawer.
-
-        drawerToggle.onOptionsItemSelected(item);
-
+        // Developing:
         switch (item.getItemId()) {
-
-
-            case android.R.id.home:
-                binding.drawerLayout.openDrawer(GravityCompat.START);
-                Toast.makeText(this, "done", Toast.LENGTH_SHORT).show();
-                break;
             case R.id.menu_setting:
-                Toast.makeText(this, "done", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Setting", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.menu_store:
+                Toast.makeText(this, "Store", Toast.LENGTH_SHORT).show();
                 break;
         }
-        if (drawerToggle.onOptionsItemSelected(item)) {
-            Toast.makeText(this, "done", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-
+        // Returning:
         return super.onOptionsItemSelected(item);
     }
-
 }

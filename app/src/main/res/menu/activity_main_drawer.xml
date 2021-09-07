@@ -5,7 +5,7 @@
 
     <item android:title="@string/quick_access">
         <menu
-            android:checkableBehavior="all"
+            android:checkableBehavior="single"
             android:enabled="true"
             android:menuCategory="alternative">
 
@@ -14,6 +14,7 @@
                 android:icon="@drawable/ic_chat"
                 android:iconTint="@color/colorPrimaryDark"
                 android:title="@string/chat"
+                android:checked="true"
                 tools:targetApi="o" />
 
             <item

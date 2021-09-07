@@ -37,6 +37,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'org.jetbrains:annotations:15.0'
     implementation 'org.jetbrains:annotations:15.0'
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
     def lottie_version = "4.1.0"
     def toasty_version = "1.5.0"
 

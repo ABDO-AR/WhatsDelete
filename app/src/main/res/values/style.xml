@@ -17,6 +17,15 @@
         <item name="android:background">@color/dark_grey</item>
     </style>
 
+    <style name="ar_def_background_dark">
+        <item name="android:background">@color/dark_grey</item>
+    </style>
+
+    <style name="ar_tab_indicator_dark">
+        <item name="android:background">@color/dark_grey</item>
+        <item name="tabIndicatorColor">@color/light_green</item>
+    </style>
+
     <style name="card_background_light">
         <item name="android:background">@drawable/card_background_board</item>
     </style>
@@ -31,6 +40,15 @@
 
     <style name="ar_background_light">
         <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="ar_def_background_light">
+        <item name="android:background">@color/light_green</item>
+    </style>
+
+    <style name="ar_tab_indicator_light">
+        <item name="android:background">@color/light_green</item>
+        <item name="tabIndicatorColor">@color/dark_grey</item>
     </style>
 
 </resources>
