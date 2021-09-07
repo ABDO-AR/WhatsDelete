@@ -14,4 +14,19 @@
     <string name="applications_mes">Applications</string>
     <string name="select_app_mes">Select the applications you want to follow. We will save your notifications and detect changes.</string>
     <string name="whatsapp_demo_text">Whatsapp</string>
+    <string name="setting">Setting</string>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="quick_access">Quick Access</string>
+    <string name="help_link">Help Links</string>
+    <string name="chat">Chat</string>
+    <string name="status">Status</string>
+    <string name="images">Images</string>
+    <string name="videos">Videos</string>
+    <string name="voice">Voice</string>
+    <string name="documents">Documents</string>
+    <string name="config">Configuration Setting</string>
+    <string name="app_list">App List</string>
+    <string name="youtube">Youtube Video Guide</string>
 </resources>

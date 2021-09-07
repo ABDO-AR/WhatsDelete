@@ -1,0 +1,59 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".ui.activity.home.HomeActivity"
+
+
+    >
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:minHeight="?attr/actionBarSize"
+        app:theme="@style/Theme.WhatsDelete"
+        app:title="@string/app_name"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+
+
+       />
+
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/home_tab_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:tabMode="scrollable"
+        app:tabGravity="center"
+        app:textAllCaps="false"
+        app:tabIndicatorGravity="stretch"
+        app:tabSelectedTextColor="@color/white"
+        app:tabIndicatorAnimationMode="elastic"
+        app:tabIndicator="@drawable/tab_indicator"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tabIndicatorColor="@color/light_green"
+        android:layout_marginTop="8sp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+
+        />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/home_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+

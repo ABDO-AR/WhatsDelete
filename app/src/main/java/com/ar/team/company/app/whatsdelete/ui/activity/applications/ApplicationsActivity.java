@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.View;
 import com.ar.team.company.app.whatsdelete.control.adapter.ApplicationsAdapter;
 import com.ar.team.company.app.whatsdelete.databinding.ActivityApplicationsBinding;
 import com.ar.team.company.app.whatsdelete.model.Application;
+import com.ar.team.company.app.whatsdelete.ui.activity.home.HomeActivity;
 
 import java.util.List;
 import java.util.Objects;
@@ -40,6 +42,10 @@ public class ApplicationsActivity extends AppCompatActivity {
         model = new ViewModelProvider(this).get(ApplicationsViewModel.class);
         // Developing:
         model.getAppsModel().observe(this, this::appsObserver);
+
+        binding.nextBoardLayout.setOnClickListener(view1 -> {
+            startActivity(new Intent(ApplicationsActivity.this , HomeActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
+        });
     }
 
     // Observing:
@@ -51,4 +57,5 @@ public class ApplicationsActivity extends AppCompatActivity {
         binding.appsRecyclerView.setAdapter(adapter);
         binding.appsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
+
 }

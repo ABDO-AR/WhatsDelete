@@ -5,6 +5,7 @@
         <item name="colorPrimary">@color/dark_grey</item>
         <item name="colorPrimaryVariant">?attr/colorPrimary</item>
         <item name="colorOnPrimary">@color/black</item>
+
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_200</item>
@@ -19,11 +20,37 @@
         <item name="card_background_attrs">@style/card_background_dark</item>
         <item name="next_on_board_button_background_attrs">@style/next_on_board_button_background_dark</item>
         <item name="ar_background">@style/ar_background_dark</item>
+
+    </style>
+
+
+    <style name="Theme.WhatsDelete_noAction" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/dark_grey</item>
+        <item name="colorPrimaryVariant">?attr/colorPrimary</item>
+        <item name="colorOnPrimary">@color/black</item>
+
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="android:navigationBarColor">?attr/colorPrimaryVariant</item>
+        <item name="actionBarStyle">@style/ARCustomDarkActionBar</item>
+        <!-- CustomAttrs -->
+        <item name="splash_background_attrs">@style/splash_background_dark</item>
+        <item name="card_background_attrs">@style/card_background_dark</item>
+        <item name="next_on_board_button_background_attrs">@style/next_on_board_button_background_dark</item>
+        <item name="ar_background">@style/ar_background_dark</item>
+
+
     </style>
     <style name="ARCustomDarkActionBar" parent="Widget.MaterialComponents.ActionBar.Solid">
         <item name="background">?attr/colorPrimaryVariant</item>
     </style>
-        <style name="Theme.ARDefTextTheme" parent="Widget.MaterialComponents.TextView">
+    <style name="Theme.ARDefTextTheme" parent="Widget.MaterialComponents.TextView">
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
         <item name="android:textSize">30sp</item>
     </style>
