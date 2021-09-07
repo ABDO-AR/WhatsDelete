@@ -19,14 +19,14 @@ import java.util.Objects;
 @SuppressWarnings("FieldCanBeLocal")
 public class ApplicationsActivity extends AppCompatActivity {
 
-    // TAGS:
-    private static final String TAG = "ApplicationsActivity";
     // This For Control The XML-Main Views:
     private ActivityApplicationsBinding binding;
     private ApplicationsViewModel model;
     // Apps:
     private ApplicationsAdapter adapter;
     private List<Application> applications;
+    // TAGS:
+    private static final String TAG = "ApplicationsActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

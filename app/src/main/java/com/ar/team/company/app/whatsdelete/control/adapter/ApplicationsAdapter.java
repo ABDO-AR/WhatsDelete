@@ -52,8 +52,8 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
         Application application = applications.get(position);
         Drawable appIcon = application.getIcon();
         // Developing:
-        holder.binding.singleAppSwitch.setText(application.getName());
-        holder.binding.singleAppSwitch.setCompoundDrawablesWithIntrinsicBounds(appIcon, null, null, null);
+        holder.binding.appIconImageView.setImageDrawable(appIcon);
+        holder.binding.appNameTextView.setText(application.getName());
         // Debugging:
         Log.d(TAG, "onBindViewHolder: View Holder Bind Successfully");
     }

@@ -33,6 +33,7 @@
         android:layout_height="45dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
+        android:padding="8dp"
         style="?attr/next_on_board_button_background_attrs"
         android:contentDescription="@string/des"
         android:elevation="10dp"

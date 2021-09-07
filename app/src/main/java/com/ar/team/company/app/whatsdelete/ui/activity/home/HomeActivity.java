@@ -67,7 +67,7 @@ public class HomeActivity extends AppCompatActivity {
         tabLayout =  findViewById(R.id.home_tab_layout);
         toolbar =  findViewById(R.id.toolbar);
 
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
 
 
         manager = new ARPreferencesManager(this);
