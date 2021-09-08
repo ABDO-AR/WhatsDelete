@@ -16,6 +16,9 @@
     <string name="whatsapp_demo_text">Whatsapp</string>
     <string name="setting">Setting</string>
 
+    <!-- Manifest -->
+    <string name="whatsapp_notification_listener_service">WhatsApp Notification Listener</string>
+
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="quick_access">Quick Access</string>
@@ -29,4 +32,7 @@
     <string name="config">Configuration Setting</string>
     <string name="app_list">App List</string>
     <string name="youtube">Youtube Video Guide</string>
+    <string name="sender_name_demo">Mark</string>
+    <string name="deleted_message_demo">This message was deleted</string>
+    <string name="_05_18_pm_demo">05:18 PM</string>
 </resources>

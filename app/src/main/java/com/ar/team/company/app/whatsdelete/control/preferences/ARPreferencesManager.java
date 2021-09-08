@@ -14,6 +14,7 @@ public class ARPreferencesManager {
     // PreferencesKeys:
     public static final String APP_INIT = "ar.Shared.Preferences.Init.App.Created";
     public static final String PACKAGE_APP_NAME = "ar.Shared.Preferences.Package.App.Name.Value";
+    public static final String WHATSAPP_CHATS = "ar.Shared.Preferences.Chats.App.Name.Whatsapp";
 
     // Constructor:
     public ARPreferencesManager(Context context) {

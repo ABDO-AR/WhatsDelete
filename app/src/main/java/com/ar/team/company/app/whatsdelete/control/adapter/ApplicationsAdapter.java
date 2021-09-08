@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -74,6 +75,7 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
         // Developing:
         holder.binding.appIconImageView.setImageDrawable(appIcon);
         holder.binding.appNameTextView.setText(application.getName());
+        // PreparingApplication:
         if (currentPackages.contains(application.getPackageName())) application.setChecked(true);
         // PreparingSwitch:
         if (application.isChecked()) holder.binding.singleAppSwitch.setChecked(true);
@@ -92,6 +94,8 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
                 currentPackages += app.getPackageName() + ",";
                 // Setting:
                 manager.setStringPreferences(ARPreferencesManager.PACKAGE_APP_NAME, currentPackages);
+                // Checking:
+                app.setChecked(true);
             }
         } else {
             if (currentPackages.contains(app.getPackageName())) {
@@ -100,16 +104,17 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
                 currentPackages = filtersPackageName; // Set the new filtered packages.
                 // Developing:
                 manager.setStringPreferences(ARPreferencesManager.PACKAGE_APP_NAME, filtersPackageName);
+                // Checking:
+                app.setChecked(false);
             }
         }
-        // Checking:
-        app.setChecked(checked);
         // This line only for make things clear:
         Log.d(TAG, "appsListener: --------------------------------------------------------------");
         // Debugging:
         Log.d(TAG, "appsListener(SP): " + manager.getStringPreferences(ARPreferencesManager.PACKAGE_APP_NAME));
         Log.d(TAG, "appsListener(CP): " + currentPackages);
         // Notify:
+        notifyItemChanged(pos);
     }
 
     @Override

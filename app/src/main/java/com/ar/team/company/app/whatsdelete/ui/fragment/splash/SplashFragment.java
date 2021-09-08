@@ -62,7 +62,7 @@ public class SplashFragment extends Fragment implements Animator.AnimatorListene
         boolean state = manager.getBooleanPreferences(ARPreferencesManager.APP_INIT);
         // Checking:
         if (state) {
-            startActivity(ARUtils.runNewTask(requireContext(), ApplicationsActivity.class));
+            startActivity(ARUtils.runNewTask(requireContext(), HomeActivity.class));
         } else {
             // Initializing:
             FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
