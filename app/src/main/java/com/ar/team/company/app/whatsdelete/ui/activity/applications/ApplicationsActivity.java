@@ -34,7 +34,6 @@ public class ApplicationsActivity extends AppCompatActivity implements Applicati
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityApplicationsBinding.inflate(getLayoutInflater()); // INFLATE THE LAYOUT.
-        Objects.requireNonNull(getSupportActionBar()).hide();
         View view = binding.getRoot(); // GET ROOT [BY DEF(CONSTRAINT LAYOUT)].
         setContentView(view); // SET THE VIEW CONTENT TO THE (VIEW).
         // Initializing:
