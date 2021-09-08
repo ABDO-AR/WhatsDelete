@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ar.team.company.app.whatsdelete.R;
+import com.ar.team.company.app.whatsdelete.annotations.ERROR;
 import com.ar.team.company.app.whatsdelete.annotations.UnderDevelopment;
 import com.ar.team.company.app.whatsdelete.control.preferences.ARPreferencesManager;
 import com.ar.team.company.app.whatsdelete.databinding.ActivityApplicationsBinding;
@@ -22,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 @UnderDevelopment(development = "CheckBox In RecyclerView Enabled By It Self")
+@ERROR(error = "(UNDER-DEVELOPMENT) THE SAME AS NEWS-X AND COMPLETE ALL SELECTED")
 public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapter.ApplicationsViewHolder> {
 
     // Fields:
@@ -108,7 +110,6 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
         Log.d(TAG, "appsListener(SP): " + manager.getStringPreferences(ARPreferencesManager.PACKAGE_APP_NAME));
         Log.d(TAG, "appsListener(CP): " + currentPackages);
         // Notify:
-        // @ERROR (UNDER-DEVELOPMENT) THE SAME AS NEWS-X AND COMPLETE ALL SELECTED
     }
 
     @Override
