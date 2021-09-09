@@ -56,7 +56,7 @@ public class ChatFragment extends Fragment {
         chats = new ArrayList<>();
         // Developing:
         if (!manager.getStringPreferences(ARPreferencesManager.WHATSAPP_CHATS).equals("Empty,")) {
-            chats.addAll(ARUtils.fromJsonToChat(manager.getStringPreferences(ARPreferencesManager.WHATSAPP_CHATS)));
+            chats.addAll(ARUtils.fromJsonToChats(manager.getStringPreferences(ARPreferencesManager.WHATSAPP_CHATS)));
             if (!chats.isEmpty()) {
                 adapter = new ChatAdapter(requireContext(), chats);
                 binding.chatRecyclerView.setAdapter(adapter);

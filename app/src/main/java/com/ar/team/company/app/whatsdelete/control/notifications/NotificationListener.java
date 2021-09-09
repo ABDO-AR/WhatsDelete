@@ -2,6 +2,9 @@ package com.ar.team.company.app.whatsdelete.control.notifications;
 
 import android.app.Notification;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
@@ -47,7 +50,7 @@ public class NotificationListener extends NotificationListenerService {
             // Developing:
             if (manager.getPreferences().contains(ARPreferencesManager.WHATSAPP_CHATS)) {
                 // Initializing:
-                chats = ARUtils.fromJsonToChat(manager.getStringPreferences(ARPreferencesManager.WHATSAPP_CHATS));
+                chats = ARUtils.fromJsonToChats(manager.getStringPreferences(ARPreferencesManager.WHATSAPP_CHATS));
                 // Developing:
                 for (Chat chat : chats) {
                     if (chat.getSender().equals(sender)) {
@@ -76,7 +79,7 @@ public class NotificationListener extends NotificationListenerService {
                 chats.add(new Chat(sender, "", date, null, messages));
             }
             // SettingPreferences:
-            manager.setStringPreferences(ARPreferencesManager.WHATSAPP_CHATS, ARUtils.fromChatToJson(chats));
+            manager.setStringPreferences(ARPreferencesManager.WHATSAPP_CHATS, ARUtils.fromChatsToJson(chats));
             // Debugging:
             Log.d(TAG, "onNotificationPosted: -------------------------------------------");
             Log.d(TAG, "onNotificationPosted: " + manager.getStringPreferences(ARPreferencesManager.WHATSAPP_CHATS));

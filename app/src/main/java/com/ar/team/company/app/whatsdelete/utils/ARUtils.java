@@ -45,15 +45,22 @@ public class ARUtils {
     }
 
     // ChatConvertorMethods:
-    public static String fromChatToJson(List<Chat> chat) {
+    public static String fromChatsToJson(List<Chat> chat) {
         return new Gson().toJson(chat);
     }
 
-    public static List<Chat> fromJsonToChat(String json) {
+    public static String fromChatToJson(Chat chat) {
+        return new Gson().toJson(chat);
+    }
+
+    public static List<Chat> fromJsonToChats(String json) {
         Type type = new TypeToken<List<Chat>>(){}.getType();
         return new Gson().fromJson(json, type);
     }
 
+    public static Chat fromJsonToChat(String json) {
+        return new Gson().fromJson(json, Chat.class);
+    }
 
     // Getters(&Setters):
 

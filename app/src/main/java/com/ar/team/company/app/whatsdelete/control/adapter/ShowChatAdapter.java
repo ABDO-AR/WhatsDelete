@@ -3,12 +3,12 @@ package com.ar.team.company.app.whatsdelete.control.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ar.team.company.app.whatsdelete.databinding.ShowChatItemViewBinding;
 import com.ar.team.company.app.whatsdelete.databinding.SingleChatItemBinding;
 import com.ar.team.company.app.whatsdelete.model.Chat;
 import com.ar.team.company.app.whatsdelete.ui.activity.show.ShowChatActivity;
@@ -18,14 +18,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
+public class ShowChatAdapter extends RecyclerView.Adapter<ShowChatAdapter.ShowChatViewHolder> {
 
     // Fields:
     private final Context context;
-    private final List<Chat> chats;
+    private final Chat chats;
 
     // Constructor:
-    public ChatAdapter(Context context, List<Chat> chats) {
+    public ShowChatAdapter(Context context, Chat chats) {
         // Initializing:
         this.context = context;
         this.chats = chats;
@@ -37,53 +37,43 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     @NonNull
     @NotNull
     @Override
-    public ChatViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+    public ShowChatAdapter.ShowChatViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         // Initializing:
         LayoutInflater inflater = LayoutInflater.from(context);
-        SingleChatItemBinding binding = SingleChatItemBinding.inflate(inflater, parent, false);
+        ShowChatItemViewBinding binding = ShowChatItemViewBinding.inflate(inflater, parent, false);
         // Returning:
-        return new ChatViewHolder(binding);
+        return new ShowChatAdapter.ShowChatViewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull ChatAdapter.ChatViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull @NotNull ShowChatViewHolder holder, int position) {
         // Initializing:
-        Chat chat = chats.get(position);
+        Chat.Messages messages = chats.getMessages().get(position);
         // Developing:
-        holder.binding.senderNameTextView.setText(chat.getSender());
-        holder.binding.lastMessageTextView.setText(chat.getMessages().get(chat.getMessages().size() - 1).getMessage());
-        // OnClickChat:
-        holder.binding.getRoot().setOnClickListener(v -> chatClicked(chat));
-    }
-
-    private void chatClicked(Chat chat) {
-        // Initializing:
-        Intent intent = new Intent(context, ShowChatActivity.class);
-        // Developing:
-        intent.putExtra("Chat", ARUtils.fromChatToJson(chat));
-        context.startActivity(intent);
+        holder.binding.chatMes.setText(messages.getMessage());
+        holder.binding.dateTextView.setText(chats.getMessageDate());
     }
 
     @Override
     public int getItemCount() {
-        return chats.size();
+        return chats.getMessages().size();
     }
 
     // ViewHolder:
-    static class ChatViewHolder extends RecyclerView.ViewHolder {
+    static class ShowChatViewHolder extends RecyclerView.ViewHolder {
 
         // Fields:
-        private final SingleChatItemBinding binding;
+        private final ShowChatItemViewBinding binding;
 
         // Constructor:
-        public ChatViewHolder(@NonNull @NotNull SingleChatItemBinding binding) {
+        public ShowChatViewHolder(@NonNull @NotNull ShowChatItemViewBinding binding) {
             super(binding.getRoot());
             // Initializing:
             this.binding = binding;
         }
 
         // Getters:
-        public SingleChatItemBinding getBinding() {
+        public ShowChatItemViewBinding getBinding() {
             return binding;
         }
     }
@@ -93,7 +83,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         return context;
     }
 
-    public List<Chat> getChats() {
+    public Chat getChats() {
         return chats;
     }
+
 }
