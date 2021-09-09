@@ -1,14 +1,8 @@
 package com.ar.team.company.app.whatsdelete.control.notifications;
 
 import android.app.Notification;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.Icon;
-import android.os.Bundle;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
-import android.util.Log;
 
 import com.ar.team.company.app.whatsdelete.control.preferences.ARPreferencesManager;
 import com.ar.team.company.app.whatsdelete.model.Chat;
@@ -17,10 +11,7 @@ import com.ar.team.company.app.whatsdelete.utils.ARUtils;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class NotificationListener extends NotificationListenerService {
 
@@ -28,6 +19,7 @@ public class NotificationListener extends NotificationListenerService {
     public static final String WHATSAPP_PACKAGE_NAME = "com.whatsapp";
     // TAGS:
     private static final String TAG = "NotificationListener";
+    private static final String NP_FIELD = "onNotificationPosted: ";
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
@@ -81,14 +73,11 @@ public class NotificationListener extends NotificationListenerService {
             // SettingPreferences:
             manager.setStringPreferences(ARPreferencesManager.WHATSAPP_CHATS, ARUtils.fromChatsToJson(chats));
             // Debugging:
-            Log.d(TAG, "onNotificationPosted: -------------------------------------------");
-            Log.d(TAG, "onNotificationPosted: " + manager.getStringPreferences(ARPreferencesManager.WHATSAPP_CHATS));
+            ARUtils.debug(TAG, NP_FIELD, manager.getStringPreferences(ARPreferencesManager.WHATSAPP_CHATS));
         }
         // Debugging:
-        Log.d(TAG, "onNotificationPosted: -------------------------------------------");
-        Log.d(TAG, "onNotificationPosted: Whatsapp Package Was Founded In Preferences");
+        ARUtils.debug(TAG, NP_FIELD, "Whatsapp Package Was Founded In Preferences");
         // Debugging:
-        Log.d(TAG, "onNotificationPosted: -------------------------------------------");
-        Log.d(TAG, "onNotificationPosted: Start");
+        ARUtils.debug(TAG, NP_FIELD, "Start");
     }
 }

@@ -2,11 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     style="?attr/ar_background"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.activity.show.ShowChatActivity">
-
 
     <ImageButton
         android:id="@+id/back_button"
@@ -19,7 +18,7 @@
         android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_back_chat_button" />
+        style="?attr/ar_chat_icon_background"/>
 
     <HorizontalScrollView
         android:id="@+id/horizontalScrollView2"
@@ -48,10 +47,10 @@
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:contentDescription="@string/des"
         app:layout_constraintStart_toEndOf="@+id/back_button"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars"
-        android:contentDescription="@string/des" />
+        tools:srcCompat="@tools:sample/avatars" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/show_chat_recycler_view"
@@ -66,6 +65,7 @@
         android:id="@+id/materialCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardElevation="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -83,12 +83,12 @@
                 android:autofillHints="@string/des"
                 android:background="@drawable/chat_input_background"
                 android:ems="10"
-                android:textColorHint="@color/white"
-                android:textColor="@color/white"
                 android:hint="@string/chat_input_hint"
                 android:inputType="text"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/chat_send_button"
                 app:layout_constraintStart_toStartOf="parent"

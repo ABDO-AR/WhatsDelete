@@ -16,6 +16,8 @@ public class ShowChatActivity extends AppCompatActivity {
 
     // This For Control The XML-Main Views:
     private ActivityShowChatBinding binding;
+    private Chat chat;
+    private ShowChatAdapter adapter;
     // TAGS:
     private static final String TAG = "ShowChatActivity";
 
@@ -26,13 +28,13 @@ public class ShowChatActivity extends AppCompatActivity {
         View view = binding.getRoot(); // GET ROOT [BY DEF(CONSTRAINT LAYOUT)].
         setContentView(view); // SET THE VIEW CONTENT TO THE (VIEW).
         // Initializing:
-        Chat chat = ARUtils.fromJsonToChat(getIntent().getExtras().getString("Chat"));
-        ShowChatAdapter adapter = new ShowChatAdapter(this, chat);
-        // Developing:
+        chat = ARUtils.fromJsonToChat(getIntent().getExtras().getString("Chat"));
+        adapter = new ShowChatAdapter(this, chat);
+        // Developing(Main-UI):
         binding.senderNameTextView.setText(chat.getSender());
         binding.backButton.setOnClickListener(v -> finish());
+        // Developing(RecyclerView):
         binding.showChatRecyclerView.setAdapter(adapter);
         binding.showChatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
-
 }

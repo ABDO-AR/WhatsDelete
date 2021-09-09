@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.ar.team.company.app.whatsdelete.R;
+import com.ar.team.company.app.whatsdelete.control.preferences.ARPreferencesManager;
 import com.ar.team.company.app.whatsdelete.databinding.ActivityMainBinding;
 
 import java.util.Objects;
@@ -16,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     // This For Control The XML-Main Views:
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private ActivityMainBinding binding;
+    private ARPreferencesManager manager;
     // TAGS:
     @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private static final String TAG = "MainActivity";
@@ -29,7 +31,17 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot(); // GET ROOT [BY DEF(CONSTRAINT LAYOUT)].
         setContentView(view); // SET THE VIEW CONTENT TO THE (VIEW).
         // Initializing:
+        manager = new ARPreferencesManager(this);
         // Developing:
+        initTheme();
+    }
+
+    private void initTheme() {
+        // Initializing:
+        boolean state = manager.getBooleanPreferences(ARPreferencesManager.LIGHT_THEME);
+        // Developing:
+        if (state) AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
     }
 
 }

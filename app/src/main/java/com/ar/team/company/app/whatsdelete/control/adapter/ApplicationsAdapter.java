@@ -114,7 +114,6 @@ public class ApplicationsAdapter extends RecyclerView.Adapter<ApplicationsAdapte
         Log.d(TAG, "appsListener(SP): " + manager.getStringPreferences(ARPreferencesManager.PACKAGE_APP_NAME));
         Log.d(TAG, "appsListener(CP): " + currentPackages);
         // Notify:
-        notifyItemChanged(pos);
     }
 
     @Override

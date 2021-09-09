@@ -1,7 +1,6 @@
 package com.ar.team.company.app.whatsdelete.control.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -9,15 +8,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ar.team.company.app.whatsdelete.databinding.ShowChatItemViewBinding;
-import com.ar.team.company.app.whatsdelete.databinding.SingleChatItemBinding;
 import com.ar.team.company.app.whatsdelete.model.Chat;
-import com.ar.team.company.app.whatsdelete.ui.activity.show.ShowChatActivity;
-import com.ar.team.company.app.whatsdelete.utils.ARUtils;
-
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
+@SuppressWarnings("unused")
 public class ShowChatAdapter extends RecyclerView.Adapter<ShowChatAdapter.ShowChatViewHolder> {
 
     // Fields:

@@ -11,7 +11,6 @@
     <item
         android:id="@+id/menu_setting"
         android:title="@string/setting"
-
         android:icon="@drawable/ic_settings_icon"
         app:showAsAction="ifRoom" />
 

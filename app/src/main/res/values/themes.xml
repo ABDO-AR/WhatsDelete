@@ -22,6 +22,7 @@
         <item name="mr_text_color">@style/mr_text_light</item>
         <item name="ar_def_background">@style/ar_def_background_light</item>
         <item name="ar_tab_indicator_color">@style/ar_tab_indicator_light</item>
+        <item name="ar_chat_icon_background">@style/ar_chat_icon_background_light</item>
     </style>
 
     <style name="Theme.WhatsDelete_noAction" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -42,8 +43,6 @@
         <item name="card_background_attrs">@style/card_background_light</item>
         <item name="next_on_board_button_background_attrs">@style/next_on_board_button_background_light</item>
         <item name="ar_background">@style/ar_background_light</item>
-
-
     </style>
 
 
