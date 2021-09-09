@@ -35,4 +35,6 @@
     <string name="sender_name_demo">Mark</string>
     <string name="deleted_message_demo">This message was deleted</string>
     <string name="_05_18_pm_demo">05:18 PM</string>
+    <string name="sender_demo">Ahmed</string>
+    <string name="chat_input_hint">Type message here...</string>
 </resources>

@@ -49,9 +49,10 @@ public class ShowChatAdapter extends RecyclerView.Adapter<ShowChatAdapter.ShowCh
     public void onBindViewHolder(@NonNull @NotNull ShowChatViewHolder holder, int position) {
         // Initializing:
         Chat.Messages messages = chats.getMessages().get(position);
+        String[] dates = chats.getMessageDate().split(" ");
         // Developing:
         holder.binding.chatMes.setText(messages.getMessage());
-        holder.binding.dateTextView.setText(chats.getMessageDate());
+        holder.binding.dateTextView.setText(dates[1] + " " + dates[2]);
     }
 
     @Override

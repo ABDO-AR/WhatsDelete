@@ -29,6 +29,8 @@ public class ShowChatActivity extends AppCompatActivity {
         Chat chat = ARUtils.fromJsonToChat(getIntent().getExtras().getString("Chat"));
         ShowChatAdapter adapter = new ShowChatAdapter(this, chat);
         // Developing:
+        binding.senderNameTextView.setText(chat.getSender());
+        binding.backButton.setOnClickListener(v -> finish());
         binding.showChatRecyclerView.setAdapter(adapter);
         binding.showChatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
