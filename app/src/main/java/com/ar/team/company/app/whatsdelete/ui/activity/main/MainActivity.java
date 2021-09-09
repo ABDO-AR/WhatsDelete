@@ -6,11 +6,8 @@ import androidx.appcompat.app.AppCompatDelegate;
 import android.os.Bundle;
 import android.view.View;
 
-import com.ar.team.company.app.whatsdelete.R;
 import com.ar.team.company.app.whatsdelete.control.preferences.ARPreferencesManager;
 import com.ar.team.company.app.whatsdelete.databinding.ActivityMainBinding;
-
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
