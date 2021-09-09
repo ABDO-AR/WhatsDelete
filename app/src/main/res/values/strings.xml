@@ -7,7 +7,7 @@
     <string name="page_1_content">By using this application you may violate the terms and services of other applications. Remember to review these terms and use of other apps before selecting them and do not select incompatible applications.</string>
     <!-- Page2 -->
     <string name="page_2_header">We care about our privacy and data security</string>
-    <string name="page_2_content">This application is free and to continue working on it, we have to show advertisement. To do this, our ad providers will use the information that they have gathered aboutyou. Remember, read the policies and you have to be legal aged to continue.Our ad providers and privacy policies may vary. WhatsDelete does not use your notification for commercial purposes but it only save and detect its content in your device.</string>
+    <string name="page_2_content">This application is free and to continue working on it, we have to show advertisement. To do this, our ad providers will use the information that they have gathered aboutyou. Remember, read the policies and you have to be legal aged to continue.Our ad providers and privacy policies may vary. SocialDelete does not use your notification for commercial purposes but it only save and detect its content in your device.</string>
     <!-- Page2 -->
     <string name="page_3_header">Ready to go</string>
     <string name="page_3_content">By clicking accept, you accept our advertising policies and do not violate the terms of use of other applications.</string>
