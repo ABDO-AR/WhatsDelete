@@ -1,4 +1,4 @@
-package com.ar.team.company.app.whatsdelete.ui.activity;
+package com.ar.team.company.app.whatsdelete.ui.activity.settings;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;

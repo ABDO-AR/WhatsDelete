@@ -5,7 +5,7 @@
     style="?attr/ar_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.SettingsActivity">
+    tools:context=".ui.activity.settings.SettingsActivity">
 
     <TextView
         android:id="@+id/textView2"

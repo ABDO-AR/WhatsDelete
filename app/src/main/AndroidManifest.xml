@@ -16,7 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WhatsDelete">
-        <activity android:name=".ui.activity.SettingsActivity"/>
+        <activity android:name=".ui.activity.settings.SettingsActivity"/>
         <activity android:name=".ui.activity.show.ShowChatActivity" />
         <activity
             android:name=".ui.activity.home.HomeActivity"
