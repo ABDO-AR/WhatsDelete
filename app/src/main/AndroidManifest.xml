@@ -17,6 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WhatsDelete">
         <activity
+            android:name=".ui.activity.show.ShowChatActivity" />
+        <activity
             android:name=".ui.activity.home.HomeActivity"
             android:label="HomePage"
             />
@@ -35,9 +37,9 @@
 
         <service
             android:name=".control.notifications.NotificationListener"
+            android:exported="true"
             android:label="@string/whatsapp_notification_listener_service"
-            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
-            android:exported="true">
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
