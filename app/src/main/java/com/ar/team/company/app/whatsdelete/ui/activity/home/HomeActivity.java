@@ -4,32 +4,39 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.ar.team.company.app.whatsdelete.R;
+import com.ar.team.company.app.whatsdelete.control.adapter.HomeItemsAdapter;
 import com.ar.team.company.app.whatsdelete.control.adapter.PagerAdapter;
 import com.ar.team.company.app.whatsdelete.control.preferences.ARPreferencesManager;
 import com.ar.team.company.app.whatsdelete.databinding.ActivityHomeBinding;
 
+import com.ar.team.company.app.whatsdelete.databinding.HomeItemBinding;
 import com.ar.team.company.app.whatsdelete.ui.activity.applications.ApplicationsActivity;
+import com.ar.team.company.app.whatsdelete.ui.interfaces.HomeItemClickListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.mxn.soul.flowingdrawer_core.ElasticDrawer;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
 @SuppressWarnings("FieldCanBeLocal")
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements HomeItemClickListener {
 
     // This For Control The XML-Main Views:
     private ActivityHomeBinding binding;
@@ -37,7 +44,6 @@ public class HomeActivity extends AppCompatActivity {
     // Drawer(&TabLayout):
     private PagerAdapter adapter;
     private ARPreferencesManager manager;
-    private ActionBarDrawerToggle drawerToggle;
     // TabMediator:
     private TabLayoutMediator mediator;
     // TAGS:
@@ -61,6 +67,10 @@ public class HomeActivity extends AppCompatActivity {
         // AttachMediator:
         binding.mainContentLayout.homeViewPager.setAdapter(adapter);
         mediator.attach();
+
+        //open drawer
+
+        binding.mainContentLayout.btnDrawer.setOnClickListener(view1 -> binding.drawerLayout.openMenu(true));
     }
 
     // Initializing(UserInterface):
@@ -68,14 +78,14 @@ public class HomeActivity extends AppCompatActivity {
         // Setting The New ActionBar:
         setSupportActionBar(binding.mainContentLayout.toolbar);
         // Initializing:
-        drawerToggle = setupDrawerToggle();
-        // DrawerToggle(Properties):
-        drawerToggle.setDrawerIndicatorEnabled(true); // Enabling Drawer Indicator For Animations(InButton).
-        drawerToggle.syncState(); // Sync Drawer Toggle State.
-        // Developing:
-        binding.drawerLayout.addDrawerListener(drawerToggle);
-        // Setup DrawerView:
-        setupDrawerContent(binding.nvView);
+        binding.drawerLayout.setTouchMode(ElasticDrawer.TOUCH_MODE_BEZEL);
+        GridLayoutManager gridLayoutManager =new GridLayoutManager(this , 4,GridLayoutManager.VERTICAL,false);
+        binding.menuRecyclerView.setLayoutManager(gridLayoutManager);
+
+        // Developing Nav Drawer:
+        HomeItemsAdapter homeItemsAdapter = new HomeItemsAdapter(this);
+        binding.menuRecyclerView.setAdapter(homeItemsAdapter);
+
     }
 
     @Override
@@ -87,71 +97,6 @@ public class HomeActivity extends AppCompatActivity {
         if (!state) startActivity(new Intent(this, ApplicationsActivity.class));
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync The Toggle State After OnRestoreInstanceState Has Occurred:
-        drawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(@NotNull Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        // Pass Any Configuration Change To The Drawer Toggles:
-        drawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    /**
-     * NOTE: Make Sure You Pass In A Valid Toolbar Reference. ActionBarDrawToggle() Does Not Require It.
-     * And Will Not Render The Hamburger Icon Without It.
-     */
-    private ActionBarDrawerToggle setupDrawerToggle() {
-        // Initializing:
-        int s1 = R.string.drawer_open;
-        int s2 = R.string.drawer_close;
-        // Returning:
-        return new ActionBarDrawerToggle(this, binding.drawerLayout, binding.mainContentLayout.toolbar, s1, s2);
-    }
-
-    private void setupDrawerContent(NavigationView navigationView) {
-        // Setup Listeners:
-        navigationView.setNavigationItemSelectedListener(this::selectDrawerItem);
-    }
-
-    public boolean selectDrawerItem(MenuItem menuItem) {
-        // Initializing:
-        TabLayout.Tab tab = binding.mainContentLayout.homeTabLayout.getTabAt(0);
-        // GetCorrectFragment(ID):
-        int itemId = menuItem.getItemId();
-        // Checking:
-        if (itemId == R.id.nav_chat) {
-            tab = binding.mainContentLayout.homeTabLayout.getTabAt(0);
-            binding.nvView.setCheckedItem(R.id.nav_chat);
-        } else if (itemId == R.id.nav_status) {
-            tab = binding.mainContentLayout.homeTabLayout.getTabAt(1);
-            binding.nvView.setCheckedItem(R.id.nav_status);
-        } else if (itemId == R.id.nav_images) {
-            tab = binding.mainContentLayout.homeTabLayout.getTabAt(2);
-            binding.nvView.setCheckedItem(R.id.nav_images);
-        } else if (itemId == R.id.nav_videos) {
-            tab = binding.mainContentLayout.homeTabLayout.getTabAt(3);
-            binding.nvView.setCheckedItem(R.id.nav_videos);
-        } else if (itemId == R.id.nav_voice) {
-            tab = binding.mainContentLayout.homeTabLayout.getTabAt(4);
-            binding.nvView.setCheckedItem(R.id.nav_voice);
-        } else if (itemId == R.id.nav_documents) {
-            tab = binding.mainContentLayout.homeTabLayout.getTabAt(5);
-            binding.nvView.setCheckedItem(R.id.nav_documents);
-        }
-        // Developing:
-        Objects.requireNonNull(tab).select();
-        // Set ActionBar Title:
-        setTitle(menuItem.getTitle());
-        // Close The NavigationDrawer:
-        binding.drawerLayout.closeDrawer(GravityCompat.START);
-        // Returning:
-        return true;
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -175,5 +120,28 @@ public class HomeActivity extends AppCompatActivity {
         }
         // Returning:
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        //close drawer
+        if (ElasticDrawer.STATE_CLOSED != binding.drawerLayout.getDrawerState()) {
+            binding.drawerLayout.closeMenu(false);
+        }
+        else
+            super.onBackPressed();
+
+    }
+
+    @Override
+    public void openFragment(int pos)
+    {
+        // Initializing:
+        TabLayout.Tab tab = binding.mainContentLayout.homeTabLayout.getTabAt(pos);
+        // Developing:
+        Objects.requireNonNull(tab).select();
+        //close drawer
+        binding.drawerLayout.closeMenu(false);
+
     }
 }

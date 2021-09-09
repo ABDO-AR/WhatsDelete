@@ -43,6 +43,10 @@ dependencies {
 
     // Gson:
     implementation 'com.google.code.gson:gson:2.8.8'
+    //Navigation Drawer
+    implementation 'com.mxn.soul:flowingdrawer-core:2.1.0'
+    implementation 'com.nineoldandroids:library:2.4.0'
+
     // Toasty:
     implementation "com.github.GrenderG:Toasty:$toasty_version"
     // LottieFiles:

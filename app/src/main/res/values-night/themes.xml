@@ -43,6 +43,7 @@
         <!-- CustomAttrs -->
         <item name="splash_background_attrs">@style/splash_background_dark</item>
         <item name="card_background_attrs">@style/card_background_dark</item>
+        <item name="mr_text_color">@style/mr_text_dark</item>
         <item name="next_on_board_button_background_attrs">@style/next_on_board_button_background_dark</item>
         <item name="ar_background">@style/ar_background_dark</item>
 

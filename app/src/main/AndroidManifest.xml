@@ -20,7 +20,8 @@
             android:name=".ui.activity.show.ShowChatActivity" />
         <activity
             android:name=".ui.activity.home.HomeActivity"
-            android:label="HomePage" />
+            android:label="HomePage"
+            />
         <activity
             android:name=".ui.activity.applications.ApplicationsActivity"
             android:label="Select Apps" />

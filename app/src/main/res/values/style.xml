@@ -16,6 +16,14 @@
     <style name="ar_background_dark">
         <item name="android:background">@color/dark_grey</item>
     </style>
+    <style name="mr_text_light">
+        <item name="android:background">@color/black</item>
+    </style>
+
+
+    <style name="mr_text_dark">
+        <item name="android:background">@color/white</item>
+    </style>
 
     <style name="ar_def_background_dark">
         <item name="android:background">@color/dark_grey</item>
