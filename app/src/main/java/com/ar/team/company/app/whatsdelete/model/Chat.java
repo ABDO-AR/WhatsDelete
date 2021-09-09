@@ -9,18 +9,34 @@ public class Chat {
 
     // Fields:
     private final String sender, receiver;
-    private final String lastMessage, messageDate;
-    private final List<String> messages;
+    private final String messageDate;
     private final Drawable senderPhoto;
+    private final List<Messages> messages;
 
     // Constructor:
-    public Chat(String sender, String receiver, String lastMessage, String messageDate, List<String> messages, Drawable senderPhoto) {
+    public Chat(String sender, String receiver, String messageDate, Drawable senderPhoto, List<Messages> messages) {
         this.sender = sender;
         this.receiver = receiver;
-        this.lastMessage = lastMessage;
         this.messageDate = messageDate;
-        this.messages = messages;
         this.senderPhoto = senderPhoto;
+        this.messages = messages;
+    }
+
+    // InnerClasses:
+    public static class Messages{
+
+        // Fields:
+        private final String message;
+
+        // Constructor:
+        public Messages(String message) {
+            this.message = message;
+        }
+
+        // Getters:
+        public String getMessage() {
+            return message;
+        }
     }
 
     // Getters:
@@ -32,19 +48,15 @@ public class Chat {
         return receiver;
     }
 
-    public String getLastMessage() {
-        return lastMessage;
-    }
-
     public String getMessageDate() {
         return messageDate;
     }
 
-    public List<String> getMessages() {
-        return messages;
-    }
-
     public Drawable getSenderPhoto() {
         return senderPhoto;
+    }
+
+    public List<Messages> getMessages() {
+        return messages;
     }
 }

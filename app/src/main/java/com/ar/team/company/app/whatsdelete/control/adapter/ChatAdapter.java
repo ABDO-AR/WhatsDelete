@@ -48,6 +48,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         // Initializing:
         Chat chat = chats.get(position);
         // Developing:
+        holder.binding.senderNameTextView.setText(chat.getSender());
+        holder.binding.lastMessageTextView.setText(chat.getMessages().get(chat.getMessages().size() - 1).getMessage());
     }
 
     @Override
