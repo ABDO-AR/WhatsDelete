@@ -1,5 +1,6 @@
 package com.ar.team.company.app.whatsdelete.ui.fragment.home;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,7 +18,7 @@ import com.ar.team.company.app.whatsdelete.control.preferences.ARPreferencesMana
 import com.ar.team.company.app.whatsdelete.databinding.FragmentChatBinding;
 import com.ar.team.company.app.whatsdelete.model.Chat;
 import com.ar.team.company.app.whatsdelete.ui.activity.home.HomeViewModel;
-import com.ar.team.company.app.whatsdelete.utils.ARUtils;
+import com.ar.team.company.app.whatsdelete.ar.utils.ARUtils;
 import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
@@ -51,17 +52,32 @@ public class ChatFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         // Initializing:
         model = new ViewModelProvider(this).get(HomeViewModel.class);
-        // Initializing(PA):
+        // Initializing(ImportantFields):
         manager = new ARPreferencesManager(requireContext());
         chats = new ArrayList<>();
+        // Initializing(UI):
+        initUI(null, null);
         // Developing:
-        if (!manager.getStringPreferences(ARPreferencesManager.WHATSAPP_CHATS).equals("Empty,")) {
+        manager.getPreferences().registerOnSharedPreferenceChangeListener(this::initUI);
+    }
+
+    // Initializing UserInterface:
+    private void initUI(SharedPreferences sharedPreferences, String key) {
+        // Initializing:
+        boolean state = !manager.getStringPreferences(ARPreferencesManager.WHATSAPP_CHATS).equals("Empty,");
+        // Developing:
+        if (state) {
+            // AddingAll:
+            chats.clear();
             chats.addAll(ARUtils.fromJsonToChats(manager.getStringPreferences(ARPreferencesManager.WHATSAPP_CHATS)));
+            // Checking(ChatsAreNotEmpty):
             if (!chats.isEmpty()) {
+                // Initializing:
                 adapter = new ChatAdapter(requireContext(), chats);
+                // Setting:
                 binding.chatRecyclerView.setAdapter(adapter);
                 binding.chatRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-                Log.d(TAG, "onViewCreated: CA");
+                // Refreshing:
                 adapter.notifyDataSetChanged();
             }
         }

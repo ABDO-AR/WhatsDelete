@@ -19,7 +19,7 @@ import com.ar.team.company.app.whatsdelete.databinding.FragmentSplashBinding;
 import com.ar.team.company.app.whatsdelete.ui.activity.applications.ApplicationsActivity;
 import com.ar.team.company.app.whatsdelete.ui.activity.home.HomeActivity;
 import com.ar.team.company.app.whatsdelete.ui.fragment.onboard.OnBoardFragment;
-import com.ar.team.company.app.whatsdelete.utils.ARUtils;
+import com.ar.team.company.app.whatsdelete.ar.utils.ARUtils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -62,7 +62,7 @@ public class SplashFragment extends Fragment implements Animator.AnimatorListene
         boolean state = manager.getBooleanPreferences(ARPreferencesManager.APP_INIT);
         // Checking:
         if (state) {
-            startActivity(ARUtils.runNewTask(requireContext(), HomeActivity.class));
+            startActivity(ARUtils.runNewTask(requireContext(), requireActivity(), HomeActivity.class));
         } else {
             // Initializing:
             FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();

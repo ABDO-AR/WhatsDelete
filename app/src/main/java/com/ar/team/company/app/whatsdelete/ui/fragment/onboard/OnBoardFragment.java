@@ -1,7 +1,6 @@
 package com.ar.team.company.app.whatsdelete.ui.fragment.onboard;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -23,12 +22,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ar.team.company.app.whatsdelete.R;
+import com.ar.team.company.app.whatsdelete.ar.permissions.ARPermissionsRequest;
 import com.ar.team.company.app.whatsdelete.control.adapter.BoardAdapter;
 import com.ar.team.company.app.whatsdelete.control.preferences.ARPreferencesManager;
 import com.ar.team.company.app.whatsdelete.databinding.FragmentOnBoardBinding;
 import com.ar.team.company.app.whatsdelete.model.Board;
 import com.ar.team.company.app.whatsdelete.ui.activity.applications.ApplicationsActivity;
-import com.ar.team.company.app.whatsdelete.utils.ARUtils;
+import com.ar.team.company.app.whatsdelete.ar.utils.ARUtils;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
@@ -48,6 +48,8 @@ public class OnBoardFragment extends Fragment {
     private List<Board> boards;
     private TextView[] textViews;
     private int index = 0;
+    // ARPermissionsRequest:
+    private ARPermissionsRequest request;
     // Preferences:
     private ARPreferencesManager manager;
     // TAGS:
@@ -67,6 +69,7 @@ public class OnBoardFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         // InitializingPreferences:
         manager = new ARPreferencesManager(requireContext());
+        request = new ARPermissionsRequest(requireContext());
         // Initializing:
         initUI();
         initPager();
@@ -126,7 +129,7 @@ public class OnBoardFragment extends Fragment {
                     // Permission not granted so we have to ask it:
                     launcher.launch(perm);
                 }
-            }
+            } else if (position == 2) OnBoardFragment.this.request.runNotificationAccess();
             // Super:
             super.onPageSelected(position);
         }
@@ -153,7 +156,7 @@ public class OnBoardFragment extends Fragment {
             binding.onBoardPager.setCurrentItem(index);
         } else {
             manager.setBooleanPreferences(ARPreferencesManager.APP_INIT, true);
-            startActivity(ARUtils.runNewTask(requireContext(), ApplicationsActivity.class));
+            startActivity(ARUtils.runNewTask(requireContext(), requireActivity(), ApplicationsActivity.class));
         }
     }
 

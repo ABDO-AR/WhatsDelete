@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,10 +19,10 @@ import com.ar.team.company.app.whatsdelete.control.adapter.PagerAdapter;
 import com.ar.team.company.app.whatsdelete.control.preferences.ARPreferencesManager;
 
 import com.ar.team.company.app.whatsdelete.databinding.ActivityHomeBinding;
-import com.ar.team.company.app.whatsdelete.ui.activity.SettingsActivity;
 import com.ar.team.company.app.whatsdelete.ui.activity.applications.ApplicationsActivity;
+import com.ar.team.company.app.whatsdelete.ui.activity.settings.SettingsActivity;
 import com.ar.team.company.app.whatsdelete.ui.interfaces.HomeItemClickListener;
-import com.ar.team.company.app.whatsdelete.utils.ARUtils;
+import com.ar.team.company.app.whatsdelete.ar.utils.ARUtils;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.mxn.soul.flowingdrawer_core.ElasticDrawer;
@@ -62,6 +63,19 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
         mediator.attach();
         // OpeningDrawer:
         binding.mainContentLayout.btnDrawer.setOnClickListener(view1 -> binding.drawerLayout.openMenu(true));
+        // SettingMenuSize:
+        settingSize();
+    }
+
+    // SettingDrawerSize:
+    private void settingSize() {
+        // Initializing:
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        // GettingWidth:
+        int width = displayMetrics.widthPixels;
+        // Developing:
+        binding.drawerLayout.setMenuSize(width);
     }
 
     // Initializing(UserInterface):

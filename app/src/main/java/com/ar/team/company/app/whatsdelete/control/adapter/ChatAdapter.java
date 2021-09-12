@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ar.team.company.app.whatsdelete.databinding.SingleChatItemBinding;
 import com.ar.team.company.app.whatsdelete.model.Chat;
 import com.ar.team.company.app.whatsdelete.ui.activity.show.ShowChatActivity;
-import com.ar.team.company.app.whatsdelete.utils.ARUtils;
+import com.ar.team.company.app.whatsdelete.ar.utils.ARUtils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -52,6 +52,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         // Developing:
         holder.binding.senderNameTextView.setText(chat.getSender());
         holder.binding.lastMessageTextView.setText(chat.getMessages().get(chat.getMessages().size() - 1).getMessage());
+        if (chat.getSenderPhoto() != null)
+            holder.binding.senderImageView.setImageDrawable(chat.getSenderPhoto());
         // OnClickChat:
         holder.binding.getRoot().setOnClickListener(v -> chatClicked(chat));
     }

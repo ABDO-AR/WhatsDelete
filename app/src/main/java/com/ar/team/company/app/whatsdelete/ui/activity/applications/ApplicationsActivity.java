@@ -13,7 +13,7 @@ import com.ar.team.company.app.whatsdelete.databinding.ActivityApplicationsBindi
 import com.ar.team.company.app.whatsdelete.databinding.SingleAppItemBinding;
 import com.ar.team.company.app.whatsdelete.model.Application;
 import com.ar.team.company.app.whatsdelete.ui.activity.home.HomeActivity;
-import com.ar.team.company.app.whatsdelete.utils.ARUtils;
+import com.ar.team.company.app.whatsdelete.ar.utils.ARUtils;
 
 import java.util.List;
 import java.util.Objects;
@@ -41,7 +41,7 @@ public class ApplicationsActivity extends AppCompatActivity implements Applicati
         // Developing:
         model.getAppsModel().observe(this, this::appsObserver);
         // Developing(Views):
-        binding.nextBoardLayout.setOnClickListener(v -> startActivity(ARUtils.runNewTask(this, HomeActivity.class)));
+        binding.nextBoardLayout.setOnClickListener(v -> startActivity(ARUtils.runNewTask(this, this, HomeActivity.class)));
     }
 
     // Observing:

@@ -1,13 +1,15 @@
-package com.ar.team.company.app.whatsdelete.utils;
+package com.ar.team.company.app.whatsdelete.ar.utils;
 
+import android.app.Activity;
+import android.app.Notification;
+import android.app.RemoteInput;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.ar.team.company.app.whatsdelete.control.preferences.ARPreferencesManager;
 import com.ar.team.company.app.whatsdelete.model.Chat;
-import com.ar.team.company.app.whatsdelete.ui.activity.applications.ApplicationsActivity;
-import com.ar.team.company.app.whatsdelete.ui.activity.home.HomeActivity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -23,10 +25,6 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class ARUtils {
 
-    // Fields:
-
-    // Constructors:
-
     // Methods:
     public static List<String> getAppsPackages(ARPreferencesManager manager) {
         // Initializing:
@@ -34,8 +32,31 @@ public class ARUtils {
         return new ArrayList<>();
     }
 
+    // Method(Replay):
+    public static void reply(Context context, Notification.Action action, String message) {
+        // Catching The Error:
+        try {
+            // Initializing:
+            Intent sendIntent = new Intent();
+            Bundle msg = new Bundle();
+            // ForOnActionsRemoteInput Because We Don't Know The Action Name:
+            for (RemoteInput input : action.getRemoteInputs()) {
+                msg.putCharSequence(input.getResultKey(), message);
+            }
+            // AddingResultsToIntent:
+            RemoteInput.addResultsToIntent(action.getRemoteInputs(), sendIntent, msg);
+            // SendingTheAction:
+            action.actionIntent.send(context, 0, sendIntent);
+        } catch (Exception e) {
+            // Printing Error To Console If There AreOne:
+            e.printStackTrace();
+        }
+    }
+
     // For running new task intent:
-    public static Intent runNewTask(Context context, Class<?> cls) {
+    public static Intent runNewTask(Context context, Activity activity, Class<?> cls) {
+        // OverrideAnimations:
+        activity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         // Initializing:
         Intent newTask = new Intent(context, cls);
         // AddingFlags:
@@ -59,25 +80,24 @@ public class ARUtils {
         Log.d(tag, field + debug);
     }
 
-    // ChatConvertorMethods:
+    // Methods(ListOfChats):
     public static String fromChatsToJson(List<Chat> chat) {
-        return new Gson().toJson(chat);
-    }
-
-    public static String fromChatToJson(Chat chat) {
         return new Gson().toJson(chat);
     }
 
     public static List<Chat> fromJsonToChats(String json) {
         Type type = new TypeToken<List<Chat>>() {
+
         }.getType();
         return new Gson().fromJson(json, type);
+    }
+
+    // Methods(OneChat):
+    public static String fromChatToJson(Chat chat) {
+        return new Gson().toJson(chat);
     }
 
     public static Chat fromJsonToChat(String json) {
         return new Gson().fromJson(json, Chat.class);
     }
-
-    // Getters(&Setters):
-
 }
