@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.ar.team.company.app.whatsdelete.ar.images.ARImagesAccess;
@@ -51,7 +52,7 @@ public class ImagesFragment extends Fragment {
         adapter = new ImagesAdapter(requireContext(), bitmaps);
         // Developing:
         binding.recyclerImageView.setAdapter(adapter);
-        binding.recyclerImageView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        binding.recyclerImageView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
     }
 
 }

@@ -5,61 +5,54 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.ar.team.company.app.whatsdelete.R;
+import com.ar.team.company.app.whatsdelete.ar.voices.ARVoicesAccess;
+import com.ar.team.company.app.whatsdelete.control.adapter.VoicesAdapter;
+import com.ar.team.company.app.whatsdelete.databinding.FragmentVoiceBinding;
+import com.ar.team.company.app.whatsdelete.ui.activity.home.HomeViewModel;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link VoiceFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.io.File;
+import java.util.List;
+
+@SuppressWarnings("FieldCanBeLocal")
 public class VoiceFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    // This for control the Fragment-Layout views:
+    private FragmentVoiceBinding binding;
+    private HomeViewModel model; // MainModel for our fragment.
+    // Adapter:
+    private ARVoicesAccess access;
+    private List<File> files;
+    private VoicesAdapter adapter;
+    // TAGS:
+    private static final String TAG = "VoiceFragment";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public VoiceFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment VoiceFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static VoiceFragment newInstance(String param1, String param2) {
-        VoiceFragment fragment = new VoiceFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflate the fragment layout:
+        binding = FragmentVoiceBinding.inflate(inflater, container, false);
+        return binding.getRoot(); // Get the fragment layout root.
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_voice, container, false);
+    public void onViewCreated(@NotNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        // Initializing:
+        model = new ViewModelProvider(this).get(HomeViewModel.class);
+        // Initializing(Adapter):
+        access = new ARVoicesAccess(requireContext());
+        files = access.getWhatsappVoicesDirectory();
+        adapter = new VoicesAdapter(requireContext(), files);
+        // Developing:
+        binding.voicesRecyclerView.setAdapter(adapter);
+        binding.voicesRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
     }
 }

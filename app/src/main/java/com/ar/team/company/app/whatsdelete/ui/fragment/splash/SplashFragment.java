@@ -1,7 +1,6 @@
 package com.ar.team.company.app.whatsdelete.ui.fragment.splash;
 
 import android.animation.Animator;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,7 +15,6 @@ import android.view.ViewGroup;
 import com.ar.team.company.app.whatsdelete.R;
 import com.ar.team.company.app.whatsdelete.control.preferences.ARPreferencesManager;
 import com.ar.team.company.app.whatsdelete.databinding.FragmentSplashBinding;
-import com.ar.team.company.app.whatsdelete.ui.activity.applications.ApplicationsActivity;
 import com.ar.team.company.app.whatsdelete.ui.activity.home.HomeActivity;
 import com.ar.team.company.app.whatsdelete.ui.fragment.onboard.OnBoardFragment;
 import com.ar.team.company.app.whatsdelete.ar.utils.ARUtils;

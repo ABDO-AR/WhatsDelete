@@ -1,11 +1,13 @@
 package com.ar.team.company.app.whatsdelete.ui.activity.home;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Menu;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 import com.ar.team.company.app.whatsdelete.R;
 import com.ar.team.company.app.whatsdelete.control.adapter.HomeItemsAdapter;
 import com.ar.team.company.app.whatsdelete.control.adapter.PagerAdapter;
+import com.ar.team.company.app.whatsdelete.control.foreground.ARForegroundService;
 import com.ar.team.company.app.whatsdelete.control.preferences.ARPreferencesManager;
 
 import com.ar.team.company.app.whatsdelete.databinding.ActivityHomeBinding;
@@ -49,6 +52,8 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
         binding = ActivityHomeBinding.inflate(getLayoutInflater()); // INFLATE THE LAYOUT.
         View view = binding.getRoot(); // GET ROOT [BY DEF(CONSTRAINT LAYOUT)].
         setContentView(view); // SET THE VIEW CONTENT TO THE (VIEW).
+        // StartOurForegroundService:
+        ContextCompat.startForegroundService(this, new Intent(this, ARForegroundService.class));
         // Initializing(UI):
         initUI();
         // Initializing(MAIN-FIELDS):

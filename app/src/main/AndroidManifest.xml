@@ -10,14 +10,14 @@
         android:maxSdkVersion="28" />
 
     <application
-        android:requestLegacyExternalStorage="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WhatsDelete">
-        <activity android:name=".ui.activity.settings.SettingsActivity"/>
+        <activity android:name=".ui.activity.settings.SettingsActivity" />
         <activity android:name=".ui.activity.show.ShowChatActivity" />
         <activity
             android:name=".ui.activity.home.HomeActivity"
@@ -44,6 +44,11 @@
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
+        <service
+            android:name=".control.foreground.ARForegroundService"
+            android:enabled="true"
+            android:exported="false"
+            android:label="SocialDelete Foreground Service" />
     </application>
 
 </manifest>
