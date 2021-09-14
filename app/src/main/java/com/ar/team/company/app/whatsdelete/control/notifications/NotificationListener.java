@@ -1,20 +1,14 @@
 package com.ar.team.company.app.whatsdelete.control.notifications;
 
 import android.app.Notification;
-import android.app.RemoteInput;
-import android.content.Intent;
-import android.os.Bundle;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
-import android.widget.Toast;
 
 import com.ar.team.company.app.whatsdelete.control.preferences.ARPreferencesManager;
 import com.ar.team.company.app.whatsdelete.model.Chat;
 import com.ar.team.company.app.whatsdelete.ar.utils.ARUtils;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.ar.team.company.app.whatsdelete.ui.activity.show.ShowChatActivity;
 
-import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,8 +41,11 @@ public class NotificationListener extends NotificationListenerService {
             // Initializing(Replay):
             Notification.WearableExtender extender = new Notification.WearableExtender(sbn.getNotification());
             List<Notification.Action> actions = new ArrayList<>(extender.getActions());
-            // Initializing(Icon):
-            // PreparingIcon:
+            for (Notification.Action action : actions) {
+                if (action.title.toString().contains(sender)) {
+                    ShowChatActivity.clicked = mes -> ARUtils.reply(getApplicationContext(), action, mes);
+                }
+            }
             // AddingData:
             messages.add(new Chat.Messages(msg));
             // Developing:
@@ -72,7 +69,7 @@ public class NotificationListener extends NotificationListenerService {
                 // CheckingSenders:
                 if (!currentSenders.contains(sender)) {
                     // Initializing:
-                    Chat chat = new Chat(sender, "", date, null, messages, null);
+                    Chat chat = new Chat(sender, "", date, null, messages);
                     // AddingTheNewChat:
                     chats.add(chat);
                 }
@@ -80,7 +77,7 @@ public class NotificationListener extends NotificationListenerService {
                 // Initializing:
                 chats = new ArrayList<>();
                 // Developing:
-                chats.add(new Chat(sender, "", date, null, messages, null));
+                chats.add(new Chat(sender, "", date, null, messages));
             }
             // SettingPreferences:
             manager.setStringPreferences(ARPreferencesManager.WHATSAPP_CHATS, ARUtils.fromChatsToJson(chats));

@@ -13,17 +13,15 @@ public class Chat {
     private final String sender, receiver;
     private final String messageDate;
     private final Drawable senderPhoto;
-    private final List<Notification.Action> actions;
     private final List<Messages> messages;
 
     // Constructor:
-    public Chat(String sender, String receiver, String messageDate, Drawable senderPhoto, List<Messages> messages, List<Notification.Action> actions) {
+    public Chat(String sender, String receiver, String messageDate, Drawable senderPhoto, List<Messages> messages) {
         this.sender = sender;
         this.receiver = receiver;
         this.messageDate = messageDate;
         this.senderPhoto = senderPhoto;
         this.messages = messages;
-        this.actions = actions;
     }
 
     // InnerClasses:
@@ -44,9 +42,6 @@ public class Chat {
     }
 
     // Getters:
-    public List<Notification.Action> getActions() {
-        return actions;
-    }
 
     public String getSender() {
         return sender;
