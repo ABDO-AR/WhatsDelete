@@ -1,12 +1,8 @@
 package com.ar.team.company.app.whatsdelete.control.notifications;
 
 import android.app.Notification;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Icon;
-import android.os.Build;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
-import android.util.Log;
 
 import com.ar.team.company.app.whatsdelete.control.preferences.ARPreferencesManager;
 import com.ar.team.company.app.whatsdelete.model.ARIcon;
@@ -17,8 +13,10 @@ import com.ar.team.company.app.whatsdelete.ui.activity.show.ShowChatActivity;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class NotificationListener extends NotificationListenerService {
 
     // StaticFields:
@@ -53,13 +51,23 @@ public class NotificationListener extends NotificationListenerService {
             // Initializing(Replay):
             Notification.WearableExtender extender = new Notification.WearableExtender(sbn.getNotification());
             List<Notification.Action> actions = new ArrayList<>(extender.getActions());
-            // Adding:
+            // AddingAll:
             finalActions.addAll(actions);
+            // Filtering(FinalActions):
+            List<Notification.Action> filteringAction = new ArrayList<>(new HashSet<>(finalActions));
+            // Clearing(FinalAction):
+            finalActions.clear();
+            // AddingAll(FilteringActions):
+            finalActions.addAll(filteringAction);
+            // Icons:
             icons.add(new ARIcon(sender, sbn.getNotification().getLargeIcon()));
             // LoopingValues:
             ShowChatActivity.clicked = (senderName, mes) -> {
+                // Looping:
                 for (Notification.Action action : finalActions) {
+                    // Checking:
                     if (action.title.toString().contains(senderName)) {
+                        // Replaying:
                         ARUtils.reply(getApplicationContext(), action, mes);
                     }
                 }

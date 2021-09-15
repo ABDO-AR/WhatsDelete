@@ -1,13 +1,10 @@
 package com.ar.team.company.app.whatsdelete.control.converters;
 
 import com.google.gson.InstanceCreator;
-import com.google.gson.JsonObject;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 
+@SuppressWarnings("unused")
 public class ARConvertersManager {
 
     // Converter(CharSequence):

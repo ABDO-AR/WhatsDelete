@@ -1,9 +1,7 @@
 package com.ar.team.company.app.whatsdelete.model;
 
-import android.app.Notification;
 import android.graphics.drawable.Drawable;
 
-import java.io.Serializable;
 import java.util.List;
 
 @SuppressWarnings("unused")

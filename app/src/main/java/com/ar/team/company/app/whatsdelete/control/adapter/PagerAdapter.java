@@ -1,10 +1,8 @@
 package com.ar.team.company.app.whatsdelete.control.adapter;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
@@ -20,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class PagerAdapter extends FragmentStateAdapter {
 
     // Fields:

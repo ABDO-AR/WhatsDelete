@@ -1,6 +1,5 @@
 package com.ar.team.company.app.whatsdelete.ui.activity.applications;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -16,9 +15,8 @@ import com.ar.team.company.app.whatsdelete.ui.activity.home.HomeActivity;
 import com.ar.team.company.app.whatsdelete.ar.utils.ARUtils;
 
 import java.util.List;
-import java.util.Objects;
 
-@SuppressWarnings("FieldCanBeLocal")
+@SuppressWarnings({"FieldCanBeLocal", "unused"})
 public class ApplicationsActivity extends AppCompatActivity implements ApplicationsAdapter.Apps {
 
     // This For Control The XML-Main Views:

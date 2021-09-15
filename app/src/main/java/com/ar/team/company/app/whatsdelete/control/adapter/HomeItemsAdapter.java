@@ -2,37 +2,21 @@ package com.ar.team.company.app.whatsdelete.control.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.ar.team.company.app.whatsdelete.R;
 import com.ar.team.company.app.whatsdelete.databinding.HomeItemBinding;
-import com.ar.team.company.app.whatsdelete.databinding.SingleChatItemBinding;
-import com.ar.team.company.app.whatsdelete.ui.fragment.home.ChatFragment;
-import com.ar.team.company.app.whatsdelete.ui.fragment.home.DocumentFragment;
-import com.ar.team.company.app.whatsdelete.ui.fragment.home.ImagesFragment;
-import com.ar.team.company.app.whatsdelete.ui.fragment.home.StatusFragment;
-import com.ar.team.company.app.whatsdelete.ui.fragment.home.VideosFragment;
-import com.ar.team.company.app.whatsdelete.ui.fragment.home.VoiceFragment;
 import com.ar.team.company.app.whatsdelete.ui.interfaces.HomeItemClickListener;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class HomeItemsAdapter  extends RecyclerView.Adapter<HomeItemsAdapter.HomeViewHolder>{
     // init Interface
-    private HomeItemClickListener itemClickListener;
-    private Context context;
+    private final HomeItemClickListener itemClickListener;
+    private final Context context;
     // Fields:
     public final int[] iconsItems = {R.drawable.ic_chat,R.drawable.ic_status,R.drawable.ic_images , R.drawable.ic_videos,R.drawable.ic_voice, R.drawable.ic_documents};
     public final String[] namesItems ={"Chat","Status","Images","Videos","Voice","Document"};
@@ -47,7 +31,7 @@ public class HomeItemsAdapter  extends RecyclerView.Adapter<HomeItemsAdapter.Hom
         this.itemClickListener = (HomeItemClickListener) context;
     }
 
-    public HomeViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+    public @NotNull HomeViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         // Initializing:
         LayoutInflater inflater = LayoutInflater.from(context);
         HomeItemBinding binding = HomeItemBinding.inflate(inflater, parent, false);

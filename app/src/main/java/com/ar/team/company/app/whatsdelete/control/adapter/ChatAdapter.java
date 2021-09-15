@@ -1,20 +1,13 @@
 package com.ar.team.company.app.whatsdelete.control.adapter;
 
-import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.Icon;
-import android.os.Build;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ar.team.company.app.whatsdelete.control.notifications.NotificationListener;

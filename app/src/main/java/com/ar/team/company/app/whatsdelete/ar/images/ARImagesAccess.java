@@ -44,6 +44,7 @@ public class ARImagesAccess {
     }
 
     // InnerClasses:
+    @SuppressWarnings("SuspiciousNameCombination")
     public static class ARBitmapHelper {
 
         // Methods(Decoding):

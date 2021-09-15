@@ -1,5 +1,6 @@
 package com.ar.team.company.app.whatsdelete.control.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -39,6 +40,7 @@ public class ShowChatAdapter extends RecyclerView.Adapter<ShowChatAdapter.ShowCh
         return new ShowChatAdapter.ShowChatViewHolder(binding);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull @NotNull ShowChatViewHolder holder, int position) {
         // Initializing:

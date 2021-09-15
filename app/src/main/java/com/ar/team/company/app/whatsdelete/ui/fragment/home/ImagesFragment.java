@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.ar.team.company.app.whatsdelete.ar.images.ARImagesAccess;
 import com.ar.team.company.app.whatsdelete.control.adapter.ImagesAdapter;
@@ -22,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-@SuppressWarnings("FieldCanBeLocal")
+@SuppressWarnings({"FieldCanBeLocal", "unused"})
 public class ImagesFragment extends Fragment {
 
     // This for control the Fragment-Layout views:
@@ -32,6 +31,8 @@ public class ImagesFragment extends Fragment {
     private ARImagesAccess access;
     private List<Bitmap> bitmaps;
     private ImagesAdapter adapter;
+    // Thread:
+    private Thread workingThread;
     // TAGS:
     private static final String TAG = "ImagesFragment";
 
@@ -47,12 +48,37 @@ public class ImagesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         // Initializing:
         model = new ViewModelProvider(this).get(HomeViewModel.class);
+        // Working:
+        workingThread = new Thread(this::workingMethod);
+        // StartWorkingThread:
+        workingThread.start();
+    }
+
+    // WorkingThread:
+    private void workingMethod() {
+        // Initializing:
         access = new ARImagesAccess(requireContext());
         bitmaps = access.getWhatsappImagesBitmaps();
         adapter = new ImagesAdapter(requireContext(), bitmaps);
         // Developing:
-        binding.recyclerImageView.setAdapter(adapter);
-        binding.recyclerImageView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
+        requireActivity().runOnUiThread(() -> {
+            binding.recyclerImageView.setAdapter(adapter);
+            binding.recyclerImageView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
+            // Loading:
+            isLoading(false);
+        });
     }
 
+    @SuppressWarnings("SameParameterValue")
+    private void isLoading(boolean loading) {
+        // Developing:
+        binding.progress.setVisibility(loading ? View.VISIBLE : View.GONE);
+        binding.recyclerImageView.setVisibility(loading ? View.GONE : View.VISIBLE);
+    }
+
+    @Override
+    public void onDestroy() {
+        workingThread.interrupt();
+        super.onDestroy();
+    }
 }

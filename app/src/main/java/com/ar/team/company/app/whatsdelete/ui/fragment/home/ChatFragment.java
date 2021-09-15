@@ -1,6 +1,5 @@
 package com.ar.team.company.app.whatsdelete.ui.fragment.home;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("FieldCanBeLocal")
+@SuppressWarnings({"FieldCanBeLocal", "unused"})
 public class ChatFragment extends Fragment {
 
     // This for control the Fragment-Layout views:
@@ -53,13 +52,14 @@ public class ChatFragment extends Fragment {
         manager = new ARPreferencesManager(requireContext());
         chats = new ArrayList<>();
         // Initializing(UI):
-        initUI(null, null);
+        initUI();
         // Developing:
-        manager.getPreferences().registerOnSharedPreferenceChangeListener(this::initUI);
+        // This Method Is Working But Makes Foreground Problem.
+        // manager.getPreferences().registerOnSharedPreferenceChangeListener(this::initUI);
     }
 
     // Initializing UserInterface:
-    private void initUI(SharedPreferences sharedPreferences, String key) {
+    private void initUI() {
         // Initializing:
         boolean state = !manager.getStringPreferences(ARPreferencesManager.WHATSAPP_CHATS).equals("Empty,");
         // Developing:

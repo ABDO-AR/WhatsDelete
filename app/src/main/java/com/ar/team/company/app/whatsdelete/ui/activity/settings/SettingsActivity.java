@@ -11,7 +11,7 @@ import android.view.View;
 import com.ar.team.company.app.whatsdelete.control.preferences.ARPreferencesManager;
 import com.ar.team.company.app.whatsdelete.databinding.ActivitySettingsBinding;
 
-@SuppressWarnings("FieldCanBeLocal")
+@SuppressWarnings({"FieldCanBeLocal", "unused"})
 public class SettingsActivity extends AppCompatActivity {
 
     // This For Control The XML-Main Views:

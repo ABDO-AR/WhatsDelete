@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.ar.team.company.app.whatsdelete.R;
 import com.ar.team.company.app.whatsdelete.ar.voices.ARVoicesAccess;
 import com.ar.team.company.app.whatsdelete.control.adapter.VoicesAdapter;
 import com.ar.team.company.app.whatsdelete.databinding.FragmentVoiceBinding;
@@ -22,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.util.List;
 
-@SuppressWarnings("FieldCanBeLocal")
+@SuppressWarnings({"FieldCanBeLocal", "unused"})
 public class VoiceFragment extends Fragment {
 
     // This for control the Fragment-Layout views:
@@ -32,6 +31,8 @@ public class VoiceFragment extends Fragment {
     private ARVoicesAccess access;
     private List<File> files;
     private VoicesAdapter adapter;
+    // Threading:
+    private Thread workingThread;
     // TAGS:
     private static final String TAG = "VoiceFragment";
 
@@ -47,12 +48,38 @@ public class VoiceFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         // Initializing:
         model = new ViewModelProvider(this).get(HomeViewModel.class);
+        // Working:
+        workingThread = new Thread(this::workingMethod);
+        // StartWorkingThread:
+        workingThread.start();
+    }
+
+    // WorkingThread:
+    private void workingMethod() {
         // Initializing(Adapter):
         access = new ARVoicesAccess(requireContext());
         files = access.getWhatsappVoicesDirectory();
         adapter = new VoicesAdapter(requireContext(), files);
         // Developing:
-        binding.voicesRecyclerView.setAdapter(adapter);
-        binding.voicesRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        requireActivity().runOnUiThread(() -> {
+            // Developing:
+            binding.voicesRecyclerView.setAdapter(adapter);
+            binding.voicesRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+            // Loading:
+            isLoading(false);
+        });
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private void isLoading(boolean loading) {
+        // Developing:
+        binding.progress.setVisibility(loading ? View.VISIBLE : View.GONE);
+        binding.voicesRecyclerView.setVisibility(loading ? View.GONE : View.VISIBLE);
+    }
+
+    @Override
+    public void onDestroy() {
+        workingThread.interrupt();
+        super.onDestroy();
     }
 }

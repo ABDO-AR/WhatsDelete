@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Menu;
@@ -32,7 +31,7 @@ import com.mxn.soul.flowingdrawer_core.ElasticDrawer;
 
 import java.util.Objects;
 
-@SuppressWarnings("FieldCanBeLocal")
+@SuppressWarnings({"FieldCanBeLocal", "unused"})
 public class HomeActivity extends AppCompatActivity implements HomeItemClickListener {
 
     // This For Control The XML-Main Views:
@@ -54,6 +53,12 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
         setContentView(view); // SET THE VIEW CONTENT TO THE (VIEW).
         // StartOurForegroundService:
         ContextCompat.startForegroundService(this, new Intent(this, ARForegroundService.class));
+        // Initializing(App):
+        initApp();
+    }
+
+    // InitApp:
+    private void initApp() {
         // Initializing(UI):
         initUI();
         // Initializing(MAIN-FIELDS):
@@ -70,6 +75,8 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
         binding.mainContentLayout.btnDrawer.setOnClickListener(view1 -> binding.drawerLayout.openMenu(true));
         // SettingMenuSize:
         settingSize();
+        // ManagerListener:
+        manager.getPreferences().registerOnSharedPreferenceChangeListener((sp, s) -> initApp());
     }
 
     // SettingDrawerSize:

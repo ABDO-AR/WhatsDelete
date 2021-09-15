@@ -3,22 +3,17 @@ package com.ar.team.company.app.whatsdelete.ui.activity.show;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.app.Notification;
 import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.ar.team.company.app.whatsdelete.control.adapter.ShowChatAdapter;
-import com.ar.team.company.app.whatsdelete.control.notifications.NotificationListener;
 import com.ar.team.company.app.whatsdelete.databinding.ActivityShowChatBinding;
 import com.ar.team.company.app.whatsdelete.model.Chat;
 import com.ar.team.company.app.whatsdelete.ar.utils.ARUtils;
 import com.ar.team.company.app.whatsdelete.ui.interfaces.OnChatButtonClicked;
 
-import java.util.List;
-
-@SuppressWarnings("FieldCanBeLocal")
+@SuppressWarnings({"FieldCanBeLocal", "unused"})
 public class ShowChatActivity extends AppCompatActivity {
 
     // This For Control The XML-Main Views:
@@ -45,7 +40,7 @@ public class ShowChatActivity extends AppCompatActivity {
         binding.senderNameTextView.setText(chat.getSender());
         binding.backButton.setOnClickListener(v -> finish());
         // Developing(Icon):
-        binding.senderImageView.setImageDrawable(icon.loadDrawable(this));
+        if (icon != null) binding.senderImageView.setImageDrawable(icon.loadDrawable(this));
         // Developing(RecyclerView):
         binding.showChatRecyclerView.setAdapter(adapter);
         binding.showChatRecyclerView.setLayoutManager(new LinearLayoutManager(this));

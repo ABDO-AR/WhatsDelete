@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class BoardAdapter extends RecyclerView.Adapter<BoardAdapter.BoardViewHolder> {
 
     // Fields:
