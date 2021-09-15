@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initTheme() {
         // Initializing:
-        boolean state = manager.getBooleanPreferences(ARPreferencesManager.LIGHT_THEME);
+        boolean state = manager.getThemeBooleanPreferences(ARPreferencesManager.LIGHT_THEME);
         // Developing:
         if (state) AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);

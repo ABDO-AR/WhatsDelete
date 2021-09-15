@@ -40,7 +40,7 @@ public class SettingsActivity extends AppCompatActivity {
     private void switchThemes(View view) {
         // Initializing:
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        boolean state = manager.getBooleanPreferences(ARPreferencesManager.LIGHT_THEME);
+        boolean state = manager.getThemeBooleanPreferences(ARPreferencesManager.LIGHT_THEME);
         // Preparing:
         builder.setTitle("Choose Theme");
         builder.setSingleChoiceItems(themes, state ? 0 : 1, this::onThemeSelected);

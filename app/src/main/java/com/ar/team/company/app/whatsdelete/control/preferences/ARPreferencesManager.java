@@ -62,6 +62,11 @@ public class ARPreferencesManager {
         return preferences.getBoolean(key, false);
     }
 
+    public Boolean getThemeBooleanPreferences(String key) {
+        // Developing:
+        return preferences.getBoolean(key, true);
+    }
+
     // Getters:
     public SharedPreferences getPreferences() {
         return preferences;
