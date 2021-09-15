@@ -26,13 +26,6 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class ARUtils {
 
-    // Methods:
-    public static List<String> getAppsPackages(ARPreferencesManager manager) {
-        // Initializing:
-        // Developing:
-        return new ArrayList<>();
-    }
-
     // Method(Replay):
     public static void reply(Context context, Notification.Action action, String message) {
         // Catching The Error:

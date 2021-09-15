@@ -1,10 +1,20 @@
 package com.ar.team.company.app.whatsdelete.ui.activity.home;
 
-import androidx.lifecycle.ViewModel;
+import android.app.Application;
 
-public class HomeViewModel extends ViewModel {
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+
+import org.jetbrains.annotations.NotNull;
+
+public class HomeViewModel extends AndroidViewModel {
 
     // MainFields:
+
+    // Constructor:
+    public HomeViewModel(@NonNull @NotNull Application application) {
+        super(application);
+    }
 
     // Chats:
     // Status:
@@ -14,5 +24,4 @@ public class HomeViewModel extends ViewModel {
     // Documents:
 
     // Getters(&Setters):
-
 }

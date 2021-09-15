@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.Notification;
+import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ public class ShowChatActivity extends AppCompatActivity {
     // This For Control The XML-Main Views:
     private ActivityShowChatBinding binding;
     private Chat chat;
+    private Icon icon;
     private ShowChatAdapter adapter;
     // Interfaces:
     public static OnChatButtonClicked clicked;
@@ -37,13 +39,16 @@ public class ShowChatActivity extends AppCompatActivity {
         setContentView(view); // SET THE VIEW CONTENT TO THE (VIEW).
         // Initializing:
         chat = ARUtils.fromJsonToChat(getIntent().getExtras().getString("Chat"));
+        icon = getIntent().getParcelableExtra("Icon");
         adapter = new ShowChatAdapter(this, chat);
         // Developing(Main-UI):
         binding.senderNameTextView.setText(chat.getSender());
         binding.backButton.setOnClickListener(v -> finish());
+        // Developing(Icon):
+        binding.senderImageView.setImageDrawable(icon.loadDrawable(this));
         // Developing(RecyclerView):
         binding.showChatRecyclerView.setAdapter(adapter);
         binding.showChatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        binding.chatSendButton.setOnClickListener(view1 -> clicked.eventClick(binding.chatEditText.getText().toString()));
+        binding.chatSendButton.setOnClickListener(v -> clicked.eventClick(chat.getSender(), binding.chatEditText.getText().toString()));
     }
 }

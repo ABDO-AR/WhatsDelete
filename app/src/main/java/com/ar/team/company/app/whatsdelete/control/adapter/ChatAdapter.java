@@ -1,15 +1,25 @@
 package com.ar.team.company.app.whatsdelete.control.adapter;
 
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.Icon;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ar.team.company.app.whatsdelete.control.notifications.NotificationListener;
 import com.ar.team.company.app.whatsdelete.databinding.SingleChatItemBinding;
+import com.ar.team.company.app.whatsdelete.model.ARIcon;
 import com.ar.team.company.app.whatsdelete.model.Chat;
 import com.ar.team.company.app.whatsdelete.ui.activity.show.ShowChatActivity;
 import com.ar.team.company.app.whatsdelete.ar.utils.ARUtils;
@@ -49,19 +59,35 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     public void onBindViewHolder(@NonNull @NotNull ChatAdapter.ChatViewHolder holder, int position) {
         // Initializing:
         Chat chat = chats.get(position);
+        Icon sendIcon = null;
         // Developing:
         holder.binding.senderNameTextView.setText(chat.getSender());
         holder.binding.lastMessageTextView.setText(chat.getMessages().get(chat.getMessages().size() - 1).getMessage());
-        if (chat.getSenderPhoto() != null)
-            holder.binding.senderImageView.setImageDrawable(chat.getSenderPhoto());
+        // Icon:
+        // Looping:
+        for (ARIcon icon : NotificationListener.icons) {
+            // Checking:
+            if (icon.getId().contains(chat.getSender())) {
+                // Checking:
+                if (icon.getIcon() != null) {
+                    // Initializing:
+                    Drawable drawable = icon.getIcon().loadDrawable(context);
+                    sendIcon = icon.getIcon();
+                    // Developing:
+                    holder.binding.senderImageView.setImageDrawable(drawable);
+                }
+            }
+        }
         // OnClickChat:
-        holder.binding.getRoot().setOnClickListener(v -> chatClicked(chat));
+        Icon finalSendIcon = sendIcon;
+        holder.binding.getRoot().setOnClickListener(v -> chatClicked(chat, finalSendIcon));
     }
 
-    private void chatClicked(Chat chat) {
+    private void chatClicked(Chat chat, Icon icon) {
         // Initializing:
         Intent intent = new Intent(context, ShowChatActivity.class);
         // Developing:
+        intent.putExtra("Icon", icon);
         intent.putExtra("Chat", ARUtils.fromChatToJson(chat));
         context.startActivity(intent);
     }
