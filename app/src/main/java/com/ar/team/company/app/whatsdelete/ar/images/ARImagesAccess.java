@@ -17,6 +17,7 @@ public class ARImagesAccess {
     private final Context context;
     public static List<File> staticFiles;
 
+
     // Constructor:
     public ARImagesAccess(Context context) {
         this.context = context;
