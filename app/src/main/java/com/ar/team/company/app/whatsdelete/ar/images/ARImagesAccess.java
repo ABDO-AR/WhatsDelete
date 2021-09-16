@@ -7,6 +7,7 @@ import android.os.Environment;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -14,6 +15,7 @@ public class ARImagesAccess {
 
     // Fields:
     private final Context context;
+    public static List<File> staticFiles;
 
     // Constructor:
     public ARImagesAccess(Context context) {
@@ -39,6 +41,8 @@ public class ARImagesAccess {
             // Adding:
             bitmaps.add(ARBitmapHelper.decodeBitmapFromFile(file.getAbsolutePath(), 120, 120));
         }
+        // Adding:
+        staticFiles = Arrays.asList(files);
         // Developing:
         return bitmaps;
     }

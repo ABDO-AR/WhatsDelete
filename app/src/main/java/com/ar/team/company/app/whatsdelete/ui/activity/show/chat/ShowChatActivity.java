@@ -1,4 +1,4 @@
-package com.ar.team.company.app.whatsdelete.ui.activity.show;
+package com.ar.team.company.app.whatsdelete.ui.activity.show.chat;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;

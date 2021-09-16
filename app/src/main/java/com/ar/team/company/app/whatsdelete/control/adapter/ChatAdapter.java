@@ -14,7 +14,7 @@ import com.ar.team.company.app.whatsdelete.control.notifications.NotificationLis
 import com.ar.team.company.app.whatsdelete.databinding.SingleChatItemBinding;
 import com.ar.team.company.app.whatsdelete.model.ARIcon;
 import com.ar.team.company.app.whatsdelete.model.Chat;
-import com.ar.team.company.app.whatsdelete.ui.activity.show.ShowChatActivity;
+import com.ar.team.company.app.whatsdelete.ui.activity.show.chat.ShowChatActivity;
 import com.ar.team.company.app.whatsdelete.ar.utils.ARUtils;
 
 import org.jetbrains.annotations.NotNull;

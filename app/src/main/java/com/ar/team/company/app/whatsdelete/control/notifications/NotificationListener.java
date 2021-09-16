@@ -8,7 +8,7 @@ import com.ar.team.company.app.whatsdelete.control.preferences.ARPreferencesMana
 import com.ar.team.company.app.whatsdelete.model.ARIcon;
 import com.ar.team.company.app.whatsdelete.model.Chat;
 import com.ar.team.company.app.whatsdelete.ar.utils.ARUtils;
-import com.ar.team.company.app.whatsdelete.ui.activity.show.ShowChatActivity;
+import com.ar.team.company.app.whatsdelete.ui.activity.show.chat.ShowChatActivity;
 
 import java.text.DateFormat;
 import java.util.ArrayList;

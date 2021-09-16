@@ -1,6 +1,7 @@
 package com.ar.team.company.app.whatsdelete.control.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.provider.MediaStore;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ar.team.company.app.whatsdelete.databinding.VideoItemViewBinding;
+import com.ar.team.company.app.whatsdelete.ui.activity.show.video.ShowVideoActivity;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -49,6 +51,17 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideosView
         Bitmap thumb = ThumbnailUtils.createVideoThumbnail(file.getAbsolutePath(), MediaStore.Images.Thumbnails.MINI_KIND);
         // Developing:
         holder.binding.videoThumbnail.setImageBitmap(thumb);
+        holder.binding.playVideoButton.setOnClickListener(v -> playVideo(file, position));
+    }
+
+    // PlayingVideos:
+    private void playVideo(File file, int position) {
+        // Initializing:
+        Intent intent = new Intent(context, ShowVideoActivity.class);
+        // PuttingExtras:
+        intent.putExtra("Uri", file.getAbsolutePath());
+        // Developing:
+        context.startActivity(intent);
     }
 
     @Override

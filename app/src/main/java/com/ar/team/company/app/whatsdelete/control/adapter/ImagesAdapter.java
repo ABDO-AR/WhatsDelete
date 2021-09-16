@@ -1,17 +1,22 @@
 package com.ar.team.company.app.whatsdelete.control.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ar.team.company.app.whatsdelete.databinding.ImageViewItemBinding;
+import com.ar.team.company.app.whatsdelete.ui.activity.show.image.ShowImageActivity;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -20,11 +25,13 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImagesView
     // Fields:
     private final Context context;
     private final List<Bitmap> bitmaps;
+    public static List<Bitmap> staticBitmaps;
 
     // Constructor:
     public ImagesAdapter(Context context, List<Bitmap> bitmaps) {
         this.context = context;
         this.bitmaps = bitmaps;
+        staticBitmaps = bitmaps;
         notifyDataSetChanged();
     }
 
@@ -43,6 +50,17 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImagesView
         Bitmap bitmap = bitmaps.get(position);
         // Developing:
         holder.binding.imageViewItem.setImageBitmap(bitmap);
+        holder.binding.imageViewItem.setOnClickListener(view -> slidingImage(position));
+    }
+
+    // RunningSlidingImage:
+    private void slidingImage(int pos) {
+        // Initializing:
+        Intent intent = new Intent(context, ShowImageActivity.class);
+        // PuttingExtras:
+        intent.putExtra("Index", pos);
+        // Developing:
+        context.startActivity(intent);
     }
 
     @Override

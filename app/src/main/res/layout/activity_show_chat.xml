@@ -5,7 +5,7 @@
     style="?attr/ar_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.show.ShowChatActivity">
+    tools:context=".ui.activity.show.chat.ShowChatActivity">
 
     <ImageButton
         android:id="@+id/back_button"
