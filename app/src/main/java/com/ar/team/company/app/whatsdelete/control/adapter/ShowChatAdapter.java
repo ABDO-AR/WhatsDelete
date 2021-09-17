@@ -9,15 +9,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ar.team.company.app.whatsdelete.databinding.ShowChatItemViewBinding;
+import com.ar.team.company.app.whatsdelete.databinding.ShowChatItemViewMeBinding;
 import com.ar.team.company.app.whatsdelete.model.Chat;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
-public class ShowChatAdapter extends RecyclerView.Adapter<ShowChatAdapter.ShowChatViewHolder> {
+public class ShowChatAdapter extends RecyclerView.Adapter {
 
     // Fields:
     private final Context context;
     private final Chat chats;
+    // ViewTypes:
+    private static final int VIEW_TYPE_RECEIVED = 0;
+    private static final int VIEW_TYPE_SENT = 1;
 
     // Constructor:
     public ShowChatAdapter(Context context, Chat chats) {
@@ -32,23 +36,47 @@ public class ShowChatAdapter extends RecyclerView.Adapter<ShowChatAdapter.ShowCh
     @NonNull
     @NotNull
     @Override
-    public ShowChatAdapter.ShowChatViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         // Initializing:
         LayoutInflater inflater = LayoutInflater.from(context);
-        ShowChatItemViewBinding binding = ShowChatItemViewBinding.inflate(inflater, parent, false);
-        // Returning:
-        return new ShowChatAdapter.ShowChatViewHolder(binding);
+        // Checking(Returning):
+        if (viewType == VIEW_TYPE_RECEIVED) {
+            // Initializing:
+            ShowChatItemViewBinding binding = ShowChatItemViewBinding.inflate(inflater, parent, false);
+            // Returning:
+            return new ShowChatAdapter.ShowChatViewHolder(binding);
+        }else {
+            // Initializing:
+            ShowChatItemViewMeBinding binding = ShowChatItemViewMeBinding.inflate(inflater, parent, false);
+            // Returning:
+            return new ShowChatAdapter.ShowChatViewHolderMe(binding);
+        }
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull @NotNull ShowChatViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull @NotNull RecyclerView.ViewHolder holder, int position) {
         // Initializing:
         Chat.Messages messages = chats.getMessages().get(position);
         String[] dates = chats.getMessageDate().split(" ");
-        // Developing:
-        holder.binding.chatMes.setText(messages.getMessage());
-        holder.binding.dateTextView.setText(dates[1] + " " + dates[2]);
+        // Checking:
+        if (holder.getItemViewType() == VIEW_TYPE_RECEIVED){
+            // Developing:
+            ((ShowChatViewHolder) holder).binding.chatMes.setText(messages.getMessage());
+            ((ShowChatViewHolder) holder).binding.dateTextView.setText(dates[1] + " " + dates[2]);
+        }else {
+            // Developing:
+            ((ShowChatViewHolderMe) holder).binding.chatMes.setText(messages.getMessage());
+            ((ShowChatViewHolderMe) holder).binding.dateTextView.setText(dates[1] + " " + dates[2]);
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        // Initializing:
+        boolean sender = chats.getMessages().get(position).isSender();
+        // Checking(Returning):
+        if (sender) return VIEW_TYPE_RECEIVED;
+        else return VIEW_TYPE_SENT;
     }
 
     @Override
@@ -56,7 +84,7 @@ public class ShowChatAdapter extends RecyclerView.Adapter<ShowChatAdapter.ShowCh
         return chats.getMessages().size();
     }
 
-    // ViewHolder:
+    // ViewHolders:
     static class ShowChatViewHolder extends RecyclerView.ViewHolder {
 
         // Fields:
@@ -71,6 +99,24 @@ public class ShowChatAdapter extends RecyclerView.Adapter<ShowChatAdapter.ShowCh
 
         // Getters:
         public ShowChatItemViewBinding getBinding() {
+            return binding;
+        }
+    }
+
+    static class ShowChatViewHolderMe extends RecyclerView.ViewHolder {
+
+        // Fields:
+        private final ShowChatItemViewMeBinding binding;
+
+        // Constructor:
+        public ShowChatViewHolderMe(@NonNull @NotNull ShowChatItemViewMeBinding binding) {
+            super(binding.getRoot());
+            // Initializing:
+            this.binding = binding;
+        }
+
+        // Getters:
+        public ShowChatItemViewMeBinding getBinding() {
             return binding;
         }
     }
