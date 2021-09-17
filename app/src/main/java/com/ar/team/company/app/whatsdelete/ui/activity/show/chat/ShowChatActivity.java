@@ -15,6 +15,8 @@ import com.ar.team.company.app.whatsdelete.model.Chat;
 import com.ar.team.company.app.whatsdelete.ar.utils.ARUtils;
 import com.ar.team.company.app.whatsdelete.ui.interfaces.OnChatButtonClicked;
 
+import es.dmoral.toasty.Toasty;
+
 @SuppressWarnings({"FieldCanBeLocal", "unused"})
 public class ShowChatActivity extends AppCompatActivity {
 
@@ -42,31 +44,27 @@ public class ShowChatActivity extends AppCompatActivity {
         binding.senderNameTextView.setText(chat.getSender());
         binding.backButton.setOnClickListener(v -> finish());
         // Developing(Icon):
-        if (icon != null)
-            binding.senderImageView.setImageDrawable(icon.loadDrawable(this));
-        else
-            binding.senderImageView.setImageResource(R.drawable.ic_placeholder);
+        if (icon != null) binding.senderImageView.setImageDrawable(icon.loadDrawable(this));
+        else binding.senderImageView.setImageResource(R.drawable.ic_placeholder);
         // Developing(RecyclerView):
         binding.showChatRecyclerView.setAdapter(adapter);
         binding.showChatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        binding.chatSendButton.setOnClickListener(v ->
-                {
-                    if (!binding.chatEditText.getText().equals(""))
-                    {
-                        binding.chatEditText.setText("");
-                        try {
-                            clicked.eventClick(chat.getSender(), binding.chatEditText.getText().toString());
-                        }
-                        catch (Exception e)
-                        {
-                        Toast.makeText(this, "Unable to reach the person, please try again ", Toast.LENGTH_SHORT).show();
-                        }
+        binding.chatSendButton.setOnClickListener(this::sendMethod);
+    }
 
-
-
-                    }
-
-
-                });
+    // SendMethod:
+    private void sendMethod(View view) {
+        // Checking:
+        if (!binding.chatEditText.getText().toString().isEmpty()) {
+            // CatchingErrors:
+            try {
+                // SendingResponse:
+                clicked.eventClick(chat.getSender(), binding.chatEditText.getText().toString());
+            } catch (Exception e) {
+                Toasty.error(this, "Unable to reach the person, please try again", Toast.LENGTH_LONG).show();
+            }
+            // EmptyChatInput:
+            binding.chatEditText.setText("");
+        }
     }
 }
