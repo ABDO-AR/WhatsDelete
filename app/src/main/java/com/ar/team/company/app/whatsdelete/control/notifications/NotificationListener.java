@@ -3,7 +3,7 @@ package com.ar.team.company.app.whatsdelete.control.notifications;
 import android.app.Notification;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
-import android.widget.Toast;
+import android.util.Log;
 
 import com.ar.team.company.app.whatsdelete.control.preferences.ARPreferencesManager;
 import com.ar.team.company.app.whatsdelete.model.ARIcon;
@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @SuppressWarnings("unused")
 public class NotificationListener extends NotificationListenerService {
@@ -31,7 +32,10 @@ public class NotificationListener extends NotificationListenerService {
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
         super.onNotificationPosted(sbn);
-        // MainFields:
+        // Initializing(DateTime):
+        String date = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(new Date());
+        List<Chat> chats;
+        // Initializing(Data):
         String sender = sbn.getNotification().extras.getString(Notification.EXTRA_TITLE);
         // CheckingFields:
         boolean s1 = sbn.getPackageName().equals(WHATSAPP_PACKAGE_NAME);
@@ -42,14 +46,21 @@ public class NotificationListener extends NotificationListenerService {
         ARPreferencesManager manager = new ARPreferencesManager(getApplicationContext());
         String currentPackages = manager.getStringPreferences(ARPreferencesManager.PACKAGE_APP_NAME);
         List<Chat.Messages> messages = new ArrayList<>();
+        // Initializing(Data):
+        String msg = sbn.getNotification().extras.getString(Notification.EXTRA_TEXT);
+        String currentSenders = manager.getStringPreferences(ARPreferencesManager.SENDER_NAME);
+        // Design:
+        String firstChar;
+        // Trying:
+        try {
+            // Initializing:
+            firstChar = msg.split(" ")[0];
+        } catch (Exception e) {
+            // Initializing:
+            firstChar = msg.substring(0, 1);
+        }
         // CheckingStatusBarNotification:
-        if (state) {
-            // Initializing(DateTime):
-            String date = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(new Date());
-            List<Chat> chats;
-            // Initializing(Data):
-            String msg = sbn.getNotification().extras.getString(Notification.EXTRA_TEXT);
-            String currentSenders = manager.getStringPreferences(ARPreferencesManager.SENDER_NAME);
+        if (state && !msg.equals(firstChar + " new messages")) {
             // Initializing(Replay):
             Notification.WearableExtender extender = new Notification.WearableExtender(sbn.getNotification());
             List<Notification.Action> actions = new ArrayList<>(extender.getActions());
@@ -65,17 +76,32 @@ public class NotificationListener extends NotificationListenerService {
             icons.add(new ARIcon(sender, sbn.getNotification().getLargeIcon()));
             // LoopingValues:
             ShowChatActivity.clicked = (senderName, mes) -> {
+                // Temps:
+                AtomicBoolean sentTemp = new AtomicBoolean(false);
                 // Looping:
                 for (Notification.Action action : finalActions) {
+                    // Debugging:
+                    Log.d(TAG, "ARActions.Debug: " + action.title);
                     // Checking:
-                    if (action.title.toString().contains(senderName)) {
+                    if (action.title.toString().contains(senderName) && !sentTemp.get()) {
+                        // AddingMeMessages:
+                        List<Chat> savedChats = ARUtils.fromJsonToChats(manager.getStringPreferences(ARPreferencesManager.WHATSAPP_CHATS));
+                        // Looping:
+                        for (Chat chat : savedChats) {
+                            // Checking:
+                            if (chat.getSender().equals(senderName)) chat.getMessages().add(new Chat.Messages(mes, false));
+                        }
+                        // SettingChatsAgain:
+                        manager.setStringPreferences(ARPreferencesManager.WHATSAPP_CHATS, ARUtils.fromChatsToJson(savedChats));
                         // Replaying:
                         ARUtils.reply(getApplicationContext(), action, mes);
+                        // ResponseToTemps:
+                        sentTemp.set(true);
                     }
                 }
             };
             // AddingData:
-            messages.add(new Chat.Messages(msg));
+            messages.add(new Chat.Messages(msg, true));
             // Developing:
             if (manager.getPreferences().contains(ARPreferencesManager.WHATSAPP_CHATS)) {
                 // Initializing:

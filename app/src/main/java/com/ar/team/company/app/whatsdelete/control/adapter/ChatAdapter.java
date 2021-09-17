@@ -57,10 +57,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         // Developing:
         holder.binding.senderNameTextView.setText(chat.getSender());
         holder.binding.lastMessageTextView.setText(chat.getMessages().get(chat.getMessages().size() - 1).getMessage());
-        // Icon:
-        // Looping:
-
+        // PlaceHolderIcon:
         holder.binding.senderImageView.setImageResource(R.drawable.ic_placeholder);
+        // Looping:
         for (ARIcon icon : NotificationListener.icons) {
             // Checking:
             if (icon.getId().contains(chat.getSender())) {
@@ -76,7 +75,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
             }
 
         }
-
         // OnClickChat:
         Icon finalSendIcon = sendIcon;
         holder.binding.getRoot().setOnClickListener(v -> chatClicked(chat, finalSendIcon));

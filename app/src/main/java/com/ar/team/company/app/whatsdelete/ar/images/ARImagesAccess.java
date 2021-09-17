@@ -55,8 +55,7 @@ public class ARImagesAccess {
         File[] files = getWhatsappImagesDirectory();
         List<Bitmap> bitmaps = new ArrayList<>();
         // AddingBitmaps:
-        if (files != null)
-        {
+        if (files != null) {
             for (File file : files) {
                 // Adding:
                 bitmaps.add(ARBitmapHelper.decodeBitmapFromFile(file.getAbsolutePath(), 120, 120));
@@ -66,11 +65,7 @@ public class ARImagesAccess {
             staticFiles = Arrays.asList(files);
             // Developing:
             return bitmaps;
-        }
-        else
-            return null;
-
-
+        } else return null;
     }
 
     // InnerClasses:

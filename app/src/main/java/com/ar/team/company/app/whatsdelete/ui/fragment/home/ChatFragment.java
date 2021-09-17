@@ -64,25 +64,22 @@ public class ChatFragment extends Fragment {
 
     // Initializing UserInterface:
     private void initUI() {
-        // Checking:
-        if (!NotificationListener.finalActions.isEmpty()) {
-            // Initializing:
-            boolean state = !manager.getStringPreferences(ARPreferencesManager.WHATSAPP_CHATS).equals("Empty,");
-            // Developing:
-            if (state) {
-                // AddingAll:
-                chats.clear();
-                chats.addAll(ARUtils.fromJsonToChats(manager.getStringPreferences(ARPreferencesManager.WHATSAPP_CHATS)));
-                // Checking(ChatsAreNotEmpty):
-                if (!chats.isEmpty()) {
-                    // Initializing:
-                    adapter = new ChatAdapter(requireContext(), chats);
-                    // Setting:
-                    binding.chatRecyclerView.setAdapter(adapter);
-                    binding.chatRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-                    // Refreshing:
-                    adapter.notifyDataSetChanged();
-                }
+        // Initializing:
+        boolean state = !manager.getStringPreferences(ARPreferencesManager.WHATSAPP_CHATS).equals("Empty,");
+        // Developing:
+        if (state) {
+            // AddingAll:
+            chats.clear();
+            chats.addAll(ARUtils.fromJsonToChats(manager.getStringPreferences(ARPreferencesManager.WHATSAPP_CHATS)));
+            // Checking(ChatsAreNotEmpty):
+            if (!chats.isEmpty()) {
+                // Initializing:
+                adapter = new ChatAdapter(requireContext(), chats);
+                // Setting:
+                binding.chatRecyclerView.setAdapter(adapter);
+                binding.chatRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+                // Refreshing:
+                adapter.notifyDataSetChanged();
             }
         }
     }

@@ -27,15 +27,21 @@ public class Chat {
 
         // Fields:
         private final String message;
+        private final boolean sender;
 
         // Constructor:
-        public Messages(String message) {
+        public Messages(String message, boolean sender) {
             this.message = message;
+            this.sender = sender;
         }
 
         // Getters:
         public String getMessage() {
             return message;
+        }
+
+        public boolean isSender() {
+            return sender;
         }
     }
 

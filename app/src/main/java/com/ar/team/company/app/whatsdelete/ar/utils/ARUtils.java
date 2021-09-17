@@ -31,8 +31,12 @@ public class ARUtils {
             Intent sendIntent = new Intent();
             Bundle msg = new Bundle();
             // ForOnActionsRemoteInput Because We Don't Know The Action Name:
-            for (RemoteInput input : action.getRemoteInputs()) {
-                msg.putCharSequence(input.getResultKey(), message);
+            try {
+                for (RemoteInput input : action.getRemoteInputs()) {
+                    msg.putCharSequence(input.getResultKey(), message);
+                }
+            } catch (NullPointerException e) {
+                Log.d("ARUtils: ", "Attempt to get length of null array");
             }
             // AddingResultsToIntent:
             RemoteInput.addResultsToIntent(action.getRemoteInputs(), sendIntent, msg);

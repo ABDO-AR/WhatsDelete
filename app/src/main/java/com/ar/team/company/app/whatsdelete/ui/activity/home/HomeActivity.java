@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Menu;
@@ -32,7 +33,7 @@ import com.mxn.soul.flowingdrawer_core.ElasticDrawer;
 import java.util.Objects;
 
 @SuppressWarnings({"FieldCanBeLocal", "unused"})
-public class HomeActivity extends AppCompatActivity implements HomeItemClickListener {
+public class HomeActivity extends AppCompatActivity implements HomeItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     // This For Control The XML-Main Views:
     private ActivityHomeBinding binding;
@@ -76,7 +77,30 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
         // SettingMenuSize:
         settingSize();
         // ManagerListener:
-        manager.getPreferences().registerOnSharedPreferenceChangeListener((sp, s) -> initApp());
+        manager.getPreferences().registerOnSharedPreferenceChangeListener(this);
+    }
+
+    // SharedPreferencesChangeListener:
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        // Initializing(APP):
+        initApp();
+    }
+
+    @Override
+    protected void onResume() {
+        // Initializing(APP):
+        initApp();
+        // Super:
+        super.onResume();
+    }
+
+    @Override
+    protected void onStop() {
+        // UnRegistering:
+        manager.getPreferences().unregisterOnSharedPreferenceChangeListener(this);
+        // Super:
+        super.onStop();
     }
 
     // SettingDrawerSize:

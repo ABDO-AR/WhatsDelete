@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.graphics.drawable.Icon;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -44,10 +45,8 @@ public class ShowChatActivity extends AppCompatActivity {
         binding.senderNameTextView.setText(chat.getSender());
         binding.backButton.setOnClickListener(v -> finish());
         // Developing(Icon):
-        if (icon != null)
-            binding.senderImageView.setImageDrawable(icon.loadDrawable(this));
-        else
-            binding.senderImageView.setImageResource(R.drawable.ic_placeholder);
+        if (icon != null) binding.senderImageView.setImageDrawable(icon.loadDrawable(this));
+        else binding.senderImageView.setImageResource(R.drawable.ic_placeholder);
         // Developing(RecyclerView):
         binding.showChatRecyclerView.setAdapter(adapter);
         binding.showChatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -56,6 +55,10 @@ public class ShowChatActivity extends AppCompatActivity {
 
     // SendMethod:
     private void sendMethod(View view) {
+        // WarningMessage:
+        String warningMes = "We need your friend send notification again if you need to send him messages";
+        // WarningToast:
+        if (icon == null) Toasty.warning(this, warningMes, Toasty.LENGTH_LONG).show();
         // Checking:
         if (!binding.chatEditText.getText().toString().isEmpty()) {
             // CatchingErrors:
