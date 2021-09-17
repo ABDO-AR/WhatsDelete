@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragment.home.ChatFragment">
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chat_recycler_view"
         android:layout_width="0dp"
@@ -16,19 +15,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-<com.google.android.material.floatingactionbutton.FloatingActionButton
-    android:id="@+id/fab_check_noti"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_margin="30sp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    android:src="@drawable/ic_baseline_notification_important_24"
-    android:tint="@color/colorPrimary"
-    app:fabSize="normal"
-    android:backgroundTint="@color/colorPrimary"
-
-    />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_check_noti"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="30sp"
+        android:backgroundTint="@color/colorPrimary"
+        android:contentDescription="@string/des"
+        android:src="@drawable/ic_baseline_notification_important_24"
+        android:tint="@color/colorPrimary"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

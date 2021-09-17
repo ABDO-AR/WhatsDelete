@@ -33,12 +33,15 @@ public class ARPermissionsRequest {
         // Developing:
         if (!state) showNotificationAccessDialog((dialog, i) -> onAccessButtonClicked(dialog));
     }
+
+    // Method(ReRunAccess):
     public void reRunNotificationAccess() {
         // Initializing:
         boolean state = checkNotificationAccess();
         // Developing:
         onAccessButtonClicked();
     }
+
     // Methods(Listener):
     private void onAccessButtonClicked(DialogInterface dialog) {
         // Initializing:
