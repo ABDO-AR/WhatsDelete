@@ -17,19 +17,28 @@ public class ARImagesAccess {
     private final Context context;
     public static List<File> staticFiles;
 
+
     // Constructor:
     public ARImagesAccess(Context context) {
         this.context = context;
     }
 
     // Method(Images):
-    public File[] getWhatsappImagesDirectory() {
+    private File[] getWhatsappImagesDirectory() {
         // Initializing(Paths):
         String externalStorageDirectory = Environment.getExternalStorageDirectory().getAbsolutePath();
         String whatsappImagesPath = "/WhatsApp/Media/WhatsApp Images";
         String finalPath = externalStorageDirectory + whatsappImagesPath;
+        // Initializing(Paths2):
+        String whatsappImagesPath2 = "Android/media/com.whatsapp/WhatsApp/Media/WhatsApp Images";
+        String finalPath2 = externalStorageDirectory + whatsappImagesPath2;
+        // FieldsField:
+        File[] backupFiles = new File(finalPath2).listFiles(file -> isImage(file.getAbsolutePath()));
+        File[] files = new File(finalPath).listFiles(file -> isImage(file.getAbsolutePath()));
+        // Checking:
+        if (files == null || files.length <= 0) files = backupFiles;
         // Returning:
-        return new File(finalPath).listFiles(file -> isImage(file.getAbsolutePath()));
+        return files;
     }
 
     public List<Bitmap> getWhatsappImagesBitmaps() {
