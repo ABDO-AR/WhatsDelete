@@ -9,6 +9,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @SuppressWarnings("unused")
 public class ARImagesAccess {
@@ -33,12 +34,17 @@ public class ARImagesAccess {
         String whatsappImagesPath2 = "Android/media/com.whatsapp/WhatsApp/Media/WhatsApp Images";
         String finalPath2 = externalStorageDirectory + whatsappImagesPath2;
         // FieldsField:
-        File[] backupFiles = new File(finalPath2).listFiles(file -> isImage(file.getAbsolutePath()));
         File[] files = new File(finalPath).listFiles(file -> isImage(file.getAbsolutePath()));
         // Checking:
-        if (files == null || files.length <= 0) files = backupFiles;
-        // Returning:
-        return files;
+        try {
+            // Initializing:
+            String tryingPath = Objects.requireNonNull(files)[0].getAbsolutePath();
+            // Returning:
+            return files;
+        } catch (NullPointerException e) {
+            // Returning:
+            return new File(finalPath2).listFiles(file -> isImage(file.getAbsolutePath()));
+        }
     }
 
     public List<Bitmap> getWhatsappImagesBitmaps() {

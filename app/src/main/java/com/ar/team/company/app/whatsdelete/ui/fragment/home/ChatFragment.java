@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.ar.team.company.app.whatsdelete.control.adapter.ChatAdapter;
+import com.ar.team.company.app.whatsdelete.control.notifications.NotificationListener;
 import com.ar.team.company.app.whatsdelete.control.preferences.ARPreferencesManager;
 import com.ar.team.company.app.whatsdelete.databinding.FragmentChatBinding;
 import com.ar.team.company.app.whatsdelete.model.Chat;
@@ -54,28 +55,29 @@ public class ChatFragment extends Fragment {
         // Initializing(UI):
         initUI();
         // Developing:
-        // This Method Is Working But Makes Foreground Problem.
-        // manager.getPreferences().registerOnSharedPreferenceChangeListener(this::initUI);
     }
 
     // Initializing UserInterface:
     private void initUI() {
-        // Initializing:
-        boolean state = !manager.getStringPreferences(ARPreferencesManager.WHATSAPP_CHATS).equals("Empty,");
-        // Developing:
-        if (state) {
-            // AddingAll:
-            chats.clear();
-            chats.addAll(ARUtils.fromJsonToChats(manager.getStringPreferences(ARPreferencesManager.WHATSAPP_CHATS)));
-            // Checking(ChatsAreNotEmpty):
-            if (!chats.isEmpty()) {
-                // Initializing:
-                adapter = new ChatAdapter(requireContext(), chats);
-                // Setting:
-                binding.chatRecyclerView.setAdapter(adapter);
-                binding.chatRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-                // Refreshing:
-                adapter.notifyDataSetChanged();
+        // Checking:
+        if (!NotificationListener.finalActions.isEmpty()) {
+            // Initializing:
+            boolean state = !manager.getStringPreferences(ARPreferencesManager.WHATSAPP_CHATS).equals("Empty,");
+            // Developing:
+            if (state) {
+                // AddingAll:
+                chats.clear();
+                chats.addAll(ARUtils.fromJsonToChats(manager.getStringPreferences(ARPreferencesManager.WHATSAPP_CHATS)));
+                // Checking(ChatsAreNotEmpty):
+                if (!chats.isEmpty()) {
+                    // Initializing:
+                    adapter = new ChatAdapter(requireContext(), chats);
+                    // Setting:
+                    binding.chatRecyclerView.setAdapter(adapter);
+                    binding.chatRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+                    // Refreshing:
+                    adapter.notifyDataSetChanged();
+                }
             }
         }
     }
