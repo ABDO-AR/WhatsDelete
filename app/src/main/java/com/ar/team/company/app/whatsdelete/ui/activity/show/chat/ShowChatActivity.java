@@ -44,8 +44,10 @@ public class ShowChatActivity extends AppCompatActivity {
         binding.senderNameTextView.setText(chat.getSender());
         binding.backButton.setOnClickListener(v -> finish());
         // Developing(Icon):
-        if (icon != null) binding.senderImageView.setImageDrawable(icon.loadDrawable(this));
-        else binding.senderImageView.setImageResource(R.drawable.ic_placeholder);
+        if (icon != null)
+            binding.senderImageView.setImageDrawable(icon.loadDrawable(this));
+        else
+            binding.senderImageView.setImageResource(R.drawable.ic_placeholder);
         // Developing(RecyclerView):
         binding.showChatRecyclerView.setAdapter(adapter);
         binding.showChatRecyclerView.setLayoutManager(new LinearLayoutManager(this));

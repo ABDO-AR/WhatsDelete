@@ -30,7 +30,7 @@ public class ARVoicesAccess {
         File[] dirs = new File(finalPath).listFiles();
         if (dirs == null || dirs.length <= 0){
             // Initializing(Paths2):
-            String whatsappImagesPath2 = "Android/media/com.whatsapp/WhatsApp/Media/WhatsApp Voice Notes";
+            String whatsappImagesPath2 = "/Android/media/com.whatsapp/WhatsApp/Media/WhatsApp Voice Notes";
             String finalPath2 = externalStorageDirectory + whatsappImagesPath2;
             // FieldsField:
             dirs = new File(finalPath2).listFiles(file -> isImage(file.getAbsolutePath()));

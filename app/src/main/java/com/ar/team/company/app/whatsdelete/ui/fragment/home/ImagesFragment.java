@@ -19,6 +19,7 @@ import com.ar.team.company.app.whatsdelete.ui.activity.home.HomeViewModel;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings({"FieldCanBeLocal", "unused"})
@@ -29,7 +30,7 @@ public class ImagesFragment extends Fragment {
     private HomeViewModel model; // MainModel for our fragment.
     // Adapter:
     private ARImagesAccess access;
-    private List<Bitmap> bitmaps;
+    private List<Bitmap> bitmaps=new ArrayList<>();
     private ImagesAdapter adapter;
     // Thread:
     private Thread workingThread;
@@ -58,7 +59,10 @@ public class ImagesFragment extends Fragment {
     private void workingMethod() {
         // Initializing:
         access = new ARImagesAccess(requireContext());
+
+        if (access.getWhatsappImagesBitmaps()!=null)
         bitmaps = access.getWhatsappImagesBitmaps();
+
         adapter = new ImagesAdapter(requireContext(), bitmaps);
         // Developing:
         requireActivity().runOnUiThread(() -> {

@@ -25,7 +25,7 @@ public class ARVideosAccess {
         String whatsappImagesPath = "/WhatsApp/Media/WhatsApp Video";
         String finalPath = externalStorageDirectory + whatsappImagesPath;
         // Initializing(Paths2):
-        String whatsappImagesPath2 = "Android/media/com.whatsapp/WhatsApp/Media/WhatsApp Video";
+        String whatsappImagesPath2 = "/Android/media/com.whatsapp/WhatsApp/Media/WhatsApp Video";
         String finalPath2 = externalStorageDirectory + whatsappImagesPath2;
         // FieldsField:
         File[] backupFiles = new File(finalPath2).listFiles(file -> isImage(file.getAbsolutePath()));

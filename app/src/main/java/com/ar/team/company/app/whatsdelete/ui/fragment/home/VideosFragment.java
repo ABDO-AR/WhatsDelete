@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings({"FieldCanBeLocal", "unused"})
@@ -29,7 +30,7 @@ public class VideosFragment extends Fragment {
     private HomeViewModel model; // MainModel for our fragment.
     // Adapters:
     private ARVideosAccess access;
-    private List<File> files;
+    private List<File> files = new ArrayList<>();
     private VideosAdapter adapter;
     // Threading:
     private Thread workingThread;
@@ -58,6 +59,8 @@ public class VideosFragment extends Fragment {
     private void workingMethod() {
         // Initializing(Adapter):
         access = new ARVideosAccess(requireContext());
+
+        if (access.getWhatsappVideosDirectory()!=null)
         files = access.getWhatsappVideosDirectory();
         adapter = new VideosAdapter(requireContext(), files);
         // Developing:

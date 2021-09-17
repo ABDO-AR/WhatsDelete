@@ -4,12 +4,15 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
+import es.dmoral.toasty.Toasty;
 
 @SuppressWarnings("unused")
 public class ARImagesAccess {
@@ -31,7 +34,7 @@ public class ARImagesAccess {
         String whatsappImagesPath = "/WhatsApp/Media/WhatsApp Images";
         String finalPath = externalStorageDirectory + whatsappImagesPath;
         // Initializing(Paths2):
-        String whatsappImagesPath2 = "Android/media/com.whatsapp/WhatsApp/Media/WhatsApp Images";
+        String whatsappImagesPath2 = "/Android/media/com.whatsapp/WhatsApp/Media/WhatsApp Images";
         String finalPath2 = externalStorageDirectory + whatsappImagesPath2;
         // FieldsField:
         File[] files = new File(finalPath).listFiles(file -> isImage(file.getAbsolutePath()));
@@ -52,14 +55,22 @@ public class ARImagesAccess {
         File[] files = getWhatsappImagesDirectory();
         List<Bitmap> bitmaps = new ArrayList<>();
         // AddingBitmaps:
-        for (File file : files) {
+        if (files != null)
+        {
+            for (File file : files) {
+                // Adding:
+                bitmaps.add(ARBitmapHelper.decodeBitmapFromFile(file.getAbsolutePath(), 120, 120));
+
+            }
             // Adding:
-            bitmaps.add(ARBitmapHelper.decodeBitmapFromFile(file.getAbsolutePath(), 120, 120));
+            staticFiles = Arrays.asList(files);
+            // Developing:
+            return bitmaps;
         }
-        // Adding:
-        staticFiles = Arrays.asList(files);
-        // Developing:
-        return bitmaps;
+        else
+            return null;
+
+
     }
 
     // InnerClasses:
