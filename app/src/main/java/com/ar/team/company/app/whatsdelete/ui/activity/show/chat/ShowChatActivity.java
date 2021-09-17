@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
+import com.ar.team.company.app.whatsdelete.R;
 import com.ar.team.company.app.whatsdelete.control.adapter.ShowChatAdapter;
 import com.ar.team.company.app.whatsdelete.databinding.ActivityShowChatBinding;
 import com.ar.team.company.app.whatsdelete.model.Chat;
@@ -40,10 +42,31 @@ public class ShowChatActivity extends AppCompatActivity {
         binding.senderNameTextView.setText(chat.getSender());
         binding.backButton.setOnClickListener(v -> finish());
         // Developing(Icon):
-        if (icon != null) binding.senderImageView.setImageDrawable(icon.loadDrawable(this));
+        if (icon != null)
+            binding.senderImageView.setImageDrawable(icon.loadDrawable(this));
+        else
+            binding.senderImageView.setImageResource(R.drawable.ic_placeholder);
         // Developing(RecyclerView):
         binding.showChatRecyclerView.setAdapter(adapter);
         binding.showChatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        binding.chatSendButton.setOnClickListener(v -> clicked.eventClick(chat.getSender(), binding.chatEditText.getText().toString()));
+        binding.chatSendButton.setOnClickListener(v ->
+                {
+                    if (!binding.chatEditText.getText().equals(""))
+                    {
+                        binding.chatEditText.setText("");
+                        try {
+                            clicked.eventClick(chat.getSender(), binding.chatEditText.getText().toString());
+                        }
+                        catch (Exception e)
+                        {
+                        Toast.makeText(this, "Unable to reach the person, please try again ", Toast.LENGTH_SHORT).show();
+                        }
+
+
+
+                    }
+
+
+                });
     }
 }

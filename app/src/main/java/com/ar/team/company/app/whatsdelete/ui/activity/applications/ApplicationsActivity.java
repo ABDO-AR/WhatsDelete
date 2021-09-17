@@ -55,7 +55,12 @@ public class ApplicationsActivity extends AppCompatActivity implements Applicati
     @Override // OnAppClicked:
     public void onAppClicked(List<Application> apps, int pos, SingleAppItemBinding appBinding) {
         // Developing:
-        binding.allAppsSwitch.setOnCheckedChangeListener((c, checked) -> appsChanged(apps, checked));
+        binding.allAppsSwitch.setOnCheckedChangeListener((c, checked) ->
+                {
+                    appsChanged(apps, checked);
+
+                });
+
     }
 
     private void appsChanged(List<Application> apps, boolean checked) {

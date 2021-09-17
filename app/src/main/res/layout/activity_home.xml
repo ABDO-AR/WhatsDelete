@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.mxn.soul.flowingdrawer_core.FlowingDrawer xmlns:android="http://schemas.android.com/apk/res/android"
+<com.mxn.soul.flowingdrawer_core.FlowingDrawer
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
@@ -48,7 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="18sp"
+                android:layout_marginTop="@dimen/_25sdp"
                 android:paddingTop="@dimen/nav_header_vertical_spacing"
                 android:text="@string/app_name"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -109,7 +110,6 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_config"
-                style="?attr/ar_background"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -136,6 +136,7 @@
                     android:layout_marginBottom="8dp"
                     android:paddingEnd="10dp"
                     android:paddingStart="10dp"
+                    style= "?attr/mr_text_color"
                     android:src="@drawable/ic_baseline_arrow_forward_24"
                     android:contentDescription="@string/des" />
 
@@ -143,13 +144,13 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_app_list"
-                style="?attr/ar_background"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
                 app:cardCornerRadius="15sp"
+                style= "?attr/mr_text_color"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cv_config">
 
@@ -169,6 +170,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:paddingEnd="10sp"
+                    style= "?attr/mr_text_color"
                     android:src="@drawable/ic_baseline_arrow_forward_24"
                     tools:ignore="RtlSymmetry"
                     android:contentDescription="@string/des" />
@@ -177,7 +179,6 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_youtube"
-                style="?attr/ar_background"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -203,6 +204,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:paddingEnd="10sp"
+                    style= "?attr/mr_text_color"
                     android:src="@drawable/ic_baseline_arrow_forward_24"
                     tools:ignore="RtlSymmetry"
                     android:contentDescription="@string/des" />
