@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ar.team.company.app.whatsdelete.R;
 import com.ar.team.company.app.whatsdelete.control.notifications.NotificationListener;
 import com.ar.team.company.app.whatsdelete.databinding.SingleChatItemBinding;
 import com.ar.team.company.app.whatsdelete.model.ARIcon;
@@ -58,6 +59,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         holder.binding.lastMessageTextView.setText(chat.getMessages().get(chat.getMessages().size() - 1).getMessage());
         // Icon:
         // Looping:
+
+        holder.binding.senderImageView.setImageResource(R.drawable.ic_placeholder);
         for (ARIcon icon : NotificationListener.icons) {
             // Checking:
             if (icon.getId().contains(chat.getSender())) {
@@ -69,8 +72,11 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
                     // Developing:
                     holder.binding.senderImageView.setImageDrawable(drawable);
                 }
+
             }
+
         }
+
         // OnClickChat:
         Icon finalSendIcon = sendIcon;
         holder.binding.getRoot().setOnClickListener(v -> chatClicked(chat, finalSendIcon));

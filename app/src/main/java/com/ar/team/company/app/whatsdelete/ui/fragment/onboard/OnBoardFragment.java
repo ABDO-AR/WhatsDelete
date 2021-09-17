@@ -129,7 +129,8 @@ public class OnBoardFragment extends Fragment {
                     // Permission not granted so we have to ask it:
                     launcher.launch(perm);
                 }
-            } else if (position == 2) OnBoardFragment.this.request.runNotificationAccess();
+            } else if (position == 2)
+                OnBoardFragment.this.request.runNotificationAccess();
             // Super:
             super.onPageSelected(position);
         }

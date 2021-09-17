@@ -33,7 +33,12 @@ public class ARPermissionsRequest {
         // Developing:
         if (!state) showNotificationAccessDialog((dialog, i) -> onAccessButtonClicked(dialog));
     }
-
+    public void reRunNotificationAccess() {
+        // Initializing:
+        boolean state = checkNotificationAccess();
+        // Developing:
+        onAccessButtonClicked();
+    }
     // Methods(Listener):
     private void onAccessButtonClicked(DialogInterface dialog) {
         // Initializing:
@@ -43,7 +48,12 @@ public class ARPermissionsRequest {
         // Developing:
         if (state) dialog.dismiss();
     }
-
+    private void onAccessButtonClicked() {
+        // Initializing:
+        boolean state = checkNotificationAccess();
+        // StartActivity:
+        context.startActivity(new Intent(NOTIFICATIONS_ACCESS_PAGE));
+    }
     // Methods(UI):
     public void showNotificationAccessDialog(DialogInterface.OnClickListener listener) {
         // Initializing:

@@ -25,9 +25,9 @@
             >
             <ImageView
                 android:id="@+id/btn_drawer"
-                android:layout_width="36dp"
+                android:layout_width="@dimen/_18ssp"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_baseline_menu_open_24"
+                android:src="@drawable/ic_drawer_icon"
                 android:layout_gravity="center"
                 android:layout_marginStart="10sp"
                 />
