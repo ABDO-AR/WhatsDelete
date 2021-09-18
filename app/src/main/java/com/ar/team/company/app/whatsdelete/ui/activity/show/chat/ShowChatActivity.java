@@ -23,8 +23,10 @@ public class ShowChatActivity extends AppCompatActivity {
 
     // This For Control The XML-Main Views:
     private ActivityShowChatBinding binding;
+    // Adapter:
     private Chat chat;
     private Icon icon;
+    private LinearLayoutManager layoutManager;
     private ShowChatAdapter adapter;
     // Interfaces:
     public static OnChatButtonClicked clicked;
@@ -40,7 +42,10 @@ public class ShowChatActivity extends AppCompatActivity {
         // Initializing:
         chat = ARUtils.fromJsonToChat(getIntent().getExtras().getString("Chat"));
         icon = getIntent().getParcelableExtra("Icon");
+        layoutManager = new LinearLayoutManager(this);
         adapter = new ShowChatAdapter(this, chat);
+        // Preparing:
+        layoutManager.setStackFromEnd(true);
         // Developing(Main-UI):
         binding.senderNameTextView.setText(chat.getSender());
         binding.backButton.setOnClickListener(v -> finish());
@@ -49,7 +54,7 @@ public class ShowChatActivity extends AppCompatActivity {
         else binding.senderImageView.setImageResource(R.drawable.ic_placeholder);
         // Developing(RecyclerView):
         binding.showChatRecyclerView.setAdapter(adapter);
-        binding.showChatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.showChatRecyclerView.setLayoutManager(layoutManager);
         binding.chatSendButton.setOnClickListener(this::sendMethod);
     }
 
@@ -64,7 +69,12 @@ public class ShowChatActivity extends AppCompatActivity {
             // CatchingErrors:
             try {
                 // SendingResponse:
-                clicked.eventClick(chat.getSender(), binding.chatEditText.getText().toString());
+                Chat refreshingChat = clicked.eventClick(chat.getSender(), binding.chatEditText.getText().toString());
+                // Refreshing(Adapter):
+                adapter = new ShowChatAdapter(this, refreshingChat);
+                // Refreshing(RecyclerView):
+                binding.showChatRecyclerView.setAdapter(adapter);
+                binding.showChatRecyclerView.setLayoutManager(layoutManager);
             } catch (Exception e) {
                 Toasty.error(this, "Unable to reach the person, please try again", Toast.LENGTH_LONG).show();
             }

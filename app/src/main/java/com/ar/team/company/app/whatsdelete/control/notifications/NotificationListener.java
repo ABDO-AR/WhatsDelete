@@ -78,6 +78,7 @@ public class NotificationListener extends NotificationListenerService {
             ShowChatActivity.clicked = (senderName, mes) -> {
                 // Temps:
                 AtomicBoolean sentTemp = new AtomicBoolean(false);
+                Chat tempChat = null;
                 // Looping:
                 for (Notification.Action action : finalActions) {
                     // Debugging:
@@ -89,7 +90,11 @@ public class NotificationListener extends NotificationListenerService {
                         // Looping:
                         for (Chat chat : savedChats) {
                             // Checking:
-                            if (chat.getSender().equals(senderName)) chat.getMessages().add(new Chat.Messages(mes, false));
+                            if (chat.getSender().equals(senderName)) {
+                                // Setting:
+                                tempChat = chat;
+                                chat.getMessages().add(new Chat.Messages(mes.trim(), false));
+                            }
                         }
                         // SettingChatsAgain:
                         manager.setStringPreferences(ARPreferencesManager.WHATSAPP_CHATS, ARUtils.fromChatsToJson(savedChats));
@@ -99,9 +104,11 @@ public class NotificationListener extends NotificationListenerService {
                         sentTemp.set(true);
                     }
                 }
+                // Returning:
+                return tempChat;
             };
             // AddingData:
-            messages.add(new Chat.Messages(msg, true));
+            messages.add(new Chat.Messages(msg.trim(), true));
             // Developing:
             if (manager.getPreferences().contains(ARPreferencesManager.WHATSAPP_CHATS)) {
                 // Initializing:
