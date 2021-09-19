@@ -60,8 +60,16 @@ public class NotificationListener extends NotificationListenerService {
                 // Initializing:
                 firstChar = msg.split(" ")[0];
             } catch (Exception e) {
-                // Initializing:
-                firstChar = msg.substring(0, 1);
+                // Trying:
+                try {
+                    // Initializing:
+                    firstChar = msg.substring(0, 1);
+                } catch (NullPointerException nullPointerException) {
+                    // Initializing:
+                    firstChar = "A";
+                    // Debug:
+                    Log.d(TAG, "onNotificationPosted: " + nullPointerException.toString());
+                }
             }
             // CheckingStatusBarNotification:
             if (state && !msg.equals(firstChar + " new messages")) {

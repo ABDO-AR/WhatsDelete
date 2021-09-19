@@ -32,16 +32,18 @@ public class ARUtils {
             Bundle msg = new Bundle();
             // ForOnActionsRemoteInput Because We Don't Know The Action Name:
             try {
+                // Looping:
                 for (RemoteInput input : action.getRemoteInputs()) {
                     msg.putCharSequence(input.getResultKey(), message);
                 }
+                // AddingResultsToIntent:
+                RemoteInput.addResultsToIntent(action.getRemoteInputs(), sendIntent, msg);
+                // SendingTheAction:
+                action.actionIntent.send(context, 0, sendIntent);
             } catch (NullPointerException e) {
+                Log.d("ARUtils: ", e.toString());
                 Log.d("ARUtils: ", "Attempt to get length of null array");
             }
-            // AddingResultsToIntent:
-            RemoteInput.addResultsToIntent(action.getRemoteInputs(), sendIntent, msg);
-            // SendingTheAction:
-            action.actionIntent.send(context, 0, sendIntent);
         } catch (Exception e) {
             // Printing Error To Console If There AreOne:
             e.printStackTrace();
