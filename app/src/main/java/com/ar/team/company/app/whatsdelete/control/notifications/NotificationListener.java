@@ -56,13 +56,8 @@ public class NotificationListener extends NotificationListenerService {
             // Design:
             String firstChar;
             // Trying:
-            try {
-                // Initializing:
-                firstChar = msg.split(" ")[0];
-            } catch (Exception e) {
-                // Initializing:
-                firstChar = msg.substring(0, 1);
-            }
+            if (msg.contains(" ")) firstChar = msg.split(" ")[0];
+            else firstChar = msg.substring(0, 1);
             // CheckingStatusBarNotification:
             if (state && !msg.equals(firstChar + " new messages")) {
                 // Initializing(Replay):
