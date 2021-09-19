@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ar.team.company.app.whatsdelete.databinding.ShowChatItemViewBinding;
 import com.ar.team.company.app.whatsdelete.databinding.ShowChatItemViewMeBinding;
 import com.ar.team.company.app.whatsdelete.model.Chat;
+
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
@@ -45,7 +47,7 @@ public class ShowChatAdapter extends RecyclerView.Adapter {
             ShowChatItemViewBinding binding = ShowChatItemViewBinding.inflate(inflater, parent, false);
             // Returning:
             return new ShowChatAdapter.ShowChatViewHolder(binding);
-        }else {
+        } else {
             // Initializing:
             ShowChatItemViewMeBinding binding = ShowChatItemViewMeBinding.inflate(inflater, parent, false);
             // Returning:
@@ -57,16 +59,16 @@ public class ShowChatAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull @NotNull RecyclerView.ViewHolder holder, int position) {
         // Initializing:
         Chat.Messages messages = chats.getMessages().get(position);
-        String[] dates = chats.getMessageDate().split(" ");
+        String messageDate = messages.getMessageDate();
         // Checking:
-        if (holder.getItemViewType() == VIEW_TYPE_RECEIVED){
+        if (holder.getItemViewType() == VIEW_TYPE_RECEIVED) {
             // Developing:
             ((ShowChatViewHolder) holder).binding.chatMes.setText(messages.getMessage());
-            ((ShowChatViewHolder) holder).binding.dateTextView.setText(dates[1] + " " + dates[2]);
-        }else {
+            ((ShowChatViewHolder) holder).binding.dateTextView.setText(messageDate);
+        } else {
             // Developing:
             ((ShowChatViewHolderMe) holder).binding.chatMes.setText(messages.getMessage());
-            ((ShowChatViewHolderMe) holder).binding.dateTextView.setText(dates[1] + " " + dates[2]);
+            ((ShowChatViewHolderMe) holder).binding.dateTextView.setText(messageDate);
         }
     }
 

@@ -13,6 +13,7 @@ import com.ar.team.company.app.whatsdelete.ui.activity.show.chat.ShowChatActivit
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -32,8 +33,9 @@ public class NotificationListener extends NotificationListenerService {
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
         super.onNotificationPosted(sbn);
-        // Initializing(DateTime):
-        String date = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(new Date());
+        // Initializing(Date):
+        String date = getCurrentDate();
+        // Creating(Chats):
         List<Chat> chats;
         // Initializing(Data):
         String sender = sbn.getNotification().extras.getString(Notification.EXTRA_TITLE);
@@ -93,7 +95,7 @@ public class NotificationListener extends NotificationListenerService {
                             if (chat.getSender().equals(senderName)) {
                                 // Setting:
                                 tempChat = chat;
-                                chat.getMessages().add(new Chat.Messages(mes.trim(), false));
+                                chat.getMessages().add(new Chat.Messages(mes.trim(), getCurrentDate(), false));
                             }
                         }
                         // SettingChatsAgain:
@@ -108,7 +110,7 @@ public class NotificationListener extends NotificationListenerService {
                 return tempChat;
             };
             // AddingData:
-            messages.add(new Chat.Messages(msg.trim(), true));
+            messages.add(new Chat.Messages(msg.trim(), date, true));
             // Developing:
             if (manager.getPreferences().contains(ARPreferencesManager.WHATSAPP_CHATS)) {
                 // Initializing:
@@ -117,7 +119,13 @@ public class NotificationListener extends NotificationListenerService {
                 for (Chat chat : chats) {
                     if (chat.getSender().equals(sender)) {
                         // AddingTheNewMessage:
-                        chat.getMessages().addAll(messages);
+                        if (!chat.getMessages().isEmpty()) {
+                            // Checking(MessagesSizeForRemovingDuplicates):
+                            if (!chat.getMessages().get(chat.getMessages().size() - 1).getMessage().equals(messages.get(0).getMessage())) {
+                                // Adding:
+                                chat.getMessages().addAll(messages);
+                            }
+                        } else chat.getMessages().addAll(messages); // Adding.
                         // AddingSender($Preferences):
                         if (!currentSenders.contains(sender)) {
                             // Initializing:
@@ -130,7 +138,7 @@ public class NotificationListener extends NotificationListenerService {
                 // CheckingSenders:
                 if (!currentSenders.contains(sender)) {
                     // Initializing:
-                    Chat chat = new Chat(sender, "", date, null, messages);
+                    Chat chat = new Chat(sender, getCurrentDate(), messages);
                     // AddingTheNewChat:
                     chats.add(chat);
                 }
@@ -138,7 +146,7 @@ public class NotificationListener extends NotificationListenerService {
                 // Initializing:
                 chats = new ArrayList<>();
                 // Developing:
-                chats.add(new Chat(sender, "", date, null, messages));
+                chats.add(new Chat(sender, getCurrentDate(), messages));
             }
             // SettingPreferences:
             manager.setStringPreferences(ARPreferencesManager.WHATSAPP_CHATS, ARUtils.fromChatsToJson(chats));
@@ -149,5 +157,17 @@ public class NotificationListener extends NotificationListenerService {
         ARUtils.debug(TAG, NP_FIELD, "Whatsapp Package Was Founded In Preferences");
         // Debugging:
         ARUtils.debug(TAG, NP_FIELD, "Start");
+    }
+
+    // Method(Date):
+    private String getCurrentDate() {
+        // Initializing(Calendar):
+        Calendar calendar = Calendar.getInstance();
+        // Preparing(Calendar):
+        int hour24hrs = calendar.get(Calendar.HOUR_OF_DAY);
+        int minutes = calendar.get(Calendar.MINUTE);
+        String dayState = (calendar.get(Calendar.AM_PM) == Calendar.AM) ? " AM" : " PM";
+        // Setting(Date):
+        return hour24hrs + ":" + minutes + dayState;
     }
 }

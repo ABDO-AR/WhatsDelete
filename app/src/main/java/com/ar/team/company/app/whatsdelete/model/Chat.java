@@ -8,17 +8,14 @@ import java.util.List;
 public class Chat {
 
     // Fields:
-    private final String sender, receiver;
-    private final String messageDate;
-    private final Drawable senderPhoto;
+    private final String sender;
+    private final String chatDate;
     private final List<Messages> messages;
 
     // Constructor:
-    public Chat(String sender, String receiver, String messageDate, Drawable senderPhoto, List<Messages> messages) {
+    public Chat(String sender, String chatDate, List<Messages> messages) {
         this.sender = sender;
-        this.receiver = receiver;
-        this.messageDate = messageDate;
-        this.senderPhoto = senderPhoto;
+        this.chatDate = chatDate;
         this.messages = messages;
     }
 
@@ -27,11 +24,13 @@ public class Chat {
 
         // Fields:
         private final String message;
+        private final String messageDate;
         private final boolean sender;
 
         // Constructor:
-        public Messages(String message, boolean sender) {
+        public Messages(String message, String messageDate, boolean sender) {
             this.message = message;
+            this.messageDate = messageDate;
             this.sender = sender;
         }
 
@@ -40,27 +39,22 @@ public class Chat {
             return message;
         }
 
+        public String getMessageDate() {
+            return messageDate;
+        }
+
         public boolean isSender() {
             return sender;
         }
     }
 
     // Getters:
-
     public String getSender() {
         return sender;
     }
 
-    public String getReceiver() {
-        return receiver;
-    }
-
-    public String getMessageDate() {
-        return messageDate;
-    }
-
-    public Drawable getSenderPhoto() {
-        return senderPhoto;
+    public String getChatDate() {
+        return chatDate;
     }
 
     public List<Messages> getMessages() {

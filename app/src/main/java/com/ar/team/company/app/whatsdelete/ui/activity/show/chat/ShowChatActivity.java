@@ -3,6 +3,7 @@ package com.ar.team.company.app.whatsdelete.ui.activity.show.chat;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.SharedPreferences;
 import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,15 +12,18 @@ import android.widget.Toast;
 
 import com.ar.team.company.app.whatsdelete.R;
 import com.ar.team.company.app.whatsdelete.control.adapter.ShowChatAdapter;
+import com.ar.team.company.app.whatsdelete.control.preferences.ARPreferencesManager;
 import com.ar.team.company.app.whatsdelete.databinding.ActivityShowChatBinding;
 import com.ar.team.company.app.whatsdelete.model.Chat;
 import com.ar.team.company.app.whatsdelete.ar.utils.ARUtils;
 import com.ar.team.company.app.whatsdelete.ui.interfaces.OnChatButtonClicked;
 
+import java.util.List;
+
 import es.dmoral.toasty.Toasty;
 
 @SuppressWarnings({"FieldCanBeLocal", "unused"})
-public class ShowChatActivity extends AppCompatActivity {
+public class ShowChatActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     // This For Control The XML-Main Views:
     private ActivityShowChatBinding binding;
@@ -28,6 +32,7 @@ public class ShowChatActivity extends AppCompatActivity {
     private Icon icon;
     private LinearLayoutManager layoutManager;
     private ShowChatAdapter adapter;
+    private ARPreferencesManager manager;
     // Interfaces:
     public static OnChatButtonClicked clicked;
     // TAGS:
@@ -40,6 +45,7 @@ public class ShowChatActivity extends AppCompatActivity {
         View view = binding.getRoot(); // GET ROOT [BY DEF(CONSTRAINT LAYOUT)].
         setContentView(view); // SET THE VIEW CONTENT TO THE (VIEW).
         // Initializing:
+        manager = new ARPreferencesManager(this);
         chat = ARUtils.fromJsonToChat(getIntent().getExtras().getString("Chat"));
         icon = getIntent().getParcelableExtra("Icon");
         layoutManager = new LinearLayoutManager(this);
@@ -56,6 +62,29 @@ public class ShowChatActivity extends AppCompatActivity {
         binding.showChatRecyclerView.setAdapter(adapter);
         binding.showChatRecyclerView.setLayoutManager(layoutManager);
         binding.chatSendButton.setOnClickListener(this::sendMethod);
+        // Developing(Manager):
+        manager.getPreferences().registerOnSharedPreferenceChangeListener(this);
+    }
+
+    // OnChatReSend:
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+        // Initializing:
+        List<Chat> chats = ARUtils.fromJsonToChats(manager.getStringPreferences(ARPreferencesManager.WHATSAPP_CHATS));
+        Chat refreshingChat = null;
+        // Getting(RefreshingChat):
+        for (Chat chat : chats) {
+            // Checking:
+            if (chat.getSender().equals(this.chat.getSender())) refreshingChat = chat;
+        }
+        // Checking:
+        if (refreshingChat != null){
+            // Refreshing(Adapter):
+            adapter = new ShowChatAdapter(this, refreshingChat);
+            // Refreshing(RecyclerView):
+            binding.showChatRecyclerView.setAdapter(adapter);
+            binding.showChatRecyclerView.setLayoutManager(layoutManager);
+        }
     }
 
     // SendMethod:
@@ -81,5 +110,12 @@ public class ShowChatActivity extends AppCompatActivity {
             // EmptyChatInput:
             binding.chatEditText.setText("");
         }
+    }
+
+    // OnDestroy:
+    @Override
+    protected void onDestroy() {
+        manager.getPreferences().unregisterOnSharedPreferenceChangeListener(this);
+        super.onDestroy();
     }
 }
