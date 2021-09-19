@@ -167,7 +167,7 @@ public class NotificationListener extends NotificationListenerService {
         // Initializing(Calendar):
         Calendar calendar = Calendar.getInstance();
         // Preparing(Calendar):
-        int hour24hrs = calendar.get(Calendar.HOUR_OF_DAY);
+        int hour24hrs = calendar.get(Calendar.HOUR);
         int minutes = calendar.get(Calendar.MINUTE);
         String dayState = (calendar.get(Calendar.AM_PM) == Calendar.AM) ? " AM" : " PM";
         // Setting(Date):

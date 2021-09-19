@@ -77,13 +77,19 @@ public class ShowChatActivity extends AppCompatActivity implements SharedPrefere
             // Checking:
             if (chat.getSender().equals(this.chat.getSender())) refreshingChat = chat;
         }
-        // Checking:
-        if (refreshingChat != null){
-            // Refreshing(Adapter):
-            adapter = new ShowChatAdapter(this, refreshingChat);
-            // Refreshing(RecyclerView):
-            binding.showChatRecyclerView.setAdapter(adapter);
-            binding.showChatRecyclerView.setLayoutManager(layoutManager);
+        // Trying:
+        try {
+            // Checking:
+            if (refreshingChat != null && refreshingChat.getMessages() != null) {
+                // Refreshing(Adapter):
+                adapter = new ShowChatAdapter(this, refreshingChat);
+                // Refreshing(RecyclerView):
+                binding.showChatRecyclerView.setAdapter(adapter);
+                binding.showChatRecyclerView.setLayoutManager(layoutManager);
+            }
+        } catch (Exception e) {
+            // Debug:
+            Log.d(TAG, "onSharedPreferenceChanged: " + e.toString());
         }
     }
 
