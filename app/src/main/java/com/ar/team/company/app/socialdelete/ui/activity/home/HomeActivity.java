@@ -1,5 +1,6 @@
 package com.ar.team.company.app.socialdelete.ui.activity.home;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
@@ -9,13 +10,16 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.FileObserver;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.ar.team.company.app.socialdelete.R;
+import com.ar.team.company.app.socialdelete.ar.access.ARAccess;
 import com.ar.team.company.app.socialdelete.control.adapter.HomeItemsAdapter;
 import com.ar.team.company.app.socialdelete.control.adapter.PagerAdapter;
 import com.ar.team.company.app.socialdelete.control.foreground.ARForegroundService;
@@ -43,6 +47,8 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
     private ARPreferencesManager manager;
     // TabMediator:
     private TabLayoutMediator mediator;
+    // Observers:
+    private static FileObserver imagesObserver;
     // TAGS:
     private static final String TAG = "HomeActivity";
 
@@ -54,10 +60,39 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
         setContentView(view); // SET THE VIEW CONTENT TO THE (VIEW).
         // Initializing(MAIN-FIELDS):
         model = new ViewModelProvider(this).get(HomeViewModel.class);
+        initObservers();
         // StartOurForegroundService:
         ContextCompat.startForegroundService(this, new Intent(this, ARForegroundService.class));
         // Initializing(App):
         initApp();
+    }
+
+    // Method(Observers):
+    private void initObservers() {
+        // Initializing(Observers):
+        imagesObserver = new FileObserver(ARAccess.WHATSAPP_IMAGES_PATH) {
+            @Override
+            public void onEvent(int i, @Nullable String s) {
+                // Debugging:
+                Log.d(TAG, "onEvent: " + s);
+                // Checking:
+                if (i == FileObserver.CREATE || i == FileObserver.ACCESS){
+                    // Debugging:
+                    Log.d(TAG, "onEventCreate: " + s);
+                    // StartOperations:
+                    model.startImageOperation();
+                }
+            }
+        };
+        // StartObservers:
+        imagesObserver.startWatching();
+    }
+
+    // This method for control observer on ARImagesAccess:
+    public static void setImagesObserver(boolean state){
+        // Checking:
+        if (state) imagesObserver.startWatching();
+        else imagesObserver.stopWatching();
     }
 
     // InitApp:

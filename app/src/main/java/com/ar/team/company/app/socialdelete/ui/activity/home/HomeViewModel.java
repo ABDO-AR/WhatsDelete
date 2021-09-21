@@ -2,28 +2,24 @@ package com.ar.team.company.app.socialdelete.ui.activity.home;
 
 import android.app.Application;
 import android.graphics.Bitmap;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.ar.team.company.app.socialdelete.ar.images.ARImagesAccess;
-import com.ar.team.company.app.socialdelete.control.adapter.ImagesAdapter;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused")
 public class HomeViewModel extends AndroidViewModel {
 
     // MainFields:
-    private final MutableLiveData<List<Bitmap>> data = new MutableLiveData<>();
-    private final LiveData<List<Bitmap>> bitmapsLiveData = data;
+    private final MutableLiveData<List<Bitmap>> imagesMutableData = new MutableLiveData<>();
+    private final LiveData<List<Bitmap>> imagesLiveData = imagesMutableData;
     // Thread:
     private Thread imagesThread;
 
@@ -51,16 +47,16 @@ public class HomeViewModel extends AndroidViewModel {
         // Adapter:
         List<Bitmap> bitmaps = ARImagesAccess.getImagesWithDirs(getApplication().getApplicationContext());
         // Developing:
-        data.postValue(bitmaps);
+        imagesMutableData.postValue(bitmaps);
     }
 
     // Getters(&Setters):
-    public MutableLiveData<List<Bitmap>> getData() {
-        return data;
+    public MutableLiveData<List<Bitmap>> getImagesMutableData() {
+        return imagesMutableData;
     }
 
-    public LiveData<List<Bitmap>> getBitmapsLiveData() {
-        return bitmapsLiveData;
+    public LiveData<List<Bitmap>> getImagesLiveData() {
+        return imagesLiveData;
     }
 
     public Thread getImagesThread() {

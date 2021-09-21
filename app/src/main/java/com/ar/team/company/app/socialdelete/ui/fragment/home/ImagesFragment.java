@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
-import com.ar.team.company.app.socialdelete.ar.images.ARImagesAccess;
 import com.ar.team.company.app.socialdelete.control.adapter.ImagesAdapter;
 import com.ar.team.company.app.socialdelete.databinding.FragmentImagesBinding;
 import com.ar.team.company.app.socialdelete.ui.activity.home.HomeViewModel;
@@ -19,7 +18,6 @@ import com.ar.team.company.app.socialdelete.ui.activity.home.HomeViewModel;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings({"FieldCanBeLocal", "unused"})
@@ -48,7 +46,7 @@ public class ImagesFragment extends Fragment {
         // StartOperations:
         model.startImageOperation();
         // Observing:
-        model.getBitmapsLiveData().observe(getViewLifecycleOwner(), this::onBitmapsChanged);
+        model.getImagesLiveData().observe(getViewLifecycleOwner(), this::onBitmapsChanged);
     }
 
     // OnBitmapsChange:

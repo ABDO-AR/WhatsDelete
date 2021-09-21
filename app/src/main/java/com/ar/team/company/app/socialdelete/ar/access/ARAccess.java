@@ -2,6 +2,7 @@ package com.ar.team.company.app.socialdelete.ar.access;
 
 import android.content.Context;
 import android.os.Build;
+import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
@@ -28,6 +29,8 @@ public class ARAccess {
     public static final String VIDEOS_DIR = ROOT_DIR + " Videos";
     public static final String VOICES_DIR = ROOT_DIR + " Voices";
     public static final String DOCUMENTS_DIR = ROOT_DIR + " Document";
+    // Fields(Paths):
+    public static final String WHATSAPP_IMAGES_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/WhatsApp/Media/WhatsApp Images";
     // Fields(Debug):
     private static final String TAG = "ARAccess";
 

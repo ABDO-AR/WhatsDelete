@@ -4,9 +4,15 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.os.FileObserver;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import com.ar.team.company.app.socialdelete.ar.access.ARAccess;
 import com.ar.team.company.app.socialdelete.control.preferences.ARPreferencesManager;
+import com.ar.team.company.app.socialdelete.ui.activity.home.HomeActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -28,6 +34,8 @@ public class ARImagesAccess {
 
     // Method(Static):
     public static List<Bitmap> getImagesWithDirs(Context context) {
+        // Control:
+        HomeActivity.setImagesObserver(false);
         // Initializing:
         ARPreferencesManager manager = new ARPreferencesManager(context, ARPreferencesManager.MODE_FILES);
         File imagesDir = ARAccess.getAppDir(context, ARAccess.IMAGES_DIR);
@@ -59,18 +67,30 @@ public class ARImagesAccess {
                 }
             }
         } else {
+            // Initializing:
+            int tempIndex = 0;
             // Looping:
             for (File file : whatsAppImagesFiles) {
                 // NotifyManager:
-                manager.setStringPreferences(ARPreferencesManager.IMAGE_COPIED_FILES, file.getName() + ",");
-                // Start copy operation:
-                ARAccess.copy(file, new File(imagesDir.getAbsolutePath() + "/" + file.getName()));
+                manager.setStringPreferences(ARPreferencesManager.IMAGE_COPIED_FILES, manager.getStringPreferences(ARPreferencesManager.IMAGE_COPIED_FILES) + file.getName() + ",");
+                // Getting first 3 images:
+                if (tempIndex < 3) {
+                    // Start copy operation:
+                    ARAccess.copy(file, new File(imagesDir.getAbsolutePath() + "/" + file.getName()));
+                }
+                // Increment:
+                tempIndex++;
+            }
+            // Getting:
+            for (File copiedFile : Objects.requireNonNull(imagesDir.listFiles())) {
                 // Adding:
-                bitmaps.add(ARBitmapHelper.decodeBitmapFromFile(file.getAbsolutePath(), 120, 120));
+                bitmaps.add(ARBitmapHelper.decodeBitmapFromFile(copiedFile.getAbsolutePath(), 120, 120));
             }
         }
         // AddStaticFiles:
         staticFiles = Arrays.asList(Objects.requireNonNull(imagesDir.listFiles()));
+        // ReRunObserver:
+        HomeActivity.setImagesObserver(true);
         // Retuning:
         return bitmaps;
     }
