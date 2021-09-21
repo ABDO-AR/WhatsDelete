@@ -3,19 +3,12 @@ package com.ar.team.company.app.socialdelete.ar.images;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Environment;
-import android.os.FileUtils;
-import android.widget.Toast;
 
 import com.ar.team.company.app.socialdelete.ar.access.ARAccess;
+import com.ar.team.company.app.socialdelete.control.preferences.ARPreferencesManager;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -36,15 +29,50 @@ public class ARImagesAccess {
     // Method(Static):
     public static List<Bitmap> getImagesWithDirs(Context context) {
         // Initializing:
-        File dir = ARAccess.createAccessDir(context, ARAccess.ROOT_DIR);
-        List<File> files = Arrays.asList(getImagesFiles());
-        try {
-            ARAccess.copy(files.get(1),new File(dir + "/dds.jpg"));
-        } catch (IOException e) {
-            e.printStackTrace();
+        ARPreferencesManager manager = new ARPreferencesManager(context, ARPreferencesManager.MODE_FILES);
+        File imagesDir = ARAccess.getAppDir(context, ARAccess.IMAGES_DIR);
+        File[] whatsAppImagesFiles = getImagesFiles();
+        List<Bitmap> bitmaps = new ArrayList<>();
+        // Initializing(State):
+        boolean state1 = Objects.requireNonNull(imagesDir.listFiles()).length != 0;
+        // Looping:
+        if (state1) {
+            // Checking(Fields):
+            String whatsapp = manager.getStringPreferences(ARPreferencesManager.IMAGE_COPIED_FILES);
+            StringBuilder copied = new StringBuilder();
+            // If it reached to here that's mean that there are already copied images.
+            // Now we will start a simple for loop and checking each file by name:
+            for (File copiedFile : Objects.requireNonNull(imagesDir.listFiles())) {
+                // Getting all files name:
+                copied.append(copiedFile.getName()).append(",");
+                // Adding:
+                bitmaps.add(ARBitmapHelper.decodeBitmapFromFile(copiedFile.getAbsolutePath(), 120, 120));
+            }
+            // We will start checking if file contains this new file or not:
+            for (File file : whatsAppImagesFiles) {
+                // Checking:
+                if (!whatsapp.contains(file.getName()) && !copied.toString().contains(file.getName())) {
+                    // NotifyManager:
+                    manager.setStringPreferences(ARPreferencesManager.IMAGE_COPIED_FILES, whatsapp + file.getName() + ",");
+                    // Here we will start copy operation because that was new file:
+                    ARAccess.copy(file, new File(imagesDir.getAbsolutePath() + "/" + file.getName()));
+                }
+            }
+        } else {
+            // Looping:
+            for (File file : whatsAppImagesFiles) {
+                // NotifyManager:
+                manager.setStringPreferences(ARPreferencesManager.IMAGE_COPIED_FILES, file.getName() + ",");
+                // Start copy operation:
+                ARAccess.copy(file, new File(imagesDir.getAbsolutePath() + "/" + file.getName()));
+                // Adding:
+                bitmaps.add(ARBitmapHelper.decodeBitmapFromFile(file.getAbsolutePath(), 120, 120));
+            }
         }
-        // Developing:
-        return null;
+        // AddStaticFiles:
+        staticFiles = Arrays.asList(Objects.requireNonNull(imagesDir.listFiles()));
+        // Retuning:
+        return bitmaps;
     }
 
     private static File[] getImagesFiles() {
@@ -70,6 +98,7 @@ public class ARImagesAccess {
     }
 
     // Method(Images):
+    @Deprecated
     private File[] getWhatsappImagesDirectory() {
         // Initializing(Paths):
         String externalStorageDirectory = Environment.getExternalStorageDirectory().getAbsolutePath();
@@ -92,6 +121,7 @@ public class ARImagesAccess {
         }
     }
 
+    @Deprecated
     public List<Bitmap> getWhatsappImagesBitmaps() {
         // Initializing:
         File[] files = getWhatsappImagesDirectory();
@@ -152,6 +182,7 @@ public class ARImagesAccess {
     }
 
     // Methods(Checking):
+    @Deprecated
     public boolean isImage(String filePath) {
         // Checking:
         return filePath.endsWith(".jpg") || filePath.endsWith(".png");

@@ -52,6 +52,8 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
         binding = ActivityHomeBinding.inflate(getLayoutInflater()); // INFLATE THE LAYOUT.
         View view = binding.getRoot(); // GET ROOT [BY DEF(CONSTRAINT LAYOUT)].
         setContentView(view); // SET THE VIEW CONTENT TO THE (VIEW).
+        // Initializing(MAIN-FIELDS):
+        model = new ViewModelProvider(this).get(HomeViewModel.class);
         // StartOurForegroundService:
         ContextCompat.startForegroundService(this, new Intent(this, ARForegroundService.class));
         // Initializing(App):
@@ -62,8 +64,6 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
     private void initApp() {
         // Initializing(UI):
         initUI();
-        // Initializing(MAIN-FIELDS):
-        model = new ViewModelProvider(this).get(HomeViewModel.class);
         // Initializing(MEDIATOR):
         mediator = new TabLayoutMediator(binding.mainContentLayout.homeTabLayout, binding.mainContentLayout.homeViewPager, (tab, position) -> tab.setText(adapter.getHeaders(position)));
         // Initializing(FIELDS):

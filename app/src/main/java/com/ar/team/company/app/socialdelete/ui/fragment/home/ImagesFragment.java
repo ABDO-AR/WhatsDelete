@@ -29,11 +29,7 @@ public class ImagesFragment extends Fragment {
     private FragmentImagesBinding binding;
     private HomeViewModel model; // MainModel for our fragment.
     // Adapter:
-    private ARImagesAccess access;
-    private List<Bitmap> bitmaps=new ArrayList<>();
     private ImagesAdapter adapter;
-    // Thread:
-    private Thread workingThread;
     // TAGS:
     private static final String TAG = "ImagesFragment";
 
@@ -49,28 +45,21 @@ public class ImagesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         // Initializing:
         model = new ViewModelProvider(this).get(HomeViewModel.class);
-        // Working:
-        workingThread = new Thread(this::workingMethod);
-        // StartWorkingThread:
-        workingThread.start();
+        // StartOperations:
+        model.startImageOperation();
+        // Observing:
+        model.getBitmapsLiveData().observe(getViewLifecycleOwner(), this::onBitmapsChanged);
     }
 
-    // WorkingThread:
-    private void workingMethod() {
-        // Initializing:
-        access = new ARImagesAccess(requireContext());
-        // Checking:
-        if (access.getWhatsappImagesBitmaps()!=null)
-        bitmaps = access.getWhatsappImagesBitmaps();
+    // OnBitmapsChange:
+    private void onBitmapsChanged(List<Bitmap> bitmaps) {
         // Initializing:
         adapter = new ImagesAdapter(requireContext(), bitmaps);
-        // Developing:
-        requireActivity().runOnUiThread(() -> {
-            binding.recyclerImageView.setAdapter(adapter);
-            binding.recyclerImageView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
-            // Loading:
-            isLoading(false);
-        });
+        // Preparing(RecyclerView):
+        binding.recyclerImageView.setAdapter(adapter);
+        binding.recyclerImageView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
+        // Loading:
+        isLoading(false);
     }
 
     @SuppressWarnings("SameParameterValue")
@@ -82,7 +71,7 @@ public class ImagesFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        workingThread.interrupt();
+        model.getImagesThread().interrupt();
         super.onDestroy();
     }
 }
