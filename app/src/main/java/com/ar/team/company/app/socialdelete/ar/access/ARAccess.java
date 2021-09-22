@@ -15,7 +15,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @SuppressWarnings("unused")
 public class ARAccess {
@@ -30,7 +29,9 @@ public class ARAccess {
     public static final String VOICES_DIR = ROOT_DIR + " Voices";
     public static final String DOCUMENTS_DIR = ROOT_DIR + " Document";
     // Fields(Paths):
-    public static final String WHATSAPP_IMAGES_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/WhatsApp/Media/WhatsApp Images";
+    public static final String WHATSAPP_IMAGES_PATH = getWhatsappPaths(IMAGES_DIR);
+    public static final String WHATSAPP_VIDEOS_PATH = getWhatsappPaths(VIDEOS_DIR);
+    public static final String WHATSAPP_VOICES_PATH = getWhatsappPaths(VOICES_DIR);
     // Fields(Debug):
     private static final String TAG = "ARAccess";
 
@@ -45,6 +46,40 @@ public class ARAccess {
         }
         // Returning:
         return MAIN_FILE_MAP.get(dir);
+    }
+
+    // Methods(Path):
+    public static String getWhatsappPaths(String dir) {
+        // Initializing:
+        String env = Environment.getExternalStorageDirectory().getAbsolutePath();
+        String returningPath = "";
+        // Preparing
+        switch (dir) {
+            case IMAGES_DIR:
+                returningPath = getPaths("/WhatsApp/Media/WhatsApp Images", "/Android/media/com.whatsapp/WhatsApp/Media/WhatsApp Images");
+                break;
+            case VIDEOS_DIR:
+                returningPath = getPaths("/WhatsApp/Media/WhatsApp Video", "/Android/media/com.whatsapp/WhatsApp/Media/WhatsApp Video");
+                break;
+            case VOICES_DIR:
+                returningPath = getPaths("/WhatsApp/Media/WhatsApp Voice Notes", "/Android/media/com.whatsapp/WhatsApp/Media/WhatsApp Voice Notes");
+                break;
+        }
+        // Retuning:
+        return returningPath;
+    }
+
+    public static String getPaths(String dir, String dir2) {
+        // Initializing(Paths):
+        String externalStorageDirectory = Environment.getExternalStorageDirectory().getAbsolutePath();
+        String finalPath = externalStorageDirectory + dir;
+        // Initializing(Paths2):
+        String finalPath2 = externalStorageDirectory + dir2;
+        // FieldsField:
+        File file = new File(finalPath);
+        // Checking:
+        if (file.exists()) return finalPath;
+        else return finalPath2;
     }
 
     // Methods(Access):

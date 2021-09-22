@@ -47,8 +47,10 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
     private ARPreferencesManager manager;
     // TabMediator:
     private TabLayoutMediator mediator;
-    // Observers:
+    // WhatsAppDirsObservers:
     private static FileObserver imagesObserver;
+    private static FileObserver videosObserver;
+    private static FileObserver voicesObserver;
     // TAGS:
     private static final String TAG = "HomeActivity";
 
@@ -69,7 +71,7 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
 
     // Method(Observers):
     private void initObservers() {
-        // Initializing(Observers):
+        // Initializing(ImagesObserver):
         imagesObserver = new FileObserver(ARAccess.WHATSAPP_IMAGES_PATH) {
             @Override
             public void onEvent(int i, @Nullable String s) {
@@ -84,8 +86,28 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
                 }
             }
         };
+        // Initializing(ImagesObserver):
+        videosObserver = new FileObserver(ARAccess.WHATSAPP_VIDEOS_PATH) {
+            @Override
+            public void onEvent(int i, @Nullable String s) {
+                // Debugging:
+                Log.d(TAG, "onEvent: " + s);
+                // Checking:
+                if (i == FileObserver.CREATE || i == FileObserver.ACCESS){
+                    // Debugging:
+                    Log.d(TAG, "onEventCreate: " + s);
+                    // StartOperations:
+                    model.startVideoOperation();
+                }
+            }
+        };
+        // Debugging:
+        Log.d(TAG, "onEventCreate: " + ARAccess.WHATSAPP_IMAGES_PATH);
+        Log.d(TAG, "onEventCreate: " + ARAccess.WHATSAPP_VIDEOS_PATH);
+        Log.d(TAG, "onEventCreate: " + ARAccess.WHATSAPP_VOICES_PATH);
         // StartObservers:
         imagesObserver.startWatching();
+        videosObserver.startWatching();
     }
 
     // This method for control observer on ARImagesAccess:
@@ -93,6 +115,18 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
         // Checking:
         if (state) imagesObserver.startWatching();
         else imagesObserver.stopWatching();
+    }
+
+    public static void setVideosObserver(boolean state){
+        // Checking:
+        if (state) videosObserver.startWatching();
+        else videosObserver.stopWatching();
+    }
+
+    public static void setVoicesObserver(boolean state){
+        // Checking:
+        if (state) voicesObserver.startWatching();
+        else voicesObserver.stopWatching();
     }
 
     // InitApp:
