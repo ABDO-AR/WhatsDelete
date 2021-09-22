@@ -49,8 +49,7 @@ public class VideosFragment extends Fragment {
         model.getVideosLiveData().observe(getViewLifecycleOwner(), this::onVideosChanged);
     }
 
-
-    // OnBitmapsChange:
+    // OnVideosChange:
     private void onVideosChanged(List<File> videos) {
         // Initializing:
         adapter = new VideosAdapter(requireContext(), videos);

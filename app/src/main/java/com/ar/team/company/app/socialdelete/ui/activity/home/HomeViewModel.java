@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.ar.team.company.app.socialdelete.ar.images.ARImagesAccess;
 import com.ar.team.company.app.socialdelete.ar.videos.ARVideosAccess;
+import com.ar.team.company.app.socialdelete.ar.voices.ARVoicesAccess;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -25,9 +26,13 @@ public class HomeViewModel extends AndroidViewModel {
     // MainFields(Videos):
     private final MutableLiveData<List<File>> videosMutableData = new MutableLiveData<>();
     private final LiveData<List<File>> videosLiveData = videosMutableData;
+    // MainFields(Voices):
+    private final MutableLiveData<List<File>> voicesMutableData = new MutableLiveData<>();
+    private final LiveData<List<File>> voicesLiveData = voicesMutableData;
     // Threads:
     private Thread imagesThread;
     private Thread videosThread;
+    private Thread voicesThread;
     // Constructor:
     public HomeViewModel(@NonNull @NotNull Application application) {
         super(application);
@@ -50,6 +55,12 @@ public class HomeViewModel extends AndroidViewModel {
         videosThread.start();
     }
     // Voices:
+    public void startVoiceOperation(){
+        // Working:
+        voicesThread = new Thread(this::voicesThread);
+        // StartWorkingThread:
+        voicesThread.start();
+    }
     // Documents:
 
     // Method(Thread):
@@ -67,6 +78,13 @@ public class HomeViewModel extends AndroidViewModel {
         videosMutableData.postValue(videos);
     }
 
+    private void voicesThread() {
+        // Initializing:
+        List<File> voices = ARVoicesAccess.getVoicesWithDirs(getApplication().getApplicationContext());
+        // Developing:
+        voicesMutableData.postValue(voices);
+    }
+
     // Getters(&Setters):
     public MutableLiveData<List<File>> getVideosMutableData() {
         return videosMutableData;
@@ -82,6 +100,18 @@ public class HomeViewModel extends AndroidViewModel {
 
     public LiveData<List<Bitmap>> getImagesLiveData() {
         return imagesLiveData;
+    }
+
+    public MutableLiveData<List<File>> getVoicesMutableData() {
+        return voicesMutableData;
+    }
+
+    public LiveData<List<File>> getVoicesLiveData() {
+        return voicesLiveData;
+    }
+
+    public Thread getVoicesThread() {
+        return voicesThread;
     }
 
     public Thread getVideosThread() {

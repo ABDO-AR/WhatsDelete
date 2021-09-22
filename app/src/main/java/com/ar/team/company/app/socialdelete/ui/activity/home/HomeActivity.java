@@ -51,6 +51,8 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
     private static FileObserver imagesObserver;
     private static FileObserver videosObserver;
     private static FileObserver voicesObserver;
+    // TempData:
+    private static int tempVoices = 0;
     // TAGS:
     private static final String TAG = "HomeActivity";
 
@@ -78,7 +80,7 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
                 // Debugging:
                 Log.d(TAG, "onEvent: " + s);
                 // Checking:
-                if (i == FileObserver.CREATE || i == FileObserver.ACCESS){
+                if (i == FileObserver.CREATE || i == FileObserver.ACCESS) {
                     // Debugging:
                     Log.d(TAG, "onEventCreate: " + s);
                     // StartOperations:
@@ -86,18 +88,35 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
                 }
             }
         };
-        // Initializing(ImagesObserver):
+        // Initializing(VideosObserver):
         videosObserver = new FileObserver(ARAccess.WHATSAPP_VIDEOS_PATH) {
             @Override
             public void onEvent(int i, @Nullable String s) {
                 // Debugging:
                 Log.d(TAG, "onEvent: " + s);
                 // Checking:
-                if (i == FileObserver.CREATE || i == FileObserver.ACCESS){
+                if (i == FileObserver.CREATE || i == FileObserver.ACCESS) {
                     // Debugging:
                     Log.d(TAG, "onEventCreate: " + s);
                     // StartOperations:
                     model.startVideoOperation();
+                }
+            }
+        };
+        // Initializing(VoicesObserver):
+        voicesObserver = new FileObserver(ARAccess.WHATSAPP_VOICES_PATH) {
+            @Override
+            public void onEvent(int i, @Nullable String s) {
+                // Debugging:
+                Log.d(TAG, "onEvent: " + s);
+                // Checking:
+                if (tempVoices == 0) {
+                    // Debugging:
+                    Log.d(TAG, "onEventCreate: " + s);
+                    // StartOperations:
+                    model.startVoiceOperation();
+                    // Increment:
+                    tempVoices++;
                 }
             }
         };
@@ -108,25 +127,32 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
         // StartObservers:
         imagesObserver.startWatching();
         videosObserver.startWatching();
+        voicesObserver.startWatching();
     }
 
     // This method for control observer on ARImagesAccess:
-    public static void setImagesObserver(boolean state){
+    public static void setImagesObserver(boolean state) {
         // Checking:
         if (state) imagesObserver.startWatching();
         else imagesObserver.stopWatching();
     }
 
-    public static void setVideosObserver(boolean state){
+    public static void setVideosObserver(boolean state) {
         // Checking:
         if (state) videosObserver.startWatching();
         else videosObserver.stopWatching();
     }
 
-    public static void setVoicesObserver(boolean state){
+    public static void setVoicesObserver(boolean state) {
         // Checking:
         if (state) voicesObserver.startWatching();
         else voicesObserver.stopWatching();
+    }
+
+    // Methods(Reset):
+    public static void resetTempVoices() {
+        // Resting:
+        tempVoices = 0;
     }
 
     // InitApp:
