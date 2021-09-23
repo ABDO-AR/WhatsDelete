@@ -9,7 +9,6 @@ import com.ar.team.company.app.socialdelete.ui.activity.home.HomeActivity;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -42,15 +41,18 @@ public class ARVideosAccess {
             // If it reached to here that's mean that there are already copied images.
             // Now we will start a simple for loop and checking each file by name:
             for (File copiedFile : Objects.requireNonNull(videosDir.listFiles())) {
-                // Getting all files name:
-                copied.append(copiedFile.getName()).append(",");
-                // Adding:
-                returningFiles.add(copiedFile);
+                // Checking:
+                if (!copiedFile.isDirectory()){
+                    // Getting all files name:
+                    copied.append(copiedFile.getName()).append(",");
+                    // Adding:
+                    returningFiles.add(copiedFile);
+                }
             }
             // We will start checking if file contains this new file or not:
             for (File file : whatsAppVideosFiles) {
                 // Checking:
-                if (!whatsapp.contains(file.getName()) && !copied.toString().contains(file.getName())) {
+                if (!whatsapp.contains(file.getName()) && !copied.toString().contains(file.getName()) && !file.isDirectory()) {
                     // NotifyManager:
                     manager.setStringPreferences(ARPreferencesManager.VIDEO_COPIED_FILES, whatsapp + file.getName() + ",");
                     // Here we will start copy operation because that was new file:
@@ -65,15 +67,13 @@ public class ARVideosAccess {
                 // NotifyManager:
                 manager.setStringPreferences(ARPreferencesManager.VIDEO_COPIED_FILES, manager.getStringPreferences(ARPreferencesManager.VIDEO_COPIED_FILES) + file.getName() + ",");
                 // Getting first 3 images:
-                if (tempIndex < 3) {
-                    // Start copy operation:
-                    ARAccess.copy(file, new File(videosDir.getAbsolutePath() + "/" + file.getName()));
+                if (tempIndex <= 1) {
+                    // Start creating temp dir:
+                    ARAccess.createTempDirAt(context, ARAccess.VIDEOS_DIR);
                 }
                 // Increment:
                 tempIndex++;
             }
-            // Adding:
-            returningFiles.addAll(Arrays.asList(Objects.requireNonNull(videosDir.listFiles())));
         }
         // ReRunObserver:
         HomeActivity.setVideosObserver(true);
@@ -98,32 +98,7 @@ public class ARVideosAccess {
         return files;
     }
 
-    // Method(Images):
-    @Deprecated
-    public List<File> getWhatsappVideosDirectory() {
-        // Initializing(Paths):
-        String externalStorageDirectory = Environment.getExternalStorageDirectory().getAbsolutePath();
-        String whatsappImagesPath = "/WhatsApp/Media/WhatsApp Video";
-        String finalPath = externalStorageDirectory + whatsappImagesPath;
-        // Initializing(Paths2):
-        String whatsappImagesPath2 = "/Android/media/com.whatsapp/WhatsApp/Media/WhatsApp Video";
-        String finalPath2 = externalStorageDirectory + whatsappImagesPath2;
-        // FieldsField:
-        File[] backupFiles = new File(finalPath2).listFiles(file -> isImage(file.getAbsolutePath()));
-        File[] files = new File(finalPath).listFiles(file -> isImage(file.getAbsolutePath()));
-        // Checking:
-        if (files == null || files.length <= 0) files = backupFiles;
-        // Returning:
-        return Arrays.asList(Objects.requireNonNull(files));
-    }
-
     // Methods(Checking):
-    @Deprecated
-    public boolean isImage(String filePath) {
-        // Checking:
-        return filePath.endsWith(".mp4");
-    }
-
     public static boolean isVideos(String filePath) {
         // Checking:
         return filePath.endsWith(".mp4");

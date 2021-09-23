@@ -70,7 +70,11 @@ public class VoiceFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        model.getVoicesThread().interrupt();
+        // Initializing:
+        boolean voicesState = model.getVoicesThread() != null;
+        // Checking(&Interrupting):
+        if (voicesState) model.getVoicesThread().interrupt();
+        // Super:
         super.onDestroy();
     }
 }

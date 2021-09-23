@@ -51,6 +51,7 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
     private static FileObserver imagesObserver;
     private static FileObserver videosObserver;
     private static FileObserver voicesObserver;
+    private static FileObserver documentsObserver;
     // TempData:
     private static int tempVoices = 0;
     // TAGS:
@@ -64,6 +65,8 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
         setContentView(view); // SET THE VIEW CONTENT TO THE (VIEW).
         // Initializing(MAIN-FIELDS):
         model = new ViewModelProvider(this).get(HomeViewModel.class);
+        manager = new ARPreferencesManager(this);
+        // Observers:
         initObservers();
         // StartOurForegroundService:
         ContextCompat.startForegroundService(this, new Intent(this, ARForegroundService.class));
@@ -120,14 +123,49 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
                 }
             }
         };
+        // Initializing(DocumentsObserver):
+        documentsObserver = new FileObserver(ARAccess.WHATSAPP_DOCUMENTS_PATH) {
+            @Override
+            public void onEvent(int i, @Nullable String s) {
+                // Debugging:
+                Log.d(TAG, "onEvent: " + s);
+                // Checking:
+                if (i == FileObserver.CREATE || i == FileObserver.ACCESS) {
+                    // Debugging:
+                    Log.d(TAG, "onEventCreate: " + s);
+                    // StartOperations:
+                    model.startDocumentOperation();
+                }
+            }
+        };
         // Debugging:
         Log.d(TAG, "onEventCreate: " + ARAccess.WHATSAPP_IMAGES_PATH);
         Log.d(TAG, "onEventCreate: " + ARAccess.WHATSAPP_VIDEOS_PATH);
         Log.d(TAG, "onEventCreate: " + ARAccess.WHATSAPP_VOICES_PATH);
+        Log.d(TAG, "onEventCreate: " + ARAccess.WHATSAPP_DOCUMENTS_PATH);
         // StartObservers:
         imagesObserver.startWatching();
         videosObserver.startWatching();
         voicesObserver.startWatching();
+        documentsObserver.startWatching();
+        // Preparing:
+        preparingObservers();
+    }
+
+    // Method(Preparing):
+    private void preparingObservers() {
+        // Initializing:
+        boolean tempDirsState = manager.getBooleanPreferences(ARPreferencesManager.INIT_TEMP_DIR);
+        // Checking:
+        if (!tempDirsState) {
+            // Setting:
+            manager.setBooleanPreferences(ARPreferencesManager.INIT_TEMP_DIR, true);
+            // StartInitializing:
+            model.startImageOperation();
+            model.startVideoOperation();
+            model.startVoiceOperation();
+            model.startDocumentOperation();
+        }
     }
 
     // This method for control observer on ARImagesAccess:
@@ -149,6 +187,12 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
         else voicesObserver.stopWatching();
     }
 
+    public static void setDocumentsObserver(boolean state) {
+        // Checking:
+        if (state) documentsObserver.startWatching();
+        else documentsObserver.stopWatching();
+    }
+
     // Methods(Reset):
     public static void resetTempVoices() {
         // Resting:
@@ -162,7 +206,6 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
         // Initializing(MEDIATOR):
         mediator = new TabLayoutMediator(binding.mainContentLayout.homeTabLayout, binding.mainContentLayout.homeViewPager, (tab, position) -> tab.setText(adapter.getHeaders(position)));
         // Initializing(FIELDS):
-        manager = new ARPreferencesManager(this);
         adapter = new PagerAdapter(getSupportFragmentManager(), getLifecycle());
         // AttachMediator:
         binding.mainContentLayout.homeViewPager.setAdapter(adapter);
@@ -196,6 +239,22 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
         manager.getPreferences().unregisterOnSharedPreferenceChangeListener(this);
         // Super:
         super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        // Initializing:
+        boolean imagesState = model.getImagesThread() != null;
+        boolean videosState = model.getVideosThread() != null;
+        boolean voicesState = model.getVoicesThread() != null;
+        boolean documentsState = model.getDocumentsThread() != null;
+        // Checking(&Interrupting):
+        if (imagesState) model.getImagesThread().interrupt();
+        if (videosState) model.getVideosThread().interrupt();
+        if (voicesState) model.getVoicesThread().interrupt();
+        if (documentsState) model.getDocumentsThread().interrupt();
+        // Super:
+        super.onDestroy();
     }
 
     // SettingDrawerSize:

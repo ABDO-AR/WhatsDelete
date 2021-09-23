@@ -69,7 +69,11 @@ public class VideosFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        model.getVideosThread().interrupt();
+        // Initializing:
+        boolean videosState = model.getVideosThread() != null;
+        // Checking(&Interrupting):
+        if (videosState) model.getVideosThread().interrupt();
+        // Super:
         super.onDestroy();
     }
 }

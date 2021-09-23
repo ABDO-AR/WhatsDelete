@@ -5,55 +5,76 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 
-import com.ar.team.company.app.socialdelete.R;
+import com.ar.team.company.app.socialdelete.control.adapter.DocumentsAdapter;
+import com.ar.team.company.app.socialdelete.databinding.FragmentDocumentBinding;
+import com.ar.team.company.app.socialdelete.model.Document;
+import com.ar.team.company.app.socialdelete.ui.activity.home.HomeViewModel;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link DocumentFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
+@SuppressWarnings("FieldCanBeLocal")
 public class DocumentFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    // This for control the Fragment-Layout views:
+    private FragmentDocumentBinding binding;
+    private HomeViewModel model; // MainModel for our fragment.
+    // Adapter:
+    private DocumentsAdapter adapter;
+    // TAGS:
+    @SuppressWarnings("unused")
+    private static final String TAG = "DocumentFragment";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public DocumentFragment() {
-        // Required empty public constructor
-    }
-
-
-
-    // TODO: Rename and change types and number of parameters
-    public static DocumentFragment newInstance(String param1, String param2) {
-        DocumentFragment fragment = new DocumentFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflate the fragment layout:
+        binding = FragmentDocumentBinding.inflate(inflater, container, false);
+        return binding.getRoot(); // Get the fragment layout root.
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public void onViewCreated(@NotNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        // Initializing:
+        model = new ViewModelProvider(this).get(HomeViewModel.class);
+        // StartOperations:
+        model.startDocumentOperation();
+        // Observing:
+        model.getDocumentsLiveData().observe(getViewLifecycleOwner(), this::onDocumentsChanged);
+    }
+
+    // OnDocumentsChange:
+    private void onDocumentsChanged(List<Document> documents) {
+        // Initializing:
+        adapter = new DocumentsAdapter(requireContext(), documents);
+        // Preparing(RecyclerView):
+        binding.recyclerDocumentsView.setAdapter(adapter);
+        binding.recyclerDocumentsView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
+        // Loading:
+        isLoading(false);
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private void isLoading(boolean loading) {
+        // Developing:
+        binding.progress.setVisibility(loading ? View.VISIBLE : View.GONE);
+        binding.recyclerDocumentsView.setVisibility(loading ? View.GONE : View.VISIBLE);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_document, container, false);
+    public void onDestroy() {
+        // Initializing:
+        boolean documentsState = model.getDocumentsThread() != null;
+        // Checking(&Interrupting):
+        if (documentsState) model.getDocumentsThread().interrupt();
+        // Super:
+        super.onDestroy();
     }
 }

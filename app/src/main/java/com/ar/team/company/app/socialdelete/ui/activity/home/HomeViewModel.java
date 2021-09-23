@@ -8,9 +8,11 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.ar.team.company.app.socialdelete.ar.documents.ARDocumentsAccess;
 import com.ar.team.company.app.socialdelete.ar.images.ARImagesAccess;
 import com.ar.team.company.app.socialdelete.ar.videos.ARVideosAccess;
 import com.ar.team.company.app.socialdelete.ar.voices.ARVoicesAccess;
+import com.ar.team.company.app.socialdelete.model.Document;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -29,39 +31,51 @@ public class HomeViewModel extends AndroidViewModel {
     // MainFields(Voices):
     private final MutableLiveData<List<File>> voicesMutableData = new MutableLiveData<>();
     private final LiveData<List<File>> voicesLiveData = voicesMutableData;
+    // MainFields(Documents):
+    private final MutableLiveData<List<Document>> documentsMutableData = new MutableLiveData<>();
+    private final LiveData<List<Document>> documentsLiveData = documentsMutableData;
     // Threads:
     private Thread imagesThread;
     private Thread videosThread;
     private Thread voicesThread;
+    private Thread documentsThread;
+
     // Constructor:
     public HomeViewModel(@NonNull @NotNull Application application) {
         super(application);
     }
 
-    // Chats:
-    // Status:
     // Images:
-    public void startImageOperation(){
+    public void startImageOperation() {
         // Working:
         imagesThread = new Thread(this::imagesThread);
         // StartWorkingThread:
         imagesThread.start();
     }
+
     // Videos:
-    public void startVideoOperation(){
+    public void startVideoOperation() {
         // Working:
         videosThread = new Thread(this::videosThread);
         // StartWorkingThread:
         videosThread.start();
     }
+
     // Voices:
-    public void startVoiceOperation(){
+    public void startVoiceOperation() {
         // Working:
         voicesThread = new Thread(this::voicesThread);
         // StartWorkingThread:
         voicesThread.start();
     }
+
     // Documents:
+    public void startDocumentOperation() {
+        // Working:
+        documentsThread = new Thread(this::documentsThread);
+        // StartWorkingThread:
+        documentsThread.start();
+    }
 
     // Method(Thread):
     private void imagesThread() {
@@ -83,6 +97,13 @@ public class HomeViewModel extends AndroidViewModel {
         List<File> voices = ARVoicesAccess.getVoicesWithDirs(getApplication().getApplicationContext());
         // Developing:
         voicesMutableData.postValue(voices);
+    }
+
+    private void documentsThread() {
+        // Initializing:
+        List<Document> documents = ARDocumentsAccess.getDocumentsWithDirs(getApplication().getApplicationContext());
+        // Developing:
+        documentsMutableData.postValue(documents);
     }
 
     // Getters(&Setters):
@@ -108,6 +129,18 @@ public class HomeViewModel extends AndroidViewModel {
 
     public LiveData<List<File>> getVoicesLiveData() {
         return voicesLiveData;
+    }
+
+    public MutableLiveData<List<Document>> getDocumentsMutableData() {
+        return documentsMutableData;
+    }
+
+    public LiveData<List<Document>> getDocumentsLiveData() {
+        return documentsLiveData;
+    }
+
+    public Thread getDocumentsThread() {
+        return documentsThread;
     }
 
     public Thread getVoicesThread() {

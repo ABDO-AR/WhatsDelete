@@ -32,6 +32,9 @@ public class ARAccess {
     public static final String WHATSAPP_IMAGES_PATH = getWhatsappPaths(IMAGES_DIR);
     public static final String WHATSAPP_VIDEOS_PATH = getWhatsappPaths(VIDEOS_DIR);
     public static final String WHATSAPP_VOICES_PATH = getWhatsappPaths(VOICES_DIR);
+    public static final String WHATSAPP_DOCUMENTS_PATH = getWhatsappPaths(DOCUMENTS_DIR);
+    // Fields(Temp):
+    public static final String TEMP_DIR = "SD--TEMP--DIR";
     // Fields(Debug):
     private static final String TAG = "ARAccess";
 
@@ -63,6 +66,9 @@ public class ARAccess {
                 break;
             case VOICES_DIR:
                 returningPath = getPaths("/WhatsApp/Media/WhatsApp Voice Notes", "/Android/media/com.whatsapp/WhatsApp/Media/WhatsApp Voice Notes");
+                break;
+            case DOCUMENTS_DIR:
+                returningPath = getPaths("/WhatsApp/Media/WhatsApp Documents", "/Android/media/com.whatsapp/WhatsApp/Media/WhatsApp Documents");
                 break;
         }
         // Retuning:
@@ -136,6 +142,29 @@ public class ARAccess {
         }
         // Retuning:
         return fileMap;
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public static void createTempDirAt(Context context, String dir) {
+        // Initializing:
+        File tempDir = new File(context.getExternalFilesDir(null), ROOT_DIR + "/" + dir + "/" + TEMP_DIR);
+        // Checking:
+        if (!tempDir.exists()) {
+            // Checking:
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                // Trying:
+                try {
+                    // Creating:
+                    Files.createDirectory(Paths.get(tempDir.getAbsolutePath()));
+                } catch (IOException e) {
+                    // Debugging:
+                    Log.d(TAG, "createAccessDir: " + e.toString());
+                }
+            } else tempDir.mkdir();
+        } else {
+            // It's already exits:
+            Log.d(TAG, "createTempDirAt: temp dir is already exits at :: " + tempDir.getAbsolutePath());
+        }
     }
 
     public static void copy(File src, File dst) {
