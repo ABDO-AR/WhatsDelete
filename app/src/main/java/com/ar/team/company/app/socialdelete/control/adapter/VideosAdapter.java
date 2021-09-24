@@ -71,7 +71,6 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideosView
 
     // Holder:
     static class VideosViewHolder extends RecyclerView.ViewHolder {
-
         // Fields:
         private final VideoItemViewBinding binding;
 

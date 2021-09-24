@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.ar.team.company.app.socialdelete.ar.documents.ARDocumentsAccess;
 import com.ar.team.company.app.socialdelete.ar.images.ARImagesAccess;
+import com.ar.team.company.app.socialdelete.ar.status.ARStatusAccess;
 import com.ar.team.company.app.socialdelete.ar.videos.ARVideosAccess;
 import com.ar.team.company.app.socialdelete.ar.voices.ARVoicesAccess;
 import com.ar.team.company.app.socialdelete.model.Document;
@@ -31,6 +32,9 @@ public class HomeViewModel extends AndroidViewModel {
     // MainFields(Voices):
     private final MutableLiveData<List<File>> voicesMutableData = new MutableLiveData<>();
     private final LiveData<List<File>> voicesLiveData = voicesMutableData;
+    // MainFields(Status):
+    private final MutableLiveData<List<File>> statusMutableData = new MutableLiveData<>();
+    private final LiveData<List<File>> statusLiveData = statusMutableData;
     // MainFields(Documents):
     private final MutableLiveData<List<Document>> documentsMutableData = new MutableLiveData<>();
     private final LiveData<List<Document>> documentsLiveData = documentsMutableData;
@@ -38,6 +42,7 @@ public class HomeViewModel extends AndroidViewModel {
     private Thread imagesThread;
     private Thread videosThread;
     private Thread voicesThread;
+    private Thread statusThread;
     private Thread documentsThread;
 
     // Constructor:
@@ -69,6 +74,14 @@ public class HomeViewModel extends AndroidViewModel {
         voicesThread.start();
     }
 
+    // Status:
+    public void startStatusOperation() {
+        // Working:
+        statusThread = new Thread(this::statusThread);
+        // StartWorkingThread:
+        statusThread.start();
+    }
+
     // Documents:
     public void startDocumentOperation() {
         // Working:
@@ -97,6 +110,13 @@ public class HomeViewModel extends AndroidViewModel {
         List<File> voices = ARVoicesAccess.getVoicesWithDirs(getApplication().getApplicationContext());
         // Developing:
         voicesMutableData.postValue(voices);
+    }
+
+    private void statusThread() {
+        // Initializing:
+        List<File> statuses = ARStatusAccess.getStatusWithDirs(getApplication().getApplicationContext());
+        // Developing:
+        statusMutableData.postValue(statuses);
     }
 
     private void documentsThread() {
@@ -137,6 +157,18 @@ public class HomeViewModel extends AndroidViewModel {
 
     public LiveData<List<Document>> getDocumentsLiveData() {
         return documentsLiveData;
+    }
+
+    public MutableLiveData<List<File>> getStatusMutableData() {
+        return statusMutableData;
+    }
+
+    public LiveData<List<File>> getStatusLiveData() {
+        return statusLiveData;
+    }
+
+    public Thread getStatusThread() {
+        return statusThread;
     }
 
     public Thread getDocumentsThread() {

@@ -49,7 +49,7 @@ public class ARDocumentsAccess {
                 // Checking:
                 if (!copiedFile.isDirectory()) {
                     // Initializing:
-                    String fileSize = ((copiedFile.length() / 1024) / 1024) + " MB";
+                    String fileSize = getFileSize(copiedFile);
                     // Getting all files name:
                     copied.append(copiedFile.getName()).append(",");
                     // Adding:
@@ -104,6 +104,17 @@ public class ARDocumentsAccess {
         HomeActivity.setDocumentsObserver(true);
         // Retuning:
         return documents;
+    }
+
+    public static String getFileSize(File file) {
+        // Initializing:
+        String fileSize;
+        long kb = (file.length() / 1024);
+        // Checking:
+        if (kb > 1000) fileSize = (kb / 1024) + " MB";
+        else fileSize = kb + " KB";
+        // Returning:
+        return fileSize;
     }
 
     public static File[] getDocumentsFiles() {

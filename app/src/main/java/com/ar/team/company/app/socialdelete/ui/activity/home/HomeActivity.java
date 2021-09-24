@@ -1,6 +1,5 @@
 package com.ar.team.company.app.socialdelete.ui.activity.home;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
@@ -20,6 +19,7 @@ import android.widget.Toast;
 
 import com.ar.team.company.app.socialdelete.R;
 import com.ar.team.company.app.socialdelete.ar.access.ARAccess;
+import com.ar.team.company.app.socialdelete.ar.observer.ARFilesObserver;
 import com.ar.team.company.app.socialdelete.control.adapter.HomeItemsAdapter;
 import com.ar.team.company.app.socialdelete.control.adapter.PagerAdapter;
 import com.ar.team.company.app.socialdelete.control.foreground.ARForegroundService;
@@ -51,9 +51,10 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
     private static FileObserver imagesObserver;
     private static FileObserver videosObserver;
     private static FileObserver voicesObserver;
+    private static FileObserver statusObserver;
     private static FileObserver documentsObserver;
     // TempData:
-    private static int tempVoices = 0;
+    private Thread tempThread;
     // TAGS:
     private static final String TAG = "HomeActivity";
 
@@ -77,79 +78,31 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
     // Method(Observers):
     private void initObservers() {
         // Initializing(ImagesObserver):
-        imagesObserver = new FileObserver(ARAccess.WHATSAPP_IMAGES_PATH) {
-            @Override
-            public void onEvent(int i, @Nullable String s) {
-                // Debugging:
-                Log.d(TAG, "onEvent: " + s);
-                // Checking:
-                if (i == FileObserver.CREATE || i == FileObserver.ACCESS) {
-                    // Debugging:
-                    Log.d(TAG, "onEventCreate: " + s);
-                    // StartOperations:
-                    model.startImageOperation();
-                }
-            }
-        };
+        imagesObserver = new ARFilesObserver(ARAccess.WHATSAPP_IMAGES_PATH, model);
         // Initializing(VideosObserver):
-        videosObserver = new FileObserver(ARAccess.WHATSAPP_VIDEOS_PATH) {
-            @Override
-            public void onEvent(int i, @Nullable String s) {
-                // Debugging:
-                Log.d(TAG, "onEvent: " + s);
-                // Checking:
-                if (i == FileObserver.CREATE || i == FileObserver.ACCESS) {
-                    // Debugging:
-                    Log.d(TAG, "onEventCreate: " + s);
-                    // StartOperations:
-                    model.startVideoOperation();
-                }
-            }
-        };
+        videosObserver = new ARFilesObserver(ARAccess.WHATSAPP_VIDEOS_PATH, model);
         // Initializing(VoicesObserver):
-        voicesObserver = new FileObserver(ARAccess.WHATSAPP_VOICES_PATH) {
-            @Override
-            public void onEvent(int i, @Nullable String s) {
-                // Debugging:
-                Log.d(TAG, "onEvent: " + s);
-                // Checking:
-                if (tempVoices == 0) {
-                    // Debugging:
-                    Log.d(TAG, "onEventCreate: " + s);
-                    // StartOperations:
-                    model.startVoiceOperation();
-                    // Increment:
-                    tempVoices++;
-                }
-            }
-        };
+        voicesObserver = new ARFilesObserver(ARAccess.WHATSAPP_VOICES_PATH, model);
+        // Initializing(StatusObserver):
+        statusObserver = new ARFilesObserver(ARAccess.WHATSAPP_STATUS_PATH, model);
         // Initializing(DocumentsObserver):
-        documentsObserver = new FileObserver(ARAccess.WHATSAPP_DOCUMENTS_PATH) {
-            @Override
-            public void onEvent(int i, @Nullable String s) {
-                // Debugging:
-                Log.d(TAG, "onEvent: " + s);
-                // Checking:
-                if (i == FileObserver.CREATE || i == FileObserver.ACCESS) {
-                    // Debugging:
-                    Log.d(TAG, "onEventCreate: " + s);
-                    // StartOperations:
-                    model.startDocumentOperation();
-                }
-            }
-        };
+        documentsObserver = new ARFilesObserver(ARAccess.WHATSAPP_DOCUMENTS_PATH, model);
         // Debugging:
         Log.d(TAG, "onEventCreate: " + ARAccess.WHATSAPP_IMAGES_PATH);
         Log.d(TAG, "onEventCreate: " + ARAccess.WHATSAPP_VIDEOS_PATH);
         Log.d(TAG, "onEventCreate: " + ARAccess.WHATSAPP_VOICES_PATH);
+        Log.d(TAG, "onEventCreate: " + ARAccess.WHATSAPP_STATUS_PATH);
         Log.d(TAG, "onEventCreate: " + ARAccess.WHATSAPP_DOCUMENTS_PATH);
         // StartObservers:
         imagesObserver.startWatching();
         videosObserver.startWatching();
         voicesObserver.startWatching();
+        statusObserver.startWatching();
         documentsObserver.startWatching();
         // Preparing:
-        preparingObservers();
+        tempThread = new Thread(this::preparingObservers);
+        // Start:
+        tempThread.start();
     }
 
     // Method(Preparing):
@@ -164,8 +117,11 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
             model.startImageOperation();
             model.startVideoOperation();
             model.startVoiceOperation();
+            model.startStatusOperation();
             model.startDocumentOperation();
         }
+        // Finishing:
+        tempThread.interrupt();
     }
 
     // This method for control observer on ARImagesAccess:
@@ -173,6 +129,12 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
         // Checking:
         if (state) imagesObserver.startWatching();
         else imagesObserver.stopWatching();
+    }
+
+    public static void setStatusObserver(boolean state) {
+        // Checking:
+        if (state) statusObserver.startWatching();
+        else statusObserver.stopWatching();
     }
 
     public static void setVideosObserver(boolean state) {
@@ -191,12 +153,6 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
         // Checking:
         if (state) documentsObserver.startWatching();
         else documentsObserver.stopWatching();
-    }
-
-    // Methods(Reset):
-    public static void resetTempVoices() {
-        // Resting:
-        tempVoices = 0;
     }
 
     // InitApp:
@@ -247,11 +203,13 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
         boolean imagesState = model.getImagesThread() != null;
         boolean videosState = model.getVideosThread() != null;
         boolean voicesState = model.getVoicesThread() != null;
+        boolean statusState = model.getStatusThread() != null;
         boolean documentsState = model.getDocumentsThread() != null;
         // Checking(&Interrupting):
         if (imagesState) model.getImagesThread().interrupt();
         if (videosState) model.getVideosThread().interrupt();
         if (voicesState) model.getVoicesThread().interrupt();
+        if (statusState) model.getStatusThread().interrupt();
         if (documentsState) model.getDocumentsThread().interrupt();
         // Super:
         super.onDestroy();

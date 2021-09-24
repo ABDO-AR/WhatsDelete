@@ -26,6 +26,7 @@ public class ARPreferencesManager {
     public static final String IMAGE_COPIED_FILES = "ar.Shared.Preferences.Files.Images.Name.Read";
     public static final String VIDEO_COPIED_FILES = "ar.Shared.Preferences.Files.Videos.Name.Read";
     public static final String VOICE_COPIED_FILES = "ar.Shared.Preferences.Files.Voices.Name.Read";
+    public static final String STATUS_COPIED_FILES = "ar.Shared.Preferences.Files.Status.Name.Read";
     public static final String DOCUMENTS_COPIED_FILES = "ar.Shared.Preferences.Files.Documents.Name.Read";
     // Mode:
     public static final int MODE_CHAT = 0;

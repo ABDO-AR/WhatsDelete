@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Environment;
 
 import com.ar.team.company.app.socialdelete.ar.access.ARAccess;
+import com.ar.team.company.app.socialdelete.ar.observer.ARFilesObserver;
 import com.ar.team.company.app.socialdelete.control.preferences.ARPreferencesManager;
 import com.ar.team.company.app.socialdelete.ui.activity.home.HomeActivity;
 
@@ -78,7 +79,7 @@ public class ARVoicesAccess {
             }
         }
         // ReRunObserver:
-        HomeActivity.resetTempVoices();
+        ARFilesObserver.resetTempVoices();
         HomeActivity.setVoicesObserver(true);
         // Retuning:
         return voices;

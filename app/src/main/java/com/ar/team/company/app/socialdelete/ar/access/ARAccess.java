@@ -27,11 +27,13 @@ public class ARAccess {
     public static final String IMAGES_DIR = ROOT_DIR + " Images";
     public static final String VIDEOS_DIR = ROOT_DIR + " Videos";
     public static final String VOICES_DIR = ROOT_DIR + " Voices";
+    public static final String STATUS_DIR = ROOT_DIR + " Status";
     public static final String DOCUMENTS_DIR = ROOT_DIR + " Document";
     // Fields(Paths):
     public static final String WHATSAPP_IMAGES_PATH = getWhatsappPaths(IMAGES_DIR);
     public static final String WHATSAPP_VIDEOS_PATH = getWhatsappPaths(VIDEOS_DIR);
     public static final String WHATSAPP_VOICES_PATH = getWhatsappPaths(VOICES_DIR);
+    public static final String WHATSAPP_STATUS_PATH = getWhatsappPaths(STATUS_DIR);
     public static final String WHATSAPP_DOCUMENTS_PATH = getWhatsappPaths(DOCUMENTS_DIR);
     // Fields(Temp):
     public static final String TEMP_DIR = "SD--TEMP--DIR";
@@ -45,7 +47,7 @@ public class ARAccess {
             // Initializing:
             createAccessDir(context, ROOT_DIR);
             // Developing:
-            MAIN_FILE_MAP = createAccessDirs(context, IMAGES_DIR, VIDEOS_DIR, VOICES_DIR, DOCUMENTS_DIR);
+            MAIN_FILE_MAP = createAccessDirs(context, IMAGES_DIR, VIDEOS_DIR, VOICES_DIR, STATUS_DIR, DOCUMENTS_DIR);
         }
         // Returning:
         return MAIN_FILE_MAP.get(dir);
@@ -66,6 +68,9 @@ public class ARAccess {
                 break;
             case VOICES_DIR:
                 returningPath = getPaths("/WhatsApp/Media/WhatsApp Voice Notes", "/Android/media/com.whatsapp/WhatsApp/Media/WhatsApp Voice Notes");
+                break;
+            case STATUS_DIR:
+                returningPath = getPaths("/WhatsApp/Media/.Statuses", "/Android/media/com.whatsapp/WhatsApp/Media/.Statuses");
                 break;
             case DOCUMENTS_DIR:
                 returningPath = getPaths("/WhatsApp/Media/WhatsApp Documents", "/Android/media/com.whatsapp/WhatsApp/Media/WhatsApp Documents");
