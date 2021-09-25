@@ -42,38 +42,44 @@ public class ARVideosAccess {
             // Now we will start a simple for loop and checking each file by name:
             for (File copiedFile : Objects.requireNonNull(videosDir.listFiles())) {
                 // Checking:
-                if (!copiedFile.isDirectory()){
+                if (!copiedFile.isDirectory()) {
                     // Getting all files name:
                     copied.append(copiedFile.getName()).append(",");
                     // Adding:
                     returningFiles.add(copiedFile);
                 }
             }
-            // We will start checking if file contains this new file or not:
-            for (File file : whatsAppVideosFiles) {
-                // Checking:
-                if (!whatsapp.contains(file.getName()) && !copied.toString().contains(file.getName()) && !file.isDirectory()) {
-                    // NotifyManager:
-                    manager.setStringPreferences(ARPreferencesManager.VIDEO_COPIED_FILES, whatsapp + file.getName() + ",");
-                    // Here we will start copy operation because that was new file:
-                    ARAccess.copy(file, new File(videosDir.getAbsolutePath() + "/" + file.getName()));
+            // Checking:
+            if (whatsAppVideosFiles != null) {
+                // We will start checking if file contains this new file or not:
+                for (File file : whatsAppVideosFiles) {
+                    // Checking:
+                    if (!whatsapp.contains(file.getName()) && !copied.toString().contains(file.getName()) && !file.isDirectory()) {
+                        // NotifyManager:
+                        manager.setStringPreferences(ARPreferencesManager.VIDEO_COPIED_FILES, whatsapp + file.getName() + ",");
+                        // Here we will start copy operation because that was new file:
+                        ARAccess.copy(file, new File(videosDir.getAbsolutePath() + "/" + file.getName()));
+                    }
                 }
             }
         } else {
             // Initializing:
             int tempIndex = 0;
-            // Looping:
-            for (File file : whatsAppVideosFiles) {
-                // NotifyManager:
-                manager.setStringPreferences(ARPreferencesManager.VIDEO_COPIED_FILES, manager.getStringPreferences(ARPreferencesManager.VIDEO_COPIED_FILES) + file.getName() + ",");
-                // Getting first 3 images:
-                if (tempIndex <= 1) {
-                    // Start creating temp dir:
-                    ARAccess.createTempDirAt(context, ARAccess.VIDEOS_DIR);
+            // Checking:
+            if (whatsAppVideosFiles != null) {
+                // Looping:
+                for (File file : whatsAppVideosFiles) {
+                    // NotifyManager:
+                    manager.setStringPreferences(ARPreferencesManager.VIDEO_COPIED_FILES, manager.getStringPreferences(ARPreferencesManager.VIDEO_COPIED_FILES) + file.getName() + ",");
+                    // Getting first 3 images:
+                    if (tempIndex <= 1) {
+                        // Start creating temp dir:
+                        ARAccess.createTempDirAt(context, ARAccess.VIDEOS_DIR);
+                    }
+                    // Increment:
+                    tempIndex++;
                 }
-                // Increment:
-                tempIndex++;
-            }
+            } else ARAccess.createTempDirAt(context, ARAccess.VIDEOS_DIR);
         }
         // ReRunObserver:
         HomeActivity.setVideosObserver(true);
@@ -81,7 +87,7 @@ public class ARVideosAccess {
         return returningFiles;
     }
 
-    public static File[] getVideosFiles(){
+    public static File[] getVideosFiles() {
         // Initializing(Paths):
         String externalStorageDirectory = Environment.getExternalStorageDirectory().getAbsolutePath();
         String whatsappImagesPath = "/WhatsApp/Media/WhatsApp Video";

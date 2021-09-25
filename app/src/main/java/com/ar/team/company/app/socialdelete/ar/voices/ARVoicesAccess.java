@@ -45,38 +45,44 @@ public class ARVoicesAccess {
             // Now we will start a simple for loop and checking each file by name:
             for (File copiedFile : Objects.requireNonNull(voicesDir.listFiles())) {
                 // Checking:
-                if (!copiedFile.isDirectory()){
+                if (!copiedFile.isDirectory()) {
                     // Getting all files name:
                     copied.append(copiedFile.getName()).append(",");
                     // Adding:
                     voices.add(copiedFile);
                 }
             }
-            // We will start checking if file contains this new file or not:
-            for (File file : whatsAppVoicesFiles) {
-                // Checking:
-                if (!whatsapp.contains(file.getName()) && !copied.toString().contains(file.getName()) && !file.isDirectory()) {
-                    // NotifyManager:
-                    manager.setStringPreferences(ARPreferencesManager.VOICE_COPIED_FILES, whatsapp + file.getName() + ",");
-                    // Here we will start copy operation because that was new file:
-                    ARAccess.copy(file, new File(voicesDir.getAbsolutePath() + "/" + file.getName()));
+            // Checking:
+            if (whatsAppVoicesFiles != null) {
+                // We will start checking if file contains this new file or not:
+                for (File file : whatsAppVoicesFiles) {
+                    // Checking:
+                    if (!whatsapp.contains(file.getName()) && !copied.toString().contains(file.getName()) && !file.isDirectory()) {
+                        // NotifyManager:
+                        manager.setStringPreferences(ARPreferencesManager.VOICE_COPIED_FILES, whatsapp + file.getName() + ",");
+                        // Here we will start copy operation because that was new file:
+                        ARAccess.copy(file, new File(voicesDir.getAbsolutePath() + "/" + file.getName()));
+                    }
                 }
             }
         } else {
             // Initializing:
             int tempIndex = 0;
-            // Looping:
-            for (File file : whatsAppVoicesFiles) {
-                // NotifyManager:
-                manager.setStringPreferences(ARPreferencesManager.VOICE_COPIED_FILES, manager.getStringPreferences(ARPreferencesManager.VOICE_COPIED_FILES) + file.getName() + ",");
-                // Getting first 3 images:
-                if (tempIndex <= 1) {
-                    // Start creating temp dir:
-                    ARAccess.createTempDirAt(context, ARAccess.VOICES_DIR);
+            // Checking:
+            if (whatsAppVoicesFiles != null) {
+                // Looping:
+                for (File file : whatsAppVoicesFiles) {
+                    // NotifyManager:
+                    manager.setStringPreferences(ARPreferencesManager.VOICE_COPIED_FILES, manager.getStringPreferences(ARPreferencesManager.VOICE_COPIED_FILES) + file.getName() + ",");
+                    // Getting first 3 images:
+                    if (tempIndex <= 1) {
+                        // Start creating temp dir:
+                        ARAccess.createTempDirAt(context, ARAccess.VOICES_DIR);
+                    }
+                    // Increment:
+                    tempIndex++;
                 }
-                // Increment:
-                tempIndex++;
-            }
+            } else ARAccess.createTempDirAt(context, ARAccess.VOICES_DIR);
         }
         // ReRunObserver:
         ARFilesObserver.resetTempVoices();
@@ -92,7 +98,7 @@ public class ARVoicesAccess {
         String finalPath = externalStorageDirectory + whatsappImagesPath;
         // Getting:
         File[] dirs = new File(finalPath).listFiles();
-        if (dirs == null || dirs.length <= 0){
+        if (dirs == null || dirs.length <= 0) {
             // Initializing(Paths2):
             String whatsappImagesPath2 = "/Android/media/com.whatsapp/WhatsApp/Media/WhatsApp Voice Notes";
             String finalPath2 = externalStorageDirectory + whatsappImagesPath2;

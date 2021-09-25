@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -31,6 +32,8 @@ public class VoicesAdapter extends RecyclerView.Adapter<VoicesAdapter.VoicesView
     // Fields(MediaPlayer):
     private int index = 9999999;
     private MediaPlayer player;
+    // TAGS:
+    private static final String TAG = "VoicesAdapter";
 
     // Constructor:
     public VoicesAdapter(Context context, List<File> files) {
@@ -74,6 +77,9 @@ public class VoicesAdapter extends RecyclerView.Adapter<VoicesAdapter.VoicesView
 
     // Method(AUDIO):
     private void audioMethod(VoiceItemViewBinding binding, int position) {
+        // Debugging:
+        Log.d(TAG, "audioMethod: --------------------------------------------------");
+        Log.d(TAG, "audioMethod: AudioMethod Called With Position(" + position + ")");
         // Initializing:
         String audioPath = files.get(position).getAbsolutePath();
         // Checking:
@@ -84,6 +90,8 @@ public class VoicesAdapter extends RecyclerView.Adapter<VoicesAdapter.VoicesView
                 player.setDataSource(audioPath);
                 player.prepare();
                 player.start();
+                // Debugging:
+                Log.d(TAG, "audioMethod: StartPlaying Audio");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -96,20 +104,37 @@ public class VoicesAdapter extends RecyclerView.Adapter<VoicesAdapter.VoicesView
                 player.stop();
                 // Initializing:
                 player = new MediaPlayer();
+                // SettingRes:
+                binding.playVoiceButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_play));
+                // Debugging:
+                Log.d(TAG, "audioMethod: StopPlaying Audio");
                 // Checking:
                 if (index != position) audioMethod(binding, position);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            // SettingRes:
-            binding.playVoiceButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_play));
         }
+        // Setting:
+        player.setOnCompletionListener(mediaPlayer -> onPlayerComplete(mediaPlayer, binding, position));
         // Setting:
         index = position;
         // Notify:
         notifyDataSetChanged();
         // Checking:
         if (index != position) audioMethod(binding, position);
+        // Debugging:
+        Log.d(TAG, "audioMethod: EndingOfMethod");
+        Log.d(TAG, "audioMethod: --------------------------------------------------");
+    }
+
+    // Method(OnPlayerCompleted):
+    private void onPlayerComplete(MediaPlayer parentPlayer, VoiceItemViewBinding binding, int position) {
+        // Checking:
+        if (player.isPlaying()) player.stop();
+        // Initializing:
+        player = new MediaPlayer();
+        // Developing:
+        binding.playVoiceButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_play));
     }
 
     // Formatting:

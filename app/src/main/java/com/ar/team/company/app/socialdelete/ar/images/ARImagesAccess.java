@@ -54,31 +54,37 @@ public class ARImagesAccess {
                     bitmaps.add(ARBitmapHelper.decodeBitmapFromFile(copiedFile.getAbsolutePath(), 120, 120));
                 }
             }
-            // We will start checking if file contains this new file or not:
-            for (File file : whatsAppImagesFiles) {
-                // Checking:
-                if (!whatsapp.contains(file.getName()) && !copied.toString().contains(file.getName()) && !file.isDirectory()) {
-                    // NotifyManager:
-                    manager.setStringPreferences(ARPreferencesManager.IMAGE_COPIED_FILES, whatsapp + file.getName() + ",");
-                    // Here we will start copy operation because that was new file:
-                    ARAccess.copy(file, new File(imagesDir.getAbsolutePath() + "/" + file.getName()));
+            // Checking:
+            if (whatsAppImagesFiles != null) {
+                // We will start checking if file contains this new file or not:
+                for (File file : whatsAppImagesFiles) {
+                    // Checking:
+                    if (!whatsapp.contains(file.getName()) && !copied.toString().contains(file.getName()) && !file.isDirectory()) {
+                        // NotifyManager:
+                        manager.setStringPreferences(ARPreferencesManager.IMAGE_COPIED_FILES, whatsapp + file.getName() + ",");
+                        // Here we will start copy operation because that was new file:
+                        ARAccess.copy(file, new File(imagesDir.getAbsolutePath() + "/" + file.getName()));
+                    }
                 }
             }
         } else {
             // Initializing:
             int tempIndex = 0;
-            // Looping:
-            for (File file : whatsAppImagesFiles) {
-                // NotifyManager:
-                manager.setStringPreferences(ARPreferencesManager.IMAGE_COPIED_FILES, manager.getStringPreferences(ARPreferencesManager.IMAGE_COPIED_FILES) + file.getName() + ",");
-                // Getting first 3 images:
-                if (tempIndex <= 1) {
-                    // Start creating temp dir:
-                    ARAccess.createTempDirAt(context, ARAccess.IMAGES_DIR);
+            // Checking:
+            if (whatsAppImagesFiles != null) {
+                // Looping:
+                for (File file : whatsAppImagesFiles) {
+                    // NotifyManager:
+                    manager.setStringPreferences(ARPreferencesManager.IMAGE_COPIED_FILES, manager.getStringPreferences(ARPreferencesManager.IMAGE_COPIED_FILES) + file.getName() + ",");
+                    // Getting first 3 images:
+                    if (tempIndex <= 1) {
+                        // Start creating temp dir:
+                        ARAccess.createTempDirAt(context, ARAccess.IMAGES_DIR);
+                    }
+                    // Increment:
+                    tempIndex++;
                 }
-                // Increment:
-                tempIndex++;
-            }
+            } else ARAccess.createTempDirAt(context, ARAccess.IMAGES_DIR);
         }
         // AddStaticFiles:
         staticFiles = Arrays.asList(Objects.requireNonNull(imagesDir.listFiles()));
