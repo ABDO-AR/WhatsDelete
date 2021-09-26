@@ -17,6 +17,8 @@ public class Chat {
         this.messages = messages;
     }
 
+
+
     // InnerClasses:
     public static class Messages {
 

@@ -49,7 +49,8 @@ public class ShowChatActivity extends AppCompatActivity implements SharedPrefere
         chat = ARUtils.fromJsonToChat(getIntent().getExtras().getString("Chat"));
         icon = getIntent().getParcelableExtra("Icon");
         layoutManager = new LinearLayoutManager(this);
-        adapter = new ShowChatAdapter(this, chat);
+
+
         // Preparing:
         layoutManager.setStackFromEnd(true);
         // Developing(Main-UI):
@@ -59,8 +60,13 @@ public class ShowChatActivity extends AppCompatActivity implements SharedPrefere
         if (icon != null) binding.senderImageView.setImageDrawable(icon.loadDrawable(this));
         else binding.senderImageView.setImageResource(R.drawable.ic_placeholder);
         // Developing(RecyclerView):
-        binding.showChatRecyclerView.setAdapter(adapter);
-        binding.showChatRecyclerView.setLayoutManager(layoutManager);
+        if (chat!=null)
+        {
+            adapter = new ShowChatAdapter(this, chat);
+            binding.showChatRecyclerView.setAdapter(adapter);
+            binding.showChatRecyclerView.setLayoutManager(layoutManager);
+        }
+
         binding.chatSendButton.setOnClickListener(this::sendMethod);
         // Developing(Manager):
         manager.getPreferences().registerOnSharedPreferenceChangeListener(this);
@@ -103,15 +109,20 @@ public class ShowChatActivity extends AppCompatActivity implements SharedPrefere
         if (!binding.chatEditText.getText().toString().isEmpty()) {
             // CatchingErrors:
             try {
+
                 // SendingResponse:
                 Chat refreshingChat = clicked.eventClick(chat.getSender(), binding.chatEditText.getText().toString());
-                // Refreshing(Adapter):
-                adapter = new ShowChatAdapter(this, refreshingChat);
-                // Refreshing(RecyclerView):
-                binding.showChatRecyclerView.setAdapter(adapter);
-                binding.showChatRecyclerView.setLayoutManager(layoutManager);
+                if (refreshingChat!=null)
+                {
+                    // Refreshing(Adapter):
+                    adapter = new ShowChatAdapter(this, refreshingChat);
+                    // Refreshing(RecyclerView):
+                    binding.showChatRecyclerView.setAdapter(adapter);
+                    binding.showChatRecyclerView.setLayoutManager(layoutManager);
+                }
+
             } catch (Exception e) {
-                Toasty.error(this, "Unable to reach the person, please try again", Toast.LENGTH_LONG).show();
+             //   Toasty.error(this, "Unable to reach the person, please try again", Toast.LENGTH_LONG).show();
             }
             // EmptyChatInput:
             binding.chatEditText.setText("");

@@ -62,7 +62,7 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
         model = new ViewModelProvider(this).get(HomeViewModel.class);
         initObservers();
         // StartOurForegroundService:
-        ContextCompat.startForegroundService(this, new Intent(this, ARForegroundService.class));
+      //  ContextCompat.startForegroundService(this, new Intent(this, ARForegroundService.class));
         // Initializing(App):
         initApp();
     }

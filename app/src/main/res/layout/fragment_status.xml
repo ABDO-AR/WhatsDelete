@@ -9,6 +9,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="SSSSSSSSSSS" />
+        android:textColor="@color/colorPrimaryAccent"
+        android:textSize="@dimen/_18sdp"
+        android:gravity="center"
+        android:text="Status will be developed \n in the next part :)" />
 
 </FrameLayout>

@@ -35,7 +35,7 @@
 
             <TextView
                 android:id="@+id/header_text_view"
-                style="@style/Theme.ARDefTextTheme"
+                android:textColor="@color/white"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -63,6 +63,7 @@
                 app:layout_constraintVertical_bias="0.076">
 
                 <TextView
+                    android:textColor="@color/grey"
                     android:id="@+id/content_text_view"
                     style="@style/Theme.ARDefTextTheme"
                     android:layout_width="wrap_content"

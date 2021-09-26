@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     style="?attr/ar_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,6 +18,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="25sp"
         android:textStyle="bold"
+        android:fontFamily="@font/articulatcf_demi_normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/back_button" />
 
@@ -40,13 +42,61 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:text="@string/settings_mes"
+        android:fontFamily="@font/articulatcf_demi_bold"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/back_button"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/theme_card_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_7sdp"
+            android:drawableStart="@drawable/ic_baseline_nightlight_24"
+            android:drawableLeft="@drawable/ic_baseline_nightlight_24"
+            android:drawablePadding="@dimen/_15sdp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:text="Dark Mode"
+            android:fontFamily="@font/articulat_cf_bold"
+
+            android:textSize="@dimen/_18sdp"
+            android:drawableTint="@color/colorPrimaryAccent"
+            />
+
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/btn_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:gravity="center"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            android:textOff="Off"
+            android:textOn="On"
+
+            card_view:showText="false"
+
+            />
+    </com.google.android.material.card.MaterialCardView>
+ <!--   <com.google.android.material.card.MaterialCardView
         android:id="@+id/theme_card_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -76,6 +126,6 @@
             android:contentDescription="@string/des"
             android:src="@drawable/ic_baseline_arrow_forward_24" />
 
-    </com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.card.MaterialCardView>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

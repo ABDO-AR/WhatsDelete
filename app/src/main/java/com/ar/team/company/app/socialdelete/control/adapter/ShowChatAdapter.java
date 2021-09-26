@@ -18,7 +18,7 @@ public class ShowChatAdapter extends RecyclerView.Adapter {
 
     // Fields:
     private final Context context;
-    private final Chat chats;
+    private Chat chats;
     // ViewTypes:
     private static final int VIEW_TYPE_RECEIVED = 0;
     private static final int VIEW_TYPE_SENT = 1;

@@ -52,6 +52,9 @@ dependencies {
     implementation "com.intuit.ssp:ssp-android:$scalable_unit_size"
     implementation "com.intuit.sdp:sdp-android:$scalable_unit_size"
 
+    //circleImageView
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'org.jetbrains:annotations:22.0.0'
     implementation 'org.jetbrains:annotations:22.0.0'
