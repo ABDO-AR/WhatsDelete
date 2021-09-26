@@ -15,7 +15,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @SuppressWarnings("unused")
 public class ARAccess {
@@ -28,9 +27,16 @@ public class ARAccess {
     public static final String IMAGES_DIR = ROOT_DIR + " Images";
     public static final String VIDEOS_DIR = ROOT_DIR + " Videos";
     public static final String VOICES_DIR = ROOT_DIR + " Voices";
+    public static final String STATUS_DIR = ROOT_DIR + " Status";
     public static final String DOCUMENTS_DIR = ROOT_DIR + " Document";
     // Fields(Paths):
-    public static final String WHATSAPP_IMAGES_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/WhatsApp/Media/WhatsApp Images";
+    public static final String WHATSAPP_IMAGES_PATH = getWhatsappPaths(IMAGES_DIR);
+    public static final String WHATSAPP_VIDEOS_PATH = getWhatsappPaths(VIDEOS_DIR);
+    public static final String WHATSAPP_VOICES_PATH = getWhatsappPaths(VOICES_DIR);
+    public static final String WHATSAPP_STATUS_PATH = getWhatsappPaths(STATUS_DIR);
+    public static final String WHATSAPP_DOCUMENTS_PATH = getWhatsappPaths(DOCUMENTS_DIR);
+    // Fields(Temp):
+    public static final String TEMP_DIR = "SD--TEMP--DIR";
     // Fields(Debug):
     private static final String TAG = "ARAccess";
 
@@ -41,10 +47,50 @@ public class ARAccess {
             // Initializing:
             createAccessDir(context, ROOT_DIR);
             // Developing:
-            MAIN_FILE_MAP = createAccessDirs(context, IMAGES_DIR, VIDEOS_DIR, VOICES_DIR, DOCUMENTS_DIR);
+            MAIN_FILE_MAP = createAccessDirs(context, IMAGES_DIR, VIDEOS_DIR, VOICES_DIR, STATUS_DIR, DOCUMENTS_DIR);
         }
         // Returning:
         return MAIN_FILE_MAP.get(dir);
+    }
+
+    // Methods(Path):
+    public static String getWhatsappPaths(String dir) {
+        // Initializing:
+        String env = Environment.getExternalStorageDirectory().getAbsolutePath();
+        String returningPath = "";
+        // Preparing
+        switch (dir) {
+            case IMAGES_DIR:
+                returningPath = getPaths("/WhatsApp/Media/WhatsApp Images", "/Android/media/com.whatsapp/WhatsApp/Media/WhatsApp Images");
+                break;
+            case VIDEOS_DIR:
+                returningPath = getPaths("/WhatsApp/Media/WhatsApp Video", "/Android/media/com.whatsapp/WhatsApp/Media/WhatsApp Video");
+                break;
+            case VOICES_DIR:
+                returningPath = getPaths("/WhatsApp/Media/WhatsApp Voice Notes", "/Android/media/com.whatsapp/WhatsApp/Media/WhatsApp Voice Notes");
+                break;
+            case STATUS_DIR:
+                returningPath = getPaths("/WhatsApp/Media/.Statuses", "/Android/media/com.whatsapp/WhatsApp/Media/.Statuses");
+                break;
+            case DOCUMENTS_DIR:
+                returningPath = getPaths("/WhatsApp/Media/WhatsApp Documents", "/Android/media/com.whatsapp/WhatsApp/Media/WhatsApp Documents");
+                break;
+        }
+        // Retuning:
+        return returningPath;
+    }
+
+    public static String getPaths(String dir, String dir2) {
+        // Initializing(Paths):
+        String externalStorageDirectory = Environment.getExternalStorageDirectory().getAbsolutePath();
+        String finalPath = externalStorageDirectory + dir;
+        // Initializing(Paths2):
+        String finalPath2 = externalStorageDirectory + dir2;
+        // FieldsField:
+        File file = new File(finalPath);
+        // Checking:
+        if (file.exists()) return finalPath;
+        else return finalPath2;
     }
 
     // Methods(Access):
@@ -101,6 +147,29 @@ public class ARAccess {
         }
         // Retuning:
         return fileMap;
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public static void createTempDirAt(Context context, String dir) {
+        // Initializing:
+        File tempDir = new File(context.getExternalFilesDir(null), ROOT_DIR + "/" + dir + "/" + TEMP_DIR);
+        // Checking:
+        if (!tempDir.exists()) {
+            // Checking:
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                // Trying:
+                try {
+                    // Creating:
+                    Files.createDirectory(Paths.get(tempDir.getAbsolutePath()));
+                } catch (IOException e) {
+                    // Debugging:
+                    Log.d(TAG, "createAccessDir: " + e.toString());
+                }
+            } else tempDir.mkdir();
+        } else {
+            // It's already exits:
+            Log.d(TAG, "createTempDirAt: temp dir is already exits at :: " + tempDir.getAbsolutePath());
+        }
     }
 
     public static void copy(File src, File dst) {

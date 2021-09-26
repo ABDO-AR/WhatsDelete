@@ -67,7 +67,6 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImagesView
 
     // ViewHolder:
     static class ImagesViewHolder extends RecyclerView.ViewHolder {
-
         // Fields:
         private final ImageViewItemBinding binding;
 

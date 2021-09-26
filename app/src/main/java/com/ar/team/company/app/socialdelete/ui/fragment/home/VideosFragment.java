@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
-import com.ar.team.company.app.socialdelete.ar.videos.ARVideosAccess;
 import com.ar.team.company.app.socialdelete.control.adapter.VideosAdapter;
 import com.ar.team.company.app.socialdelete.databinding.FragmentVideosBinding;
 import com.ar.team.company.app.socialdelete.ui.activity.home.HomeViewModel;
@@ -19,7 +18,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings({"FieldCanBeLocal", "unused"})
@@ -29,11 +27,7 @@ public class VideosFragment extends Fragment {
     private FragmentVideosBinding binding;
     private HomeViewModel model; // MainModel for our fragment.
     // Adapters:
-    private ARVideosAccess access;
-    private List<File> files = new ArrayList<>();
     private VideosAdapter adapter;
-    // Threading:
-    private Thread workingThread;
     // TAGS:
     private static final String TAG = "VideosFragment";
 
@@ -49,28 +43,21 @@ public class VideosFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         // Initializing:
         model = new ViewModelProvider(this).get(HomeViewModel.class);
-        // Working:
-        workingThread = new Thread(this::workingMethod);
-        // StartWorkingThread:
-        workingThread.start();
+        // StartOperations:
+        model.startVideoOperation();
+        // Observing:
+        model.getVideosLiveData().observe(getViewLifecycleOwner(), this::onVideosChanged);
     }
 
-    // WorkingThread:
-    private void workingMethod() {
-        // Initializing(Adapter):
-        access = new ARVideosAccess(requireContext());
-
-        if (access.getWhatsappVideosDirectory()!=null)
-        files = access.getWhatsappVideosDirectory();
-        adapter = new VideosAdapter(requireContext(), files);
-        // Developing:
-        requireActivity().runOnUiThread(() -> {
-            // Developing:
-            binding.videosRecyclerView.setAdapter(adapter);
-            binding.videosRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
-            // Loading:
-            isLoading(false);
-        });
+    // OnVideosChange:
+    private void onVideosChanged(List<File> videos) {
+        // Initializing:
+        adapter = new VideosAdapter(requireContext(), videos);
+        // Preparing(RecyclerView):
+        binding.videosRecyclerView.setAdapter(adapter);
+        binding.videosRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
+        // Loading:
+        isLoading(false);
     }
 
     @SuppressWarnings("SameParameterValue")
@@ -82,7 +69,11 @@ public class VideosFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        workingThread.interrupt();
+        // Initializing:
+        boolean videosState = model.getVideosThread() != null;
+        // Checking(&Interrupting):
+        if (videosState) model.getVideosThread().interrupt();
+        // Super:
         super.onDestroy();
     }
 }

@@ -69,7 +69,11 @@ public class ImagesFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        model.getImagesThread().interrupt();
+        // Initializing:
+        boolean imagesState = model.getImagesThread() != null;
+        // Checking(&Interrupting):
+        if (imagesState) model.getImagesThread().interrupt();
+        // Super:
         super.onDestroy();
     }
 }

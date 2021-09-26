@@ -1,6 +1,5 @@
 package com.ar.team.company.app.socialdelete.ui.activity.home;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
@@ -20,6 +19,7 @@ import android.widget.Toast;
 
 import com.ar.team.company.app.socialdelete.R;
 import com.ar.team.company.app.socialdelete.ar.access.ARAccess;
+import com.ar.team.company.app.socialdelete.ar.observer.ARFilesObserver;
 import com.ar.team.company.app.socialdelete.control.adapter.HomeItemsAdapter;
 import com.ar.team.company.app.socialdelete.control.adapter.PagerAdapter;
 import com.ar.team.company.app.socialdelete.control.foreground.ARForegroundService;
@@ -47,8 +47,14 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
     private ARPreferencesManager manager;
     // TabMediator:
     private TabLayoutMediator mediator;
-    // Observers:
+    // WhatsAppDirsObservers:
     private static FileObserver imagesObserver;
+    private static FileObserver videosObserver;
+    private static FileObserver voicesObserver;
+    private static FileObserver statusObserver;
+    private static FileObserver documentsObserver;
+    // TempData:
+    private Thread tempThread;
     // TAGS:
     private static final String TAG = "HomeActivity";
 
@@ -60,6 +66,8 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
         setContentView(view); // SET THE VIEW CONTENT TO THE (VIEW).
         // Initializing(MAIN-FIELDS):
         model = new ViewModelProvider(this).get(HomeViewModel.class);
+        manager = new ARPreferencesManager(this);
+        // Observers:
         initObservers();
         // StartOurForegroundService:
       //  ContextCompat.startForegroundService(this, new Intent(this, ARForegroundService.class));
@@ -69,30 +77,82 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
 
     // Method(Observers):
     private void initObservers() {
-        // Initializing(Observers):
-        imagesObserver = new FileObserver(ARAccess.WHATSAPP_IMAGES_PATH) {
-            @Override
-            public void onEvent(int i, @Nullable String s) {
-                // Debugging:
-                Log.d(TAG, "onEvent: " + s);
-                // Checking:
-                if (i == FileObserver.CREATE || i == FileObserver.ACCESS){
-                    // Debugging:
-                    Log.d(TAG, "onEventCreate: " + s);
-                    // StartOperations:
-                    model.startImageOperation();
-                }
-            }
-        };
+        // Initializing(ImagesObserver):
+        imagesObserver = new ARFilesObserver(ARAccess.WHATSAPP_IMAGES_PATH, model);
+        // Initializing(VideosObserver):
+        videosObserver = new ARFilesObserver(ARAccess.WHATSAPP_VIDEOS_PATH, model);
+        // Initializing(VoicesObserver):
+        voicesObserver = new ARFilesObserver(ARAccess.WHATSAPP_VOICES_PATH, model);
+        // Initializing(StatusObserver):
+        statusObserver = new ARFilesObserver(ARAccess.WHATSAPP_STATUS_PATH, model);
+        // Initializing(DocumentsObserver):
+        documentsObserver = new ARFilesObserver(ARAccess.WHATSAPP_DOCUMENTS_PATH, model);
+        // Debugging:
+        Log.d(TAG, "onEventCreate: " + ARAccess.WHATSAPP_IMAGES_PATH);
+        Log.d(TAG, "onEventCreate: " + ARAccess.WHATSAPP_VIDEOS_PATH);
+        Log.d(TAG, "onEventCreate: " + ARAccess.WHATSAPP_VOICES_PATH);
+        Log.d(TAG, "onEventCreate: " + ARAccess.WHATSAPP_STATUS_PATH);
+        Log.d(TAG, "onEventCreate: " + ARAccess.WHATSAPP_DOCUMENTS_PATH);
         // StartObservers:
         imagesObserver.startWatching();
+        videosObserver.startWatching();
+        voicesObserver.startWatching();
+        statusObserver.startWatching();
+        documentsObserver.startWatching();
+        // Preparing:
+        tempThread = new Thread(this::preparingObservers);
+        // Start:
+        tempThread.start();
+    }
+
+    // Method(Preparing):
+    private void preparingObservers() {
+        // Initializing:
+        boolean tempDirsState = manager.getBooleanPreferences(ARPreferencesManager.INIT_TEMP_DIR);
+        // Checking:
+        if (!tempDirsState) {
+            // Setting:
+            manager.setBooleanPreferences(ARPreferencesManager.INIT_TEMP_DIR, true);
+            // StartInitializing:
+            model.startImageOperation();
+            model.startVideoOperation();
+            model.startVoiceOperation();
+            model.startStatusOperation();
+            model.startDocumentOperation();
+        }
+        // Finishing:
+        tempThread.interrupt();
     }
 
     // This method for control observer on ARImagesAccess:
-    public static void setImagesObserver(boolean state){
+    public static void setImagesObserver(boolean state) {
         // Checking:
         if (state) imagesObserver.startWatching();
         else imagesObserver.stopWatching();
+    }
+
+    public static void setStatusObserver(boolean state) {
+        // Checking:
+        if (state) statusObserver.startWatching();
+        else statusObserver.stopWatching();
+    }
+
+    public static void setVideosObserver(boolean state) {
+        // Checking:
+        if (state) videosObserver.startWatching();
+        else videosObserver.stopWatching();
+    }
+
+    public static void setVoicesObserver(boolean state) {
+        // Checking:
+        if (state) voicesObserver.startWatching();
+        else voicesObserver.stopWatching();
+    }
+
+    public static void setDocumentsObserver(boolean state) {
+        // Checking:
+        if (state) documentsObserver.startWatching();
+        else documentsObserver.stopWatching();
     }
 
     // InitApp:
@@ -102,7 +162,6 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
         // Initializing(MEDIATOR):
         mediator = new TabLayoutMediator(binding.mainContentLayout.homeTabLayout, binding.mainContentLayout.homeViewPager, (tab, position) -> tab.setText(adapter.getHeaders(position)));
         // Initializing(FIELDS):
-        manager = new ARPreferencesManager(this);
         adapter = new PagerAdapter(getSupportFragmentManager(), getLifecycle());
         // AttachMediator:
         binding.mainContentLayout.homeViewPager.setAdapter(adapter);
@@ -136,6 +195,24 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
         manager.getPreferences().unregisterOnSharedPreferenceChangeListener(this);
         // Super:
         super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        // Initializing:
+        boolean imagesState = model.getImagesThread() != null;
+        boolean videosState = model.getVideosThread() != null;
+        boolean voicesState = model.getVoicesThread() != null;
+        boolean statusState = model.getStatusThread() != null;
+        boolean documentsState = model.getDocumentsThread() != null;
+        // Checking(&Interrupting):
+        if (imagesState) model.getImagesThread().interrupt();
+        if (videosState) model.getVideosThread().interrupt();
+        if (voicesState) model.getVoicesThread().interrupt();
+        if (statusState) model.getStatusThread().interrupt();
+        if (documentsState) model.getDocumentsThread().interrupt();
+        // Super:
+        super.onDestroy();
     }
 
     // SettingDrawerSize:

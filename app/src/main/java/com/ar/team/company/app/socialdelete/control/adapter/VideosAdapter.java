@@ -51,11 +51,11 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideosView
         Bitmap thumb = ThumbnailUtils.createVideoThumbnail(file.getAbsolutePath(), MediaStore.Images.Thumbnails.MINI_KIND);
         // Developing:
         holder.binding.videoThumbnail.setImageBitmap(thumb);
-        holder.binding.playVideoButton.setOnClickListener(v -> playVideo(file, position));
+        holder.binding.playVideoButton.setOnClickListener(v -> playVideo(file));
     }
 
     // PlayingVideos:
-    private void playVideo(File file, int position) {
+    private void playVideo(File file) {
         // Initializing:
         Intent intent = new Intent(context, ShowVideoActivity.class);
         // PuttingExtras:
@@ -71,7 +71,6 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.VideosView
 
     // Holder:
     static class VideosViewHolder extends RecyclerView.ViewHolder {
-
         // Fields:
         private final VideoItemViewBinding binding;
 

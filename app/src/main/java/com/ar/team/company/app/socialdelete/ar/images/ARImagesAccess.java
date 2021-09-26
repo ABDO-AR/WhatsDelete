@@ -4,11 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
-import android.os.FileObserver;
-import android.util.Log;
-import android.widget.Toast;
-
-import androidx.annotation.Nullable;
 
 import com.ar.team.company.app.socialdelete.ar.access.ARAccess;
 import com.ar.team.company.app.socialdelete.control.preferences.ARPreferencesManager;
@@ -51,41 +46,45 @@ public class ARImagesAccess {
             // If it reached to here that's mean that there are already copied images.
             // Now we will start a simple for loop and checking each file by name:
             for (File copiedFile : Objects.requireNonNull(imagesDir.listFiles())) {
-                // Getting all files name:
-                copied.append(copiedFile.getName()).append(",");
-                // Adding:
-                bitmaps.add(ARBitmapHelper.decodeBitmapFromFile(copiedFile.getAbsolutePath(), 120, 120));
-            }
-            // We will start checking if file contains this new file or not:
-            for (File file : whatsAppImagesFiles) {
                 // Checking:
-                if (!whatsapp.contains(file.getName()) && !copied.toString().contains(file.getName())) {
-                    // NotifyManager:
-                    manager.setStringPreferences(ARPreferencesManager.IMAGE_COPIED_FILES, whatsapp + file.getName() + ",");
-                    // Here we will start copy operation because that was new file:
-                    ARAccess.copy(file, new File(imagesDir.getAbsolutePath() + "/" + file.getName()));
+                if (!copiedFile.isDirectory()) {
+                    // Getting all files name:
+                    copied.append(copiedFile.getName()).append(",");
+                    // Adding:
+                    bitmaps.add(ARBitmapHelper.decodeBitmapFromFile(copiedFile.getAbsolutePath(), 120, 120));
+                }
+            }
+            // Checking:
+            if (whatsAppImagesFiles != null) {
+                // We will start checking if file contains this new file or not:
+                for (File file : whatsAppImagesFiles) {
+                    // Checking:
+                    if (!whatsapp.contains(file.getName()) && !copied.toString().contains(file.getName()) && !file.isDirectory()) {
+                        // NotifyManager:
+                        manager.setStringPreferences(ARPreferencesManager.IMAGE_COPIED_FILES, whatsapp + file.getName() + ",");
+                        // Here we will start copy operation because that was new file:
+                        ARAccess.copy(file, new File(imagesDir.getAbsolutePath() + "/" + file.getName()));
+                    }
                 }
             }
         } else {
             // Initializing:
             int tempIndex = 0;
-            // Looping:
-            for (File file : whatsAppImagesFiles) {
-                // NotifyManager:
-                manager.setStringPreferences(ARPreferencesManager.IMAGE_COPIED_FILES, manager.getStringPreferences(ARPreferencesManager.IMAGE_COPIED_FILES) + file.getName() + ",");
-                // Getting first 3 images:
-                if (tempIndex < 3) {
-                    // Start copy operation:
-                    ARAccess.copy(file, new File(imagesDir.getAbsolutePath() + "/" + file.getName()));
+            // Checking:
+            if (whatsAppImagesFiles != null) {
+                // Looping:
+                for (File file : whatsAppImagesFiles) {
+                    // NotifyManager:
+                    manager.setStringPreferences(ARPreferencesManager.IMAGE_COPIED_FILES, manager.getStringPreferences(ARPreferencesManager.IMAGE_COPIED_FILES) + file.getName() + ",");
+                    // Getting first 3 images:
+                    if (tempIndex <= 1) {
+                        // Start creating temp dir:
+                        ARAccess.createTempDirAt(context, ARAccess.IMAGES_DIR);
+                    }
+                    // Increment:
+                    tempIndex++;
                 }
-                // Increment:
-                tempIndex++;
-            }
-            // Getting:
-            for (File copiedFile : Objects.requireNonNull(imagesDir.listFiles())) {
-                // Adding:
-                bitmaps.add(ARBitmapHelper.decodeBitmapFromFile(copiedFile.getAbsolutePath(), 120, 120));
-            }
+            } else ARAccess.createTempDirAt(context, ARAccess.IMAGES_DIR);
         }
         // AddStaticFiles:
         staticFiles = Arrays.asList(Objects.requireNonNull(imagesDir.listFiles()));
@@ -115,48 +114,6 @@ public class ARImagesAccess {
             // Returning:
             return new File(finalPath2).listFiles(file -> isImages(file.getAbsolutePath()));
         }
-    }
-
-    // Method(Images):
-    @Deprecated
-    private File[] getWhatsappImagesDirectory() {
-        // Initializing(Paths):
-        String externalStorageDirectory = Environment.getExternalStorageDirectory().getAbsolutePath();
-        String whatsappImagesPath = "/WhatsApp/Media/WhatsApp Images";
-        String finalPath = externalStorageDirectory + whatsappImagesPath;
-        // Initializing(Paths2):
-        String whatsappImagesPath2 = "/Android/media/com.whatsapp/WhatsApp/Media/WhatsApp Images";
-        String finalPath2 = externalStorageDirectory + whatsappImagesPath2;
-        // FieldsField:
-        File[] files = new File(finalPath).listFiles(file -> isImage(file.getAbsolutePath()));
-        // Checking:
-        try {
-            // Initializing:
-            String tryingPath = Objects.requireNonNull(files)[0].getAbsolutePath();
-            // Returning:
-            return files;
-        } catch (NullPointerException e) {
-            // Returning:
-            return new File(finalPath2).listFiles(file -> isImage(file.getAbsolutePath()));
-        }
-    }
-
-    @Deprecated
-    public List<Bitmap> getWhatsappImagesBitmaps() {
-        // Initializing:
-        File[] files = getWhatsappImagesDirectory();
-        List<Bitmap> bitmaps = new ArrayList<>();
-        // AddingBitmaps:
-        if (files != null) {
-            for (File file : files) {
-                // Adding:
-                bitmaps.add(ARBitmapHelper.decodeBitmapFromFile(file.getAbsolutePath(), 120, 120));
-            }
-            // Adding:
-            staticFiles = Arrays.asList(files);
-            // Developing:
-            return bitmaps;
-        } else return null;
     }
 
     // InnerClasses:
@@ -202,12 +159,6 @@ public class ARImagesAccess {
     }
 
     // Methods(Checking):
-    @Deprecated
-    public boolean isImage(String filePath) {
-        // Checking:
-        return filePath.endsWith(".jpg") || filePath.endsWith(".png");
-    }
-
     public static boolean isImages(String filePath) {
         // Checking:
         return filePath.endsWith(".jpg") || filePath.endsWith(".png");

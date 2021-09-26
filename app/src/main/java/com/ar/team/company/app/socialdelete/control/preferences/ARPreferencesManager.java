@@ -20,7 +20,14 @@ public class ARPreferencesManager {
     public static final String WHATSAPP_CHATS = "ar.Shared.Preferences.Chats.App.Name.Whatsapp";
     public static final String LIGHT_THEME = "ar.Shared.Preferences.Theme.App.Name.Light.Value";
     public static final String SENDER_NAME = "ar.Shared.Preferences.Chats.Sender.Name.Read";
+    // AppPreferences:
+    public static final String INIT_TEMP_DIR = "ar.Shared.Preferences.Files.Dirs.Create.Temp.Start";
+    // WhatsAppPreferences:
     public static final String IMAGE_COPIED_FILES = "ar.Shared.Preferences.Files.Images.Name.Read";
+    public static final String VIDEO_COPIED_FILES = "ar.Shared.Preferences.Files.Videos.Name.Read";
+    public static final String VOICE_COPIED_FILES = "ar.Shared.Preferences.Files.Voices.Name.Read";
+    public static final String STATUS_COPIED_FILES = "ar.Shared.Preferences.Files.Status.Name.Read";
+    public static final String DOCUMENTS_COPIED_FILES = "ar.Shared.Preferences.Files.Documents.Name.Read";
     // Mode:
     public static final int MODE_CHAT = 0;
     public static final int MODE_FILES = 1;
