@@ -69,8 +69,6 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
         manager = new ARPreferencesManager(this);
         // Observers:
         initObservers();
-        // StartOurForegroundService:
-      //  ContextCompat.startForegroundService(this, new Intent(this, ARForegroundService.class));
         // Initializing(App):
         initApp();
     }

@@ -10,24 +10,20 @@ import android.os.IBinder;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 
 import com.ar.team.company.app.socialdelete.control.foreground.ARForegroundService;
 import com.ar.team.company.app.socialdelete.ui.activity.home.HomeActivity;
 
-public class BaseApplication extends Application
-{
+public class BaseApplication extends Application {
+
     // TAGS:
     private static final String TAG = "BaseApplication";
 
-
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onCreate() {
         super.onCreate();
-
-            startForegroundService(new Intent(this, ARForegroundService.class));
-
+        // StartingForegroundService:
+        ContextCompat.startForegroundService(this, new Intent(this, ARForegroundService.class));
     }
-
 }
