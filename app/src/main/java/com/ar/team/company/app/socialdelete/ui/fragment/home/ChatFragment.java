@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -22,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings({"FieldCanBeLocal", "unused"})
@@ -72,6 +74,16 @@ public class ChatFragment extends Fragment {
             chats.addAll(ARUtils.fromJsonToChats(manager.getStringPreferences(ARPreferencesManager.WHATSAPP_CHATS)));
             // Checking(ChatsAreNotEmpty):
             if (!chats.isEmpty()) {
+                // Lopping:
+                for (int index = 0; index < chats.size(); index++) {
+                    // Checking:
+                    if (chats.get(index).isNewMessage()) {
+                        // SetNewAction:
+                        chats.get(index).setNewMessage(false);
+                        // Swap:
+                        Collections.swap(chats, index, 0);
+                    }
+                }
                 // Initializing:
                 adapter = new ChatAdapter(requireContext(), chats);
                 // Setting:

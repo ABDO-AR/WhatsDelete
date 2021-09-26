@@ -6,17 +6,18 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.Icon;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ar.team.company.app.socialdelete.R;
 import com.ar.team.company.app.socialdelete.control.notifications.NotificationListener;
-import com.ar.team.company.app.socialdelete.databinding.SingleChatItemBinding;
 import com.ar.team.company.app.socialdelete.model.ARIcon;
 import com.ar.team.company.app.socialdelete.model.Chat;
 import com.ar.team.company.app.socialdelete.ui.activity.show.chat.ShowChatActivity;
 import com.ar.team.company.app.socialdelete.ar.utils.ARUtils;
+import com.ar.team.company.app.socialdelete.databinding.SingleChatItemBinding;
 
 import org.jetbrains.annotations.NotNull;
 

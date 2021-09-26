@@ -136,6 +136,8 @@ public class NotificationListener extends NotificationListenerService {
                                         if (!chat.getMessages().get(chat.getMessages().size() - 1).getMessage().equals(messages.get(0).getMessage())) {
                                             // Adding:
                                             chat.getMessages().addAll(messages);
+                                            // SettingNewMessage:
+                                            chat.setNewMessage(true);
                                         }
                                     } else chat.getMessages().addAll(messages); // Adding.
                                     // AddingSender($Preferences):

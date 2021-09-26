@@ -9,6 +9,8 @@ public class Chat {
     private final String sender;
     private final String chatDate;
     private final List<Messages> messages;
+    // Checking:
+    private boolean isNewMessage = false;
 
     // Constructor:
     public Chat(String sender, String chatDate, List<Messages> messages) {
@@ -46,6 +48,15 @@ public class Chat {
         public boolean isSender() {
             return sender;
         }
+    }
+
+    // Checking(Getter(&Setter)):
+    public boolean isNewMessage() {
+        return isNewMessage;
+    }
+
+    public void setNewMessage(boolean newMessage) {
+        isNewMessage = newMessage;
     }
 
     // Getters:
