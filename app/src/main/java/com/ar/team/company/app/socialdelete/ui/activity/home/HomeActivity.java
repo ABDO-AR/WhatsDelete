@@ -1,13 +1,18 @@
 package com.ar.team.company.app.socialdelete.ui.activity.home;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.FileObserver;
 import android.util.DisplayMetrics;
@@ -29,6 +34,7 @@ import com.ar.team.company.app.socialdelete.ui.activity.applications.Application
 import com.ar.team.company.app.socialdelete.ui.activity.settings.SettingsActivity;
 import com.ar.team.company.app.socialdelete.ui.interfaces.HomeItemClickListener;
 import com.ar.team.company.app.socialdelete.ar.utils.ARUtils;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.mxn.soul.flowingdrawer_core.ElasticDrawer;
@@ -46,13 +52,18 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
     private ARPreferencesManager manager;
     // TabMediator:
     private TabLayoutMediator mediator;
+    // Dialogs:
+    private ProgressDialog dialog;
     // WhatsAppDirsObservers:
     private static FileObserver imagesObserver;
     private static FileObserver videosObserver;
     private static FileObserver voicesObserver;
     private static FileObserver statusObserver;
     private static FileObserver documentsObserver;
-    ProgressDialog dialog;
+    // Permissions:
+    private static final String requestPermName = Manifest.permission.READ_EXTERNAL_STORAGE;
+    private final ActivityResultContracts.RequestPermission request = new ActivityResultContracts.RequestPermission();
+    private ActivityResultLauncher<String> launcher;
     // TempData:
     private Thread tempThread;
     // TAGS:
@@ -67,10 +78,41 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
         // Initializing(MAIN-FIELDS):
         model = new ViewModelProvider(this).get(HomeViewModel.class);
         manager = new ARPreferencesManager(this);
-        // Observers:
-        initObservers();
-        // Initializing(App):
-        initApp();
+        // Initializing(PERM-FIELDS):
+        launcher = registerForActivityResult(request, this::requestPermission);
+        // Initializing(Access):
+        initPermissionsAccess();
+    }
+
+    private void requestPermission(boolean isGranted) {
+        // Checking:
+        if (isGranted) {
+            // Observers:
+            initObservers();
+            // Initializing(App):
+            initApp();
+        } else launcher.launch(requestPermName);
+    }
+
+    private void initPermissionsAccess() {
+        // Checking:
+        if (ContextCompat.checkSelfPermission(this, requestPermName) == PackageManager.PERMISSION_GRANTED) {
+            // Observers:
+            initObservers();
+            // Initializing(App):
+            initApp();
+        } else if (shouldShowRequestPermissionRationale(requestPermName)) {
+            // Initializing:
+            String mes = "This app cannot work without this permission";
+            Snackbar snackbar = Snackbar.make(binding.getRoot(), mes, Snackbar.LENGTH_INDEFINITE);
+            // Preparing:
+            snackbar.setAction("ACCESS", v -> launcher.launch(requestPermName));
+            // Show:
+            snackbar.show();
+        } else {
+            // Asking for the permissions:
+            launcher.launch(requestPermName);
+        }
     }
 
     // Method(Observers):

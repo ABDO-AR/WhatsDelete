@@ -1,19 +1,26 @@
 package com.ar.team.company.app.socialdelete.ui.fragment.home;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.ar.team.company.app.socialdelete.control.adapter.ImagesAdapter;
 import com.ar.team.company.app.socialdelete.databinding.FragmentImagesBinding;
+import com.ar.team.company.app.socialdelete.ui.activity.home.HomeActivity;
 import com.ar.team.company.app.socialdelete.ui.activity.home.HomeViewModel;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
