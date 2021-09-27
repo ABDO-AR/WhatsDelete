@@ -53,7 +53,7 @@ public class ARVoicesAccess {
                 }
             }
             // Checking:
-            if (whatsAppVoicesFiles != null) {
+            if (whatsAppVoicesFiles != null && whatsAppVoicesFiles.length != 0) {
                 // We will start checking if file contains this new file or not:
                 for (File file : whatsAppVoicesFiles) {
                     // Checking:
@@ -69,7 +69,7 @@ public class ARVoicesAccess {
             // Initializing:
             int tempIndex = 0;
             // Checking:
-            if (whatsAppVoicesFiles != null) {
+            if (whatsAppVoicesFiles != null && whatsAppVoicesFiles.length != 0) {
                 // Looping:
                 for (File file : whatsAppVoicesFiles) {
                     // NotifyManager:

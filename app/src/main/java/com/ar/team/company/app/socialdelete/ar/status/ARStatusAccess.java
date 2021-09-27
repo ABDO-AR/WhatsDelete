@@ -50,7 +50,7 @@ public class ARStatusAccess {
                 }
             }
             // Checking:
-            if (whatsAppStatusFiles != null){
+            if (whatsAppStatusFiles != null && whatsAppStatusFiles.length != 0){
                 // We will start checking if file contains this new file or not:
                 for (File file : whatsAppStatusFiles) {
                     // Checking:
@@ -66,7 +66,7 @@ public class ARStatusAccess {
             // Initializing:
             int tempIndex = 0;
             // Checking:
-            if (whatsAppStatusFiles != null) {
+            if (whatsAppStatusFiles != null && whatsAppStatusFiles.length != 0) {
                 // Looping:
                 for (File file : whatsAppStatusFiles) {
                     // NotifyManager:
