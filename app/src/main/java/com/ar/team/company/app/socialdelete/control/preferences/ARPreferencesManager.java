@@ -33,6 +33,8 @@ public class ARPreferencesManager {
     public static final int MODE_FILES = 1;
     // CurrentMode:
     private int currentMode = 0;
+    public static String sender="" ;
+    //check Chat one
 
     // Constructors:
     @Deprecated

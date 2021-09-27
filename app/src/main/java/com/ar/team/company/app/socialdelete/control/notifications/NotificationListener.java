@@ -138,6 +138,7 @@ public class NotificationListener extends NotificationListenerService {
                                             chat.getMessages().addAll(messages);
                                             // SettingNewMessage:
                                             chat.setNewMessage(true);
+                                            ARPreferencesManager.sender= chat.getSender();
                                         }
                                     } else chat.getMessages().addAll(messages); // Adding.
                                     // AddingSender($Preferences):

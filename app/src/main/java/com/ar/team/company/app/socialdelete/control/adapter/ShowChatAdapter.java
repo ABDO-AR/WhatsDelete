@@ -64,6 +64,7 @@ public class ShowChatAdapter extends RecyclerView.Adapter {
             ((ShowChatViewHolder) holder).binding.chatMes.setText(messages.getMessage());
             ((ShowChatViewHolder) holder).binding.dateTextView.setText(messageDate);
         } else {
+
             // Developing:
             ((ShowChatViewHolderMe) holder).binding.chatMes.setText(messages.getMessage());
             ((ShowChatViewHolderMe) holder).binding.dateTextView.setText(messageDate);

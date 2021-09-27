@@ -30,10 +30,11 @@ public class Chat {
         private final boolean sender;
 
         // Constructor:
-        public Messages(String message, String messageDate, boolean sender) {
+        public Messages(String message, String messageDate, boolean sender ) {
             this.message = message;
             this.messageDate = messageDate;
             this.sender = sender;
+
         }
 
         // Getters:
@@ -71,4 +72,5 @@ public class Chat {
     public List<Messages> getMessages() {
         return messages;
     }
+
 }

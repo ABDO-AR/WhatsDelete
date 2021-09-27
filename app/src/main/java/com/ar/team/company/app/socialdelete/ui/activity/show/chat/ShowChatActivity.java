@@ -65,6 +65,9 @@ public class ShowChatActivity extends AppCompatActivity implements SharedPrefere
             adapter = new ShowChatAdapter(this, chat);
             binding.showChatRecyclerView.setAdapter(adapter);
             binding.showChatRecyclerView.setLayoutManager(layoutManager);
+
+
+
         }
 
         binding.chatSendButton.setOnClickListener(this::sendMethod);
@@ -119,6 +122,7 @@ public class ShowChatActivity extends AppCompatActivity implements SharedPrefere
                     // Refreshing(RecyclerView):
                     binding.showChatRecyclerView.setAdapter(adapter);
                     binding.showChatRecyclerView.setLayoutManager(layoutManager);
+                    ARPreferencesManager.sender = chat.getSender();
                 }
 
             } catch (Exception e) {
