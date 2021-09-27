@@ -98,6 +98,8 @@ public class ARAccess {
     public static File createAccessDir(Context context, String dir) {
         // Initializing:
         File accessDir = new File(context.getExternalFilesDir(null), dir);
+        // Debugging:
+        Log.d(TAG, "createAccessDir: " + accessDir.getAbsolutePath());
         // Checking:
         if (!accessDir.exists()) {
             // Checking:

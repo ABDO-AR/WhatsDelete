@@ -1,7 +1,6 @@
 package com.ar.team.company.app.socialdelete.ui.activity.home;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
@@ -23,7 +22,6 @@ import com.ar.team.company.app.socialdelete.ar.access.ARAccess;
 import com.ar.team.company.app.socialdelete.ar.observer.ARFilesObserver;
 import com.ar.team.company.app.socialdelete.control.adapter.HomeItemsAdapter;
 import com.ar.team.company.app.socialdelete.control.adapter.PagerAdapter;
-import com.ar.team.company.app.socialdelete.control.foreground.ARForegroundService;
 import com.ar.team.company.app.socialdelete.control.preferences.ARPreferencesManager;
 
 import com.ar.team.company.app.socialdelete.databinding.ActivityHomeBinding;
@@ -77,10 +75,12 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
 
     // Method(Observers):
     private void initObservers() {
-        // Dialog:
+        // Initializing(Dialog):
         dialog = new ProgressDialog(this);
+        // Setting(Text):
         dialog.setTitle("Loading");
         dialog.setMessage("LoadingObservers");
+        // ShowDialog:
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
         // Initializing(ImagesObserver):
@@ -126,8 +126,9 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
             model.startStatusOperation();
             model.startDocumentOperation();
         }
-        // Finishing:
+        // Hiding(Dialog):
         runOnUiThread(() -> dialog.hide());
+        // Finishing:
         tempThread.interrupt();
     }
 
