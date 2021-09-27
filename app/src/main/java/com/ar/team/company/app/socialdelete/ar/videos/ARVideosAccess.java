@@ -50,7 +50,7 @@ public class ARVideosAccess {
                 }
             }
             // Checking:
-            if (whatsAppVideosFiles != null) {
+            if (whatsAppVideosFiles != null && whatsAppVideosFiles.length != 0) {
                 // We will start checking if file contains this new file or not:
                 for (File file : whatsAppVideosFiles) {
                     // Checking:
@@ -66,7 +66,7 @@ public class ARVideosAccess {
             // Initializing:
             int tempIndex = 0;
             // Checking:
-            if (whatsAppVideosFiles != null) {
+            if (whatsAppVideosFiles != null && whatsAppVideosFiles.length != 0) {
                 // Looping:
                 for (File file : whatsAppVideosFiles) {
                     // NotifyManager:
