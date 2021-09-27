@@ -69,7 +69,7 @@ public class StatusAdapter extends RecyclerView.Adapter {
         // Checking:
         if (holder.getItemViewType() == VIEW_TYPE_IMAGE) {
             // Initializing:
-            Bitmap bitmap = ARImagesAccess.ARBitmapHelper.decodeBitmapFromFile(file.getAbsolutePath(), 120, 120);
+            Bitmap bitmap = ARImagesAccess.ARBitmapHelper.decodeBitmapFromFile(file.getAbsolutePath(), 800, 800);
             // Developing:
             ((StatusImageViewHolder) holder).binding.imageViewItem.setImageBitmap(bitmap);
             //((StatusImageViewHolder) holder).binding.imageViewItem.setOnClickListener(view -> slidingImage(position));

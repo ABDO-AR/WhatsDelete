@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.util.DisplayMetrics;
 
 import com.ar.team.company.app.socialdelete.ar.access.ARAccess;
 import com.ar.team.company.app.socialdelete.control.preferences.ARPreferencesManager;
@@ -51,7 +52,7 @@ public class ARImagesAccess {
                     // Getting all files name:
                     copied.append(copiedFile.getName()).append(",");
                     // Adding:
-                    bitmaps.add(ARBitmapHelper.decodeBitmapFromFile(copiedFile.getAbsolutePath(), 120, 120));
+                    bitmaps.add(ARBitmapHelper.decodeBitmapFromFile(copiedFile.getAbsolutePath(), 800, 800));
                 }
             }
             // Checking:

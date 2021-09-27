@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -53,6 +54,7 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
     private static FileObserver voicesObserver;
     private static FileObserver statusObserver;
     private static FileObserver documentsObserver;
+    ProgressDialog dialog;
     // TempData:
     private Thread tempThread;
     // TAGS:
@@ -75,6 +77,12 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
 
     // Method(Observers):
     private void initObservers() {
+        // Dialog:
+        dialog = new ProgressDialog(this);
+        dialog.setTitle("Loading");
+        dialog.setMessage("LoadingObservers");
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
         // Initializing(ImagesObserver):
         imagesObserver = new ARFilesObserver(ARAccess.WHATSAPP_IMAGES_PATH, model);
         // Initializing(VideosObserver):
@@ -119,38 +127,54 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
             model.startDocumentOperation();
         }
         // Finishing:
+        runOnUiThread(() -> dialog.hide());
         tempThread.interrupt();
     }
 
     // This method for control observer on ARImagesAccess:
     public static void setImagesObserver(boolean state) {
         // Checking:
-        if (state) imagesObserver.startWatching();
-        else imagesObserver.stopWatching();
+        if (imagesObserver != null) {
+            // Checking:
+            if (state) imagesObserver.startWatching();
+            else imagesObserver.stopWatching();
+        }
     }
 
     public static void setStatusObserver(boolean state) {
         // Checking:
-        if (state) statusObserver.startWatching();
-        else statusObserver.stopWatching();
+        if (statusObserver != null) {
+            // Checking:
+            if (state) statusObserver.startWatching();
+            else statusObserver.stopWatching();
+        }
     }
 
     public static void setVideosObserver(boolean state) {
         // Checking:
-        if (state) videosObserver.startWatching();
-        else videosObserver.stopWatching();
+        if (videosObserver != null) {
+            // Checking:
+            if (state) videosObserver.startWatching();
+            else videosObserver.stopWatching();
+        }
     }
 
     public static void setVoicesObserver(boolean state) {
         // Checking:
-        if (state) voicesObserver.startWatching();
-        else voicesObserver.stopWatching();
+        if (voicesObserver != null) {
+            // Checking:
+            if (state) voicesObserver.startWatching();
+            else voicesObserver.stopWatching();
+        }
     }
 
     public static void setDocumentsObserver(boolean state) {
         // Checking:
-        if (state) documentsObserver.startWatching();
-        else documentsObserver.stopWatching();
+        if (documentsObserver != null) {
+            // Checking:
+            if (state) documentsObserver.startWatching();
+            else documentsObserver.stopWatching();
+        }
     }
 
     // InitApp:
@@ -189,6 +213,8 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
 
     @Override
     protected void onStop() {
+        // Dismiss:
+        dialog.dismiss();
         // UnRegistering:
         manager.getPreferences().unregisterOnSharedPreferenceChangeListener(this);
         // Super:

@@ -62,7 +62,11 @@ public class VoicesAdapter extends RecyclerView.Adapter<VoicesAdapter.VoicesView
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
         SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss aa", Locale.US);
         // Initializing(MediaMetadataRetriever):
-        retriever.setDataSource(context, Uri.parse(file.getAbsolutePath()));
+        try {
+            retriever.setDataSource(context, Uri.parse(file.getAbsolutePath()));
+        } catch (Exception e) {
+            Log.d(TAG, "onBindViewHolder: " + e.toString());
+        }
         String duration = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
         // Checking:
         if (position == index)
