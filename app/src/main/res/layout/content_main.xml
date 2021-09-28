@@ -73,10 +73,7 @@
         app:tabSelectedTextColor="@color/white"
         app:textAllCaps="false"
         app:tabTextAppearance="@style/MyCustomTextAppearance"
-
-        android:fontFamily="@font/articulatcf_demi_normal"
-
-        />
+        android:fontFamily="@font/articulatcf_demi_normal" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

@@ -78,6 +78,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         }
         // OnClickChat:
         Icon finalSendIcon = sendIcon;
+        holder.binding.messagesNumberTextView.setText(String.valueOf(chat.getMessages().size()));
         holder.binding.getRoot().setOnClickListener(v -> chatClicked(chat, finalSendIcon));
     }
 
