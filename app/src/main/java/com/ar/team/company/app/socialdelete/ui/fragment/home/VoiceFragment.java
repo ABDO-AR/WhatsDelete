@@ -62,7 +62,7 @@ public class VoiceFragment extends Fragment {
         binding.voicesRecyclerView.setAdapter(adapter);
         binding.voicesRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         // Loading:
-        new Handler(Looper.getMainLooper()).postDelayed(() -> isLoading(false), 1000);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> isLoading(false), 500);
     }
 
     @SuppressWarnings("SameParameterValue")

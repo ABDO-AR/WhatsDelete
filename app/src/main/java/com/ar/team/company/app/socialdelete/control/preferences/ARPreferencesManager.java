@@ -20,6 +20,7 @@ public class ARPreferencesManager {
     public static final String WHATSAPP_CHATS = "ar.Shared.Preferences.Chats.App.Name.Whatsapp";
     public static final String LIGHT_THEME = "ar.Shared.Preferences.Theme.App.Name.Light.Value";
     public static final String SENDER_NAME = "ar.Shared.Preferences.Chats.Sender.Name.Read";
+    public static final String FRAGMENT_NUMBER = "ar.Shared.Preferences.Fragment.Access.Number.Get";
     // AppPreferences:
     public static final String INIT_TEMP_DIR = "ar.Shared.Preferences.Files.Dirs.Create.Temp.Start";
     // WhatsAppPreferences:

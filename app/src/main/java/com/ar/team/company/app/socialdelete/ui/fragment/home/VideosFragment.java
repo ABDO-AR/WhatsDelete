@@ -61,7 +61,7 @@ public class VideosFragment extends Fragment {
         binding.videosRecyclerView.setAdapter(adapter);
         binding.videosRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
         // Loading:
-        new Handler(Looper.getMainLooper()).postDelayed(() -> isLoading(false), 1000);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> isLoading(false), 500);
     }
 
     @SuppressWarnings("SameParameterValue")

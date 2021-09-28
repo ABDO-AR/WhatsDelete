@@ -62,7 +62,7 @@ public class DocumentFragment extends Fragment {
         binding.recyclerDocumentsView.setAdapter(adapter);
         binding.recyclerDocumentsView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
         // Loading:
-        new Handler(Looper.getMainLooper()).postDelayed(() -> isLoading(false), 1000);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> isLoading(false), 500);
     }
 
     @SuppressWarnings("SameParameterValue")

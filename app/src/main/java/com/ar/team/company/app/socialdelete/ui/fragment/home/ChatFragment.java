@@ -35,7 +35,7 @@ public class ChatFragment extends Fragment {
     // Preferences(&Adapter):
     private ChatAdapter adapter;
     private List<Chat> chats;
-    List<Chat> newChats ;
+    List<Chat> newChats;
     private ARPreferencesManager manager;
     // ARPermissionsRequest:
     private ARPermissionsRequest request;
@@ -72,7 +72,7 @@ public class ChatFragment extends Fragment {
         if (state) {
             // AddingAll:
             chats.clear();
-            newChats   = new ArrayList<>();
+            newChats = new ArrayList<>();
             chats.addAll(ARUtils.fromJsonToChats(manager.getStringPreferences(ARPreferencesManager.WHATSAPP_CHATS)));
             // Checking(ChatsAreNotEmpty):
             if (!chats.isEmpty()) {
@@ -83,13 +83,10 @@ public class ChatFragment extends Fragment {
                         // SetNewAction:
                         chats.get(index).setNewMessage(false);
                         // Swap:
-
-                        ///  Collections.swap(chats, index, 0);
+                        // Collections.swap(chats, index, 0);
                     }
-                    if (chats.get(index).getSender().equals(ARPreferencesManager.sender))
-                        newChats.add(0,chats.get(index));
-                        else
-                         newChats.add(chats.get(index));
+                    if (chats.get(index).getSender().equals(ARPreferencesManager.sender)) newChats.add(0, chats.get(index));
+                    else newChats.add(chats.get(index));
                 }
                 // Initializing:
                 adapter = new ChatAdapter(requireContext(), newChats);

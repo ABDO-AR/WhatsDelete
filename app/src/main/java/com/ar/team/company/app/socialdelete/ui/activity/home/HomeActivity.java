@@ -167,12 +167,16 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
             model.startDocumentOperation();
         }
         // Hiding(Dialog):
-        runOnUiThread(() -> {
-            dialog.hide();
-            initApp();
-        });
+        runOnUiThread(this::initUiThread);
         // Finishing:
         tempThread.interrupt();
+    }
+
+    private void initUiThread(){
+        // Hiding(Dialog):
+        dialog.hide();
+        // Init(App):
+        initApp();
     }
 
     // This method for control observer on ARImagesAccess:
@@ -242,9 +246,12 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
 
     // SharedPreferencesChangeListener:
     @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        // Initializing(APP):
-        initApp();
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String keyName) {
+        // Checking:
+        if (keyName.equals(ARPreferencesManager.WHATSAPP_CHATS)){
+            // Initializing(APP):
+            initApp();
+        }
     }
 
     @Override

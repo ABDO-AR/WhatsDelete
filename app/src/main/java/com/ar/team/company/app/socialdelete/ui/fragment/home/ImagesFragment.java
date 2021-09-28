@@ -68,7 +68,7 @@ public class ImagesFragment extends Fragment {
         binding.recyclerImageView.setAdapter(adapter);
         binding.recyclerImageView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
         // Loading:
-        new Handler(Looper.getMainLooper()).postDelayed(() -> isLoading(false), 1000);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> isLoading(false), 500);
     }
 
     @SuppressWarnings("SameParameterValue")

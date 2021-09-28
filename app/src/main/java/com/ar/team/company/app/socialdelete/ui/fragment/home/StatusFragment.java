@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import com.ar.team.company.app.socialdelete.R;
 import com.ar.team.company.app.socialdelete.control.adapter.StatusAdapter;
 import com.ar.team.company.app.socialdelete.control.adapter.VideosAdapter;
+import com.ar.team.company.app.socialdelete.control.preferences.ARPreferencesManager;
 import com.ar.team.company.app.socialdelete.databinding.FragmentStatusBinding;
 import com.ar.team.company.app.socialdelete.ui.activity.home.HomeViewModel;
 
@@ -64,7 +65,7 @@ public class StatusFragment extends Fragment {
         binding.statusRecyclerView.setAdapter(adapter);
         binding.statusRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
         // Loading:
-        new Handler(Looper.getMainLooper()).postDelayed(() -> isLoading(false), 1000);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> isLoading(false), 500);
     }
 
     @SuppressWarnings("SameParameterValue")
