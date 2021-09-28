@@ -14,6 +14,7 @@ import com.ar.team.company.app.socialdelete.ui.activity.show.image.ShowImageActi
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -22,7 +23,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImagesView
     // Fields:
     private final Context context;
     private final List<Bitmap> bitmaps;
-    public static List<Bitmap> staticBitmaps;
+    public static List<Bitmap> staticBitmaps = new ArrayList<>();
 
     // Constructor:
     public ImagesAdapter(Context context, List<Bitmap> bitmaps) {
@@ -56,6 +57,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImagesView
         Intent intent = new Intent(context, ShowImageActivity.class);
         // PuttingExtras:
         intent.putExtra("Index", pos);
+        intent.putExtra("TAG", "Images");
         // Developing:
         context.startActivity(intent);
     }

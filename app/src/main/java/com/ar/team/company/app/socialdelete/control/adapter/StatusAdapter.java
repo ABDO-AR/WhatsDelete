@@ -21,6 +21,7 @@ import com.ar.team.company.app.socialdelete.ui.activity.show.video.ShowVideoActi
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class StatusAdapter extends RecyclerView.Adapter {
@@ -28,6 +29,7 @@ public class StatusAdapter extends RecyclerView.Adapter {
     // Fields:
     private final Context context;
     private final List<File> files;
+    public static List<Bitmap> staticBitmaps = new ArrayList<>();
     // ViewTypes:
     public static final int VIEW_TYPE_IMAGE = 0;
     public static final int VIEW_TYPE_VIDEO = 1;
@@ -72,12 +74,12 @@ public class StatusAdapter extends RecyclerView.Adapter {
             Bitmap bitmap = ARImagesAccess.ARBitmapHelper.decodeBitmapFromFile(file.getAbsolutePath(), 800, 800);
             // Developing:
             ((StatusImageViewHolder) holder).binding.imageViewItem.setImageBitmap(bitmap);
-            //((StatusImageViewHolder) holder).binding.imageViewItem.setOnClickListener(view -> slidingImage(position));
+            ((StatusImageViewHolder) holder).binding.imageViewItem.setOnClickListener(view -> slidingImage(position));
         } else {
             Bitmap thumb = ThumbnailUtils.createVideoThumbnail(file.getAbsolutePath(), MediaStore.Images.Thumbnails.MINI_KIND);
             // Developing:
             ((StatusVideoViewHolder) holder).binding.videoThumbnail.setImageBitmap(thumb);
-            //((StatusVideoViewHolder) holder).binding.playVideoButton.setOnClickListener(v -> playVideo(file));
+            ((StatusVideoViewHolder) holder).binding.playVideoButton.setOnClickListener(v -> playVideo(file));
         }
     }
 
@@ -96,25 +98,37 @@ public class StatusAdapter extends RecyclerView.Adapter {
     }
 
     // Methods:
-    @UnderDevelopment(development = "HERE YOU HAVE TO MAKE A NEW CLASS OR EDIT CURRENT CLASS")
     private void slidingImage(int pos) {
         // Initializing:
         Intent intent = new Intent(context, ShowImageActivity.class);
+        // Clearing:
+        if (!staticBitmaps.isEmpty()) staticBitmaps.clear();
+        // Looping:
+        for (File file : files) {
+            // Checking:
+            if (!file.getAbsolutePath().endsWith(".mp4")) {
+                // SettingBitmaps:
+                staticBitmaps.add(ARImagesAccess.ARBitmapHelper.decodeBitmapFromFile(file.getAbsolutePath(), 800, 800));
+            }
+        }
         // PuttingExtras:
         intent.putExtra("Index", pos);
+        intent.putExtra("TAG", "Status");
         // Developing:
         context.startActivity(intent);
     }
 
     // PlayingVideos:
-    @UnderDevelopment(development = "HERE YOU HAVE TO MAKE A NEW CLASS OR EDIT CURRENT CLASS")
     private void playVideo(File file) {
-        // Initializing:
-        Intent intent = new Intent(context, ShowVideoActivity.class);
-        // PuttingExtras:
-        intent.putExtra("Uri", file.getAbsolutePath());
-        // Developing:
-        context.startActivity(intent);
+        // Checking:
+        if (file.getAbsolutePath().endsWith(".mp4")) {
+            // Initializing:
+            Intent intent = new Intent(context, ShowVideoActivity.class);
+            // PuttingExtras:
+            intent.putExtra("Uri", file.getAbsolutePath());
+            // Developing:
+            context.startActivity(intent);
+        }
     }
 
     // Holders:

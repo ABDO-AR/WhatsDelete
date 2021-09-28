@@ -12,6 +12,7 @@ import android.view.View;
 
 import com.ar.team.company.app.socialdelete.control.adapter.ImagesAdapter;
 import com.ar.team.company.app.socialdelete.control.adapter.SliderImageAdapter;
+import com.ar.team.company.app.socialdelete.control.adapter.StatusAdapter;
 import com.ar.team.company.app.socialdelete.databinding.ActivityShowImageBinding;
 
 import java.util.List;
@@ -36,7 +37,8 @@ public class ShowImageActivity extends AppCompatActivity {
         setContentView(view); // SET THE VIEW CONTENT TO THE (VIEW).
         // Initializing:
         index = getIntent().getExtras().getInt("Index");
-        bitmaps = ImagesAdapter.staticBitmaps;
+        if (getIntent().getExtras().getString("TAG").equals("Images")) bitmaps = ImagesAdapter.staticBitmaps;
+        else bitmaps = StatusAdapter.staticBitmaps;
         adapter = new SliderImageAdapter(this, bitmaps);
         // PreparingTextView:
         binding.imagesSizeTextView.setText((index + 1) + "/" + bitmaps.size());
