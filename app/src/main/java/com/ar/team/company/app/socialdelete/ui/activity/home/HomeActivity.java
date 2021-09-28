@@ -89,8 +89,6 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
         if (isGranted) {
             // Observers:
             initObservers();
-            // Initializing(App):
-            initApp();
         } else launcher.launch(requestPermName);
     }
 
@@ -99,8 +97,6 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
         if (ContextCompat.checkSelfPermission(this, requestPermName) == PackageManager.PERMISSION_GRANTED) {
             // Observers:
             initObservers();
-            // Initializing(App):
-            initApp();
         } else if (shouldShowRequestPermissionRationale(requestPermName)) {
             // Initializing:
             String mes = "This app cannot work without this permission";
@@ -151,6 +147,8 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
         tempThread = new Thread(this::preparingObservers);
         // Start:
         tempThread.start();
+        // Initializing(App):
+        initApp();
     }
 
     // Method(Preparing):
@@ -169,7 +167,10 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
             model.startDocumentOperation();
         }
         // Hiding(Dialog):
-        runOnUiThread(() -> dialog.hide());
+        runOnUiThread(() -> {
+            dialog.hide();
+            initApp();
+        });
         // Finishing:
         tempThread.interrupt();
     }
@@ -230,7 +231,7 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
         adapter = new PagerAdapter(getSupportFragmentManager(), getLifecycle());
         // AttachMediator:
         binding.mainContentLayout.homeViewPager.setAdapter(adapter);
-        mediator.attach();
+        if (!mediator.isAttached()) mediator.attach();
         // OpeningDrawer:
         binding.mainContentLayout.btnDrawer.setOnClickListener(view1 -> binding.drawerLayout.openMenu(true));
         // SettingMenuSize:

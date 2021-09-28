@@ -101,18 +101,29 @@ public class StatusAdapter extends RecyclerView.Adapter {
     private void slidingImage(int pos) {
         // Initializing:
         Intent intent = new Intent(context, ShowImageActivity.class);
+        int realPos = 0;
+        List<File> bitmapsFiles = new ArrayList<>();
+        List<Bitmap> bitmaps = new ArrayList<>();
         // Clearing:
         if (!staticBitmaps.isEmpty()) staticBitmaps.clear();
         // Looping:
         for (File file : files) {
             // Checking:
             if (!file.getAbsolutePath().endsWith(".mp4")) {
-                // SettingBitmaps:
-                staticBitmaps.add(ARImagesAccess.ARBitmapHelper.decodeBitmapFromFile(file.getAbsolutePath(), 800, 800));
+                // Setting:
+                bitmapsFiles.add(file);
+                bitmaps.add(ARImagesAccess.ARBitmapHelper.decodeBitmapFromFile(file.getAbsolutePath(), 800, 800));
             }
         }
+        // AddingStatic:
+        staticBitmaps = bitmaps;
+        // Looping:
+        for (int index = 0; index < bitmaps.size(); index++) {
+            // Checking:
+            if (bitmapsFiles.get(index).getName().equals(files.get(pos).getName())) realPos = index;
+        }
         // PuttingExtras:
-        intent.putExtra("Index", pos);
+        intent.putExtra("Index", realPos);
         intent.putExtra("TAG", "Status");
         // Developing:
         context.startActivity(intent);
