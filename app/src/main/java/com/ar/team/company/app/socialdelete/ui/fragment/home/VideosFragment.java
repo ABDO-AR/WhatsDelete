@@ -1,6 +1,8 @@
 package com.ar.team.company.app.socialdelete.ui.fragment.home;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,13 +53,15 @@ public class VideosFragment extends Fragment {
 
     // OnVideosChange:
     private void onVideosChanged(List<File> videos) {
+        // Loading:
+        isLoading(true);
         // Initializing:
         adapter = new VideosAdapter(requireContext(), videos);
         // Preparing(RecyclerView):
         binding.videosRecyclerView.setAdapter(adapter);
         binding.videosRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
         // Loading:
-        isLoading(false);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> isLoading(false), 1000);
     }
 
     @SuppressWarnings("SameParameterValue")

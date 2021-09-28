@@ -80,6 +80,13 @@
 
 
 
+    <style name="ar_def_fragment_card_view_background_dark">
+        <item name="android:backgroundTint">@color/dark_grey</item>
+    </style>
+    <style name="ar_def_fragment_card_view_background_light">
+        <item name="android:backgroundTint">@color/white</item>
+    </style>
+
 
     <style name="ar_chat_icon_background_dark">
         <item name="srcCompat">@drawable/ic_back_chat_button</item>

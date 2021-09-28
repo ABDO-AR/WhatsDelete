@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,13 +60,15 @@ public class ImagesFragment extends Fragment {
 
     // OnBitmapsChange:
     private void onBitmapsChanged(List<Bitmap> bitmaps) {
+        // Loading:
+        isLoading(true);
         // Initializing:
         adapter = new ImagesAdapter(requireContext(), bitmaps);
         // Preparing(RecyclerView):
         binding.recyclerImageView.setAdapter(adapter);
         binding.recyclerImageView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
         // Loading:
-        isLoading(false);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> isLoading(false), 1000);
     }
 
     @SuppressWarnings("SameParameterValue")

@@ -25,6 +25,7 @@
         <item name="ar_tab_indicator_color">@style/ar_tab_indicator_light</item>
         <item name="ar_chat_icon_background">@style/ar_chat_icon_background_light</item>
         <item name="mr_chat_icon_background">@style/mr_chat_icon_background_light</item>
+        <item name="ar_def_fragment_card_view_background">@style/ar_def_fragment_card_view_background_light</item>
 
     </style>
     <style name="MyCustomTextAppearance" parent="TextAppearance.Design.Tab">

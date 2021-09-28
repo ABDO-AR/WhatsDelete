@@ -50,7 +50,7 @@ public class ARStatusAccess {
                 }
             }
             // Checking:
-            if (whatsAppStatusFiles != null && whatsAppStatusFiles.length != 0){
+            if (whatsAppStatusFiles != null && whatsAppStatusFiles.length != 0) {
                 // We will start checking if file contains this new file or not:
                 for (File file : whatsAppStatusFiles) {
                     // Checking:
@@ -76,6 +76,9 @@ public class ARStatusAccess {
                         // Start creating temp dir:
                         ARAccess.createTempDirAt(context, ARAccess.STATUS_DIR);
                     }
+                    // Copying:
+                    ARAccess.copy(file, new File(statusDir.getAbsolutePath() + "/" + file.getName()));
+                    returningFiles.add(file);
                     // Increment:
                     tempIndex++;
                 }

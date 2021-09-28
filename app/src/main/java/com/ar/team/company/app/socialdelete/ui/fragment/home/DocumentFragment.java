@@ -1,6 +1,8 @@
 package com.ar.team.company.app.socialdelete.ui.fragment.home;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,13 +54,15 @@ public class DocumentFragment extends Fragment {
 
     // OnDocumentsChange:
     private void onDocumentsChanged(List<Document> documents) {
+        // Loading:
+        isLoading(true);
         // Initializing:
         adapter = new DocumentsAdapter(requireContext(), documents);
         // Preparing(RecyclerView):
         binding.recyclerDocumentsView.setAdapter(adapter);
         binding.recyclerDocumentsView.setLayoutManager(new GridLayoutManager(requireContext(), 2));
         // Loading:
-        isLoading(false);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> isLoading(false), 1000);
     }
 
     @SuppressWarnings("SameParameterValue")

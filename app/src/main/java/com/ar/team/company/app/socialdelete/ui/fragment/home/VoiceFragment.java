@@ -1,6 +1,8 @@
 package com.ar.team.company.app.socialdelete.ui.fragment.home;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,13 +54,15 @@ public class VoiceFragment extends Fragment {
 
     // OnVoicesChange:
     private void onVoicesChanged(List<File> voices) {
+        // Loading:
+        isLoading(true);
         // Initializing:
         adapter = new VoicesAdapter(requireContext(), voices);
         // Preparing(RecyclerView):
         binding.voicesRecyclerView.setAdapter(adapter);
         binding.voicesRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         // Loading:
-        isLoading(false);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> isLoading(false), 1000);
     }
 
     @SuppressWarnings("SameParameterValue")

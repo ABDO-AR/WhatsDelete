@@ -1,6 +1,8 @@
 package com.ar.team.company.app.socialdelete.ui.fragment.home;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,13 +56,15 @@ public class StatusFragment extends Fragment {
 
     // OnStatusChange:
     private void onStatusChanged(List<File> videos) {
+        // Loading:
+        isLoading(true);
         // Initializing:
         adapter = new StatusAdapter(requireContext(), videos);
         // Preparing(RecyclerView):
         binding.statusRecyclerView.setAdapter(adapter);
         binding.statusRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
         // Loading:
-        isLoading(false);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> isLoading(false), 1000);
     }
 
     @SuppressWarnings("SameParameterValue")
