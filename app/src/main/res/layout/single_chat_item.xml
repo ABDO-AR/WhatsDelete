@@ -86,6 +86,7 @@
             android:layout_height="@dimen/_25sdp"
             android:layout_marginEnd="8dp"
             android:backgroundTint="@color/colorPrimary"
+            android:visibility="visible"
             app:cardCornerRadius="999dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -96,10 +97,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textSize="@dimen/_10ssp"
                 android:text="@string/_1"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10ssp" />
 
         </com.google.android.material.card.MaterialCardView>
 

@@ -64,7 +64,7 @@ public class NotificationListener extends NotificationListenerService {
                     String currentPackages = manager.getStringPreferences(ARPreferencesManager.PACKAGE_APP_NAME);
                     List<Chat.Messages> messages = new ArrayList<>();
                     // Initializing(Data):
-                    String msg = sbn.getNotification().extras.getString(Notification.EXTRA_TEXT);
+                    String msg = sbn.getNotification().extras.getString(Notification.EXTRA_TEXT) + "";
                     String currentSenders = manager.getStringPreferences(ARPreferencesManager.SENDER_NAME);
                     // Checking:
                     boolean deletedMsgState = !msg.equals("This message was deleted");
@@ -150,10 +150,15 @@ public class NotificationListener extends NotificationListenerService {
                                             // Adding:
                                             chat.getMessages().addAll(messages);
                                             // SettingNewMessage:
+                                            chat.setHasNewMessage(true);
                                             chat.setNewMessage(true);
-                                            ARPreferencesManager.sender= chat.getSender();
+                                            ARPreferencesManager.sender = chat.getSender();
                                         }
-                                    } else chat.getMessages().addAll(messages); // Adding.
+                                    } else {
+                                        // Adding:
+                                        chat.getMessages().addAll(messages);
+                                        chat.setHasNewMessage(true);
+                                    }
                                     // AddingSender($Preferences):
                                     if (!currentSenders.contains(sender)) {
                                         // Initializing:
@@ -167,20 +172,23 @@ public class NotificationListener extends NotificationListenerService {
                             if (!currentSenders.contains(sender)) {
                                 // Initializing:
                                 Chat chat = new Chat(sender, getCurrentDate(), messages);
+                                chat.setHasNewMessage(true);
                                 // AddingTheNewChat:
                                 chats.add(chat);
                             }
                         } else {
                             // Initializing:
                             chats = new ArrayList<>();
+                            Chat chat = new Chat(sender, getCurrentDate(), messages);
+                            chat.setHasNewMessage(true);
                             // Developing:
-                            chats.add(new Chat(sender, getCurrentDate(), messages));
+                            chats.add(chat);
                         }
                         // SettingPreferences:
                         manager.setStringPreferences(ARPreferencesManager.WHATSAPP_CHATS, ARUtils.fromChatsToJson(chats));
                         // Debugging:
                         ARUtils.debug(TAG, NP_FIELD, manager.getStringPreferences(ARPreferencesManager.WHATSAPP_CHATS));
-                    }else if (msg.equals("This message was deleted")) {
+                    } else if (msg.equals("This message was deleted")) {
                         // Creating:
                         NotificationManager notificationManager = getSystemService(NotificationManager.class);
                         createNotificationChannel(notificationManager);
