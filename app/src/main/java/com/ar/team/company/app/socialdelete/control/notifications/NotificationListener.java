@@ -1,14 +1,23 @@
 package com.ar.team.company.app.socialdelete.control.notifications;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.os.Build;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
 
+import androidx.core.app.NotificationCompat;
+
+import com.ar.team.company.app.socialdelete.R;
 import com.ar.team.company.app.socialdelete.control.preferences.ARPreferencesManager;
 import com.ar.team.company.app.socialdelete.model.ARIcon;
 import com.ar.team.company.app.socialdelete.model.Chat;
 import com.ar.team.company.app.socialdelete.ar.utils.ARUtils;
+import com.ar.team.company.app.socialdelete.ui.activity.home.HomeActivity;
 import com.ar.team.company.app.socialdelete.ui.activity.show.chat.ShowChatActivity;
 
 import java.util.ArrayList;
@@ -24,6 +33,8 @@ public class NotificationListener extends NotificationListenerService {
     public static final String WHATSAPP_PACKAGE_NAME = "com.whatsapp";
     public static final List<Notification.Action> finalActions = new ArrayList<>();
     public static final List<ARIcon> icons = new ArrayList<>();
+    // Channels:
+    public static final String CHANNEL_ID = "AutoRDMDeletedMessage";
     // TAGS:
     private static final String TAG = "NotificationListener";
     private static final String NP_FIELD = "onNotificationPosted: ";
@@ -55,6 +66,8 @@ public class NotificationListener extends NotificationListenerService {
                     // Initializing(Data):
                     String msg = sbn.getNotification().extras.getString(Notification.EXTRA_TEXT);
                     String currentSenders = manager.getStringPreferences(ARPreferencesManager.SENDER_NAME);
+                    // Checking:
+                    boolean deletedMsgState = !msg.equals("This message was deleted");
                     // Design:
                     String firstChar;
                     // Trying:
@@ -74,7 +87,7 @@ public class NotificationListener extends NotificationListenerService {
                         }
                     }
                     // CheckingStatusBarNotification:
-                    if (state && !msg.equals(firstChar + " new messages")) {
+                    if (state && !msg.equals(firstChar + " new messages") && deletedMsgState) {
                         // Initializing(Replay):
                         Notification.WearableExtender extender = new Notification.WearableExtender(sbn.getNotification());
                         List<Notification.Action> actions = new ArrayList<>(extender.getActions());
@@ -167,6 +180,23 @@ public class NotificationListener extends NotificationListenerService {
                         manager.setStringPreferences(ARPreferencesManager.WHATSAPP_CHATS, ARUtils.fromChatsToJson(chats));
                         // Debugging:
                         ARUtils.debug(TAG, NP_FIELD, manager.getStringPreferences(ARPreferencesManager.WHATSAPP_CHATS));
+                    }else if (msg.equals("This message was deleted")) {
+                        // Creating:
+                        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+                        createNotificationChannel(notificationManager);
+                        // Preparing:
+                        // Create an explicit intent for an Activity in your app
+                        Intent intent = new Intent(this, HomeActivity.class);
+                        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+                        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                                .setSmallIcon(R.drawable.ic_notification_small_icon)
+                                .setContentTitle("AutoRDM")
+                                .setContentText("Message Deleted Was Found")
+                                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                                .setContentIntent(pendingIntent)
+                                .setAutoCancel(true);
+                        // notificationId is a unique int for each notification that you must define
+                        notificationManager.notify(881231, builder.build());
                     }
                     // Debugging:
                     ARUtils.debug(TAG, NP_FIELD, "Whatsapp Package Was Founded In Preferences");
@@ -174,6 +204,22 @@ public class NotificationListener extends NotificationListenerService {
                     ARUtils.debug(TAG, NP_FIELD, "Start");
                 }
             }
+        }
+    }
+
+    // Method(Notification):
+    private void createNotificationChannel(NotificationManager notificationManager) {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            notificationManager.createNotificationChannel(channel);
         }
     }
 

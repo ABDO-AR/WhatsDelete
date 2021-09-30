@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import com.ar.team.company.app.socialdelete.ar.access.ARAccess;
 import com.ar.team.company.app.socialdelete.control.preferences.ARPreferencesManager;
@@ -37,6 +38,8 @@ public class ARImagesAccess {
         File imagesDir = ARAccess.getAppDir(context, ARAccess.IMAGES_DIR);
         File[] whatsAppImagesFiles = getImagesFiles();
         List<Bitmap> bitmaps = new ArrayList<>();
+        // Debugging:
+        Log.d(ARAccess.TAG, "A11-OP: ImagesAccess :: " + imagesDir.getAbsolutePath());
         // Initializing(State):
         boolean state1 = Objects.requireNonNull(imagesDir.listFiles()).length != 0;
         // Looping:
@@ -46,7 +49,14 @@ public class ARImagesAccess {
             StringBuilder copied = new StringBuilder();
             // If it reached to here that's mean that there are already copied images.
             // Now we will start a simple for loop and checking each file by name:
+            int tempDebug = 0;
             for (File copiedFile : Objects.requireNonNull(imagesDir.listFiles())) {
+                // Checking:
+                if (tempDebug == 0) {
+                    // Debugging:
+                    Log.d(ARAccess.TAG, "A11-OP: ImagesAccess First Copied File :: " + copiedFile.getAbsolutePath());
+                    tempDebug++;
+                }
                 // Checking:
                 if (!copiedFile.isDirectory()) {
                     // Getting all files name:
@@ -65,6 +75,8 @@ public class ARImagesAccess {
                         manager.setStringPreferences(ARPreferencesManager.IMAGE_COPIED_FILES, whatsapp + file.getName() + ",");
                         // Here we will start copy operation because that was new file:
                         ARAccess.copy(file, new File(imagesDir.getAbsolutePath() + "/" + file.getName()));
+                        // Debugging:
+                        Log.d(ARAccess.TAG, "A11-OP: ImagesAccess Copy Operation Has Been Started For File :: " + file.getName());
                     }
                 }
             }
@@ -81,6 +93,8 @@ public class ARImagesAccess {
                     if (tempIndex <= 1) {
                         // Start creating temp dir:
                         ARAccess.createTempDirAt(context, ARAccess.IMAGES_DIR);
+                        // Debugging:
+                        Log.d(ARAccess.TAG, "A11-OP: ImagesAccess Temp Dir Has Been Created");
                     }
                     // Increment:
                     tempIndex++;
@@ -91,6 +105,8 @@ public class ARImagesAccess {
         staticFiles = Arrays.asList(Objects.requireNonNull(imagesDir.listFiles()));
         // ReRunObserver:
         HomeActivity.setImagesObserver(true);
+        // Debugging:
+        Log.d(ARAccess.TAG, "A11-OP: ImagesAccess Is Files Empty :: " + bitmaps.isEmpty());
         // Retuning:
         return bitmaps;
     }
