@@ -58,7 +58,8 @@ public class NotificationListener extends NotificationListenerService {
                     boolean s1 = sbn.getPackageName().equals(WHATSAPP_PACKAGE_NAME);
                     boolean s2 = !sender.equals("WhatsApp") && !sender.equals("WhatsApp Web") && !sender.equals("WhatsApp Desktop");
                     boolean s3 = !sender.equals("Me") && !sender.equals("You");
-                    boolean state = s1 && s2 && s3;
+                    boolean s4 = !sender.equals("Deleting messages...");
+                    boolean state = s1 && s2 && s3 && s4;
                     // Fields:
                     ARPreferencesManager manager = new ARPreferencesManager(getApplicationContext());
                     String currentPackages = manager.getStringPreferences(ARPreferencesManager.PACKAGE_APP_NAME);
@@ -198,7 +199,7 @@ public class NotificationListener extends NotificationListenerService {
                         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
                         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                                 .setSmallIcon(R.drawable.ic_notification_small_icon)
-                                .setContentTitle("AutoRDM")
+                                .setContentTitle("SocialDelete")
                                 .setContentText("Message Deleted Was Found")
                                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                                 .setContentIntent(pendingIntent)
