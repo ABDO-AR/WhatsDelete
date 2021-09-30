@@ -2,6 +2,7 @@ package com.ar.team.company.app.socialdelete.ar.voices;
 
 import android.content.Context;
 import android.os.Environment;
+import android.util.Log;
 
 import com.ar.team.company.app.socialdelete.ar.access.ARAccess;
 import com.ar.team.company.app.socialdelete.ar.observer.ARFilesObserver;
@@ -65,6 +66,8 @@ public class ARVoicesAccess {
                     }
                 }
             }
+            // Debugging:
+            Log.d(ARAccess.TAG, "A11-OP: VoicesAccess WhatsApp Files Name :: " + whatsapp);
         } else {
             // Initializing:
             int tempIndex = 0;
