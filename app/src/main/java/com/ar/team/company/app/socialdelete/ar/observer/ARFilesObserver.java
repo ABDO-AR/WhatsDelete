@@ -39,6 +39,7 @@ public class ARFilesObserver extends FileObserver {
             if (event == FileObserver.CREATE || event == FileObserver.ACCESS) {
                 // Debugging:
                 Log.d(TAG, "onEventCreate: " + s);
+                Log.d(ARAccess.TAG, "A11-OP: ARFilesObserver :: " + s);
                 // StartOperations:
                 runOperations();
             }

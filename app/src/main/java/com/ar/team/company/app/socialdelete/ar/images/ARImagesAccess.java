@@ -55,6 +55,7 @@ public class ARImagesAccess {
                 if (tempDebug == 0) {
                     // Debugging:
                     Log.d(ARAccess.TAG, "A11-OP: ImagesAccess First Copied File :: " + copiedFile.getAbsolutePath());
+                    // Increment:
                     tempDebug++;
                 }
                 // Checking:
