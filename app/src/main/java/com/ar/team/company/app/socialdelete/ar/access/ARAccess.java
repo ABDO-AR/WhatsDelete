@@ -218,5 +218,4 @@ public class ARAccess {
         // Debugging:
         Log.d(TAG, "A11-OP: Files Copied Successfully");
     }
-
 }

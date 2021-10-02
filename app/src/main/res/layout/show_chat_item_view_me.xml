@@ -44,6 +44,7 @@
                 android:layout_marginBottom="4dp"
                 android:autoLink="web|phone|email"
                 android:minEms="2"
+                android:textIsSelectable="true"
                 android:fontFamily="@font/articulatcf_demi_normal"
                 android:text="Message"
                 android:textSize="@dimen/_11sdp"
