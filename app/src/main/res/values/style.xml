@@ -95,7 +95,17 @@
 
     </style>
 
+    <style name="mr_item_chat_light">
+        <item name="android:background">@color/grey_light</item>
+        <item name="android:tint">@color/grey_light</item>
 
+
+    </style>
+    <style name="mr_item_chat_dark">
+        <item name="android:background">@color/dark_grey1</item>
+        <item name="android:tint">@color/dark_grey1</item>
+
+    </style>
 
     <style name="ar_def_fragment_card_view_background_dark">
         <item name="android:backgroundTint">@color/dark_grey</item>

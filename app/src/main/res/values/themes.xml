@@ -21,6 +21,7 @@
         <item name="ar_background">@style/ar_background_light</item>
         <item name="mr_background_chat">@style/mr_background_chat_light</item>
         <item name="mr_background_chat2">@style/mr_background_chat_light_2</item>
+        <item name="mr_item_chat">@style/mr_item_chat_light</item>
         <item name="mr_text_color">@style/mr_text_light</item>
         <item name="mr_text_color2">@style/mr_text_light_2</item>
         <item name="ar_def_background">@style/ar_def_background_light</item>

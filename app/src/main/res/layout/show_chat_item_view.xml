@@ -43,7 +43,7 @@
                 android:fontFamily="@font/articulat_cf_bold"
                 android:text="Message"
                 android:textSize="@dimen/_11sdp"
-                android:textColor="@color/dark_grey"
+                style="?attr/mr_text_color"
                 />
 
             <TextView
@@ -55,7 +55,10 @@
                 android:text="8:00PM"
 
                 android:textSize="@dimen/_7sdp"
-                android:layout_gravity="end" />
+                android:layout_gravity="end"
+
+                style="?attr/mr_text_color2"
+                />
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>

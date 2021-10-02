@@ -47,17 +47,19 @@
                 android:fontFamily="@font/articulatcf_demi_normal"
                 android:text="Message"
                 android:textSize="@dimen/_11sdp"
-                android:textColor="@color/dark_grey"
+
+                style="?attr/mr_text_color"
                />
 
             <TextView
                 android:id="@+id/date_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="end"
                 android:drawablePadding="2dp"
                 android:text="8:00PM"
                 android:textSize="@dimen/_7sdp"
-                android:layout_gravity="end"
+                style="?attr/mr_text_color"
 
                 />
         </LinearLayout>
