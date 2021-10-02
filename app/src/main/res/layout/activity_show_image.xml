@@ -9,8 +9,8 @@
 
     <ImageButton
         android:id="@+id/share_button"
-        android:layout_width="@dimen/_30sdp"
-        android:layout_height="@dimen/_30sdp"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="@android:color/transparent"
@@ -22,8 +22,8 @@
 
     <ImageButton
         android:id="@+id/back_button"
-        android:layout_width="@dimen/_30sdp"
-        android:layout_height="@dimen/_30sdp"
+        android:layout_width="@dimen/_20ssp"
+        android:layout_height="@dimen/_20ssp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:background="@android:color/transparent"
@@ -51,7 +51,7 @@
             android:text="@string/_1_10"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
             android:textColor="@color/white"
-            android:textSize="@dimen/_20ssp"
+            android:textSize="@dimen/_17ssp"
             android:textStyle="bold"
             tools:layout_editor_absoluteX="68dp"
             tools:layout_editor_absoluteY="59dp" />

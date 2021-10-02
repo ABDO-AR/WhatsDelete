@@ -34,6 +34,16 @@
         <item name="android:tint">@color/grey</item>
     </style>
 
+    <style name="mr_text_light_2">
+        <item name="android:textColor">@color/dark_grey</item>
+        <item name="android:tint">@color/dark_grey</item>
+
+    </style>
+    <style name="mr_text_dark_2">
+        <item name="android:textColor">@color/grey2</item>
+        <item name="android:tint">@color/grey2</item>
+    </style>
+
     <style name="card_background_light">
         <item name="android:background">@drawable/card_background_board</item>
     </style>
@@ -53,7 +63,14 @@
     </style>
     <style name="mr_background_chat_dark">
         <item name="android:background">@color/dark_grey</item>
+    </style>
 
+    <style name="mr_background_chat_light_2">
+        <item name="android:background">@color/white</item>
+
+    </style>
+    <style name="mr_background_chat_dark_2">
+        <item name="android:background">@color/grey1</item>
     </style>
 
     <style name="ar_def_background_dark">
@@ -96,7 +113,7 @@
     </style>
 
     <style name="mr_chat_icon_background_dark">
-        <item name="srcCompat">@drawable/ic_back_chat_button_light2</item>
+        <item name="srcCompat">@drawable/ic_back_chat_button</item>
     </style>
     <style name="mr_chat_icon_background_light">
         <item name="srcCompat">@drawable/ic_back_chat_button_light2</item>

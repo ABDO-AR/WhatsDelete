@@ -22,7 +22,9 @@
         <item name="ar_background">@style/ar_background_dark</item>
         <item name="ar_def_background">@style/ar_def_background_dark</item>
         <item name="mr_text_color">@style/mr_text_dark</item>
+        <item name="mr_text_color2">@style/mr_text_dark_2</item>
         <item name="mr_background_chat">@style/mr_background_chat_dark</item>
+        <item name="mr_background_chat2">@style/mr_background_chat_dark_2</item>
         <item name="ar_tab_indicator_color">@style/ar_tab_indicator_dark</item>
         <item name="ar_chat_icon_background">@style/ar_chat_icon_background_dark</item>
         <item name="mr_chat_icon_background">@style/mr_chat_icon_background_dark</item>

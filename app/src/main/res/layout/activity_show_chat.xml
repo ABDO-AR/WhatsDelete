@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.show.chat.ShowChatActivity">
+    tools:context=".ui.activity.show.chat.ShowChatActivity"
+    style="?attr/mr_background_chat2"
+    >
 
 
     <View
@@ -39,6 +41,7 @@
             android:paddingBottom="@dimen/_5sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+
 
             >
 
@@ -79,8 +82,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/articulat_cf_bold"
                     android:text="@string/sender_demo"
-
-                    android:textColor="@color/dark_grey"
+                    style="?attr/mr_text_color"
                     android:textSize="@dimen/_15sdp" />
 
             </HorizontalScrollView>
@@ -105,7 +107,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:backgroundTint="@color/white"
+      style="?attr/mr_background_chat2"
         app:cardElevation="0dp"
 
         app:layout_constraintBottom_toTopOf="@+id/materialCardView"
