@@ -4,9 +4,11 @@ import android.content.Context;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -22,6 +24,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("unused")
 public class VoicesAdapter extends RecyclerView.Adapter<VoicesAdapter.VoicesViewHolder> {
@@ -32,6 +35,8 @@ public class VoicesAdapter extends RecyclerView.Adapter<VoicesAdapter.VoicesView
     // Fields(MediaPlayer):
     private int index = 9999999;
     private MediaPlayer player;
+    private Handler seekHandler = new Handler();
+    private Runnable run;
     // TAGS:
     private static final String TAG = "VoicesAdapter";
 
@@ -94,6 +99,63 @@ public class VoicesAdapter extends RecyclerView.Adapter<VoicesAdapter.VoicesView
                 player.setDataSource(audioPath);
                 player.prepare();
                 player.start();
+                // StartSeeking:
+                binding.seekBar.setMax(player.getDuration());
+                binding.seekBar.setTag(position);
+                binding.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                        if (player != null && b) {
+                            player.seekTo(i);
+                        }
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+
+                    }
+                });
+                run = () -> {
+                    if (player != null && player.isPlaying()) {
+                        // Updateing SeekBar every 100 miliseconds
+                        binding.seekBar.setProgress(player.getCurrentPosition());
+                        seekHandler.postDelayed(run, 100);
+                        //For Showing time of audio(inside runnable)
+                        int miliSeconds = player.getCurrentPosition();
+                        if (miliSeconds != 0) {
+                            //if audio is playing, showing current time;
+                            long minutes = TimeUnit.MILLISECONDS.toMinutes(miliSeconds);
+                            long seconds = TimeUnit.MILLISECONDS.toSeconds(miliSeconds);
+                            if (minutes == 0) {
+                                binding.durationTextView.setText("0:" + seconds + "/" + calculateDuration(player.getDuration()));
+                            } else {
+                                if (seconds >= 60) {
+                                    long sec = seconds - (minutes * 60);
+                                    binding.durationTextView.setText(minutes + ":" + sec + "/" + calculateDuration(player.getDuration()));
+                                }
+                            }
+                        } else {
+                            //Displaying total time if audio not playing
+                            int totalTime = player.getDuration();
+                            long minutes = TimeUnit.MILLISECONDS.toMinutes(totalTime);
+                            long seconds = TimeUnit.MILLISECONDS.toSeconds(totalTime);
+                            if (minutes == 0) {
+                                binding.durationTextView.setText("0:" + seconds);
+                            } else {
+                                if (seconds >= 60) {
+                                    long sec = seconds - (minutes * 60);
+                                    binding.durationTextView.setText(minutes + ":" + sec);
+                                }
+                            }
+                        }
+                    }
+                };
+                run.run();
                 // Debugging:
                 Log.d(TAG, "audioMethod: StartPlaying Audio");
             } catch (IOException e) {
@@ -110,10 +172,11 @@ public class VoicesAdapter extends RecyclerView.Adapter<VoicesAdapter.VoicesView
                 player = new MediaPlayer();
                 // SettingRes:
                 binding.playVoiceButton.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_play));
+                // StopSeeking:
+                binding.seekBar.setProgress(0);
+                binding.seekBar.setOnSeekBarChangeListener(null);
                 // Debugging:
                 Log.d(TAG, "audioMethod: StopPlaying Audio");
-                // Checking:
-                if (index != position) audioMethod(binding, position);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -124,11 +187,24 @@ public class VoicesAdapter extends RecyclerView.Adapter<VoicesAdapter.VoicesView
         index = position;
         // Notify:
         notifyDataSetChanged();
-        // Checking:
-        if (index != position) audioMethod(binding, position);
         // Debugging:
         Log.d(TAG, "audioMethod: EndingOfMethod");
         Log.d(TAG, "audioMethod: --------------------------------------------------");
+    }
+
+    private String calculateDuration(int duration) {
+        String finalDuration = "";
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(duration);
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(duration);
+        if (minutes == 0) {
+            finalDuration = "0:" + seconds;
+        } else {
+            if (seconds >= 60) {
+                long sec = seconds - (minutes * 60);
+                finalDuration = minutes + ":" + sec;
+            }
+        }
+        return finalDuration;
     }
 
     // Method(OnPlayerCompleted):

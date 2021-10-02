@@ -23,7 +23,7 @@ public class ARStatusAccess {
     }
 
     // Method(Static):
-    public static List<File> getStatusWithDirs(Context context) {
+    public synchronized static List<File> getStatusWithDirs(Context context) {
         // Control:
         HomeActivity.setStatusObserver(false);
         // Initializing:
@@ -102,7 +102,7 @@ public class ARStatusAccess {
         File[] backupFiles = new File(finalPath2).listFiles(file -> isStatus(file.getAbsolutePath()));
         File[] files = new File(finalPath).listFiles(file -> isStatus(file.getAbsolutePath()));
         // Checking:
-        if (files == null || files.length <= 0) files = backupFiles;
+        if (files == null) files = backupFiles;
         // Returning:
         return files;
     }

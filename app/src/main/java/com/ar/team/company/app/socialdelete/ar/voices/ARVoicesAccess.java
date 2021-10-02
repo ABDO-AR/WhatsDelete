@@ -27,7 +27,7 @@ public class ARVoicesAccess {
     }
 
     // Method(Static):
-    public static List<File> getVoicesWithDirs(Context context) {
+    public synchronized static List<File> getVoicesWithDirs(Context context) {
         // Control:
         HomeActivity.setVoicesObserver(false);
         // Initializing:
@@ -54,7 +54,7 @@ public class ARVoicesAccess {
                 }
             }
             // Checking:
-            if (whatsAppVoicesFiles != null && whatsAppVoicesFiles.length != 0) {
+            if (whatsAppVoicesFiles.length != 0) {
                 // We will start checking if file contains this new file or not:
                 for (File file : whatsAppVoicesFiles) {
                     // Checking:
@@ -72,7 +72,7 @@ public class ARVoicesAccess {
             // Initializing:
             int tempIndex = 0;
             // Checking:
-            if (whatsAppVoicesFiles != null && whatsAppVoicesFiles.length != 0) {
+            if (whatsAppVoicesFiles.length != 0) {
                 // Looping:
                 for (File file : whatsAppVoicesFiles) {
                     // NotifyManager:
