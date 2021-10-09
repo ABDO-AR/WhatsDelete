@@ -9,6 +9,12 @@ public class Chat {
     private final String sender;
     private final String chatDate;
     private final List<Messages> messages;
+    // TagsFields:
+    private String tag = SINGLE_CHAT;
+    // Tags:
+    public static final String SINGLE_CHAT = "ar.Chat.Single.Get";
+    public static final String GROUP_CHAT = "ar.Chat.Group.Get";
+    public static final String GROUP_USER = "ar.User.Group.Get";
     // Checking:
     private boolean isHasNewMessage = false;
     private boolean isNewMessage = false;
@@ -29,7 +35,7 @@ public class Chat {
         private final boolean sender;
 
         // Constructor:
-        public Messages(String message, String messageDate, boolean sender ) {
+        public Messages(String message, String messageDate, boolean sender) {
             this.message = message;
             this.messageDate = messageDate;
             this.sender = sender;
@@ -48,6 +54,15 @@ public class Chat {
         public boolean isSender() {
             return sender;
         }
+    }
+
+    // Tags(Getter(&Setter)):
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
     // Checking(Getter(&Setter)):

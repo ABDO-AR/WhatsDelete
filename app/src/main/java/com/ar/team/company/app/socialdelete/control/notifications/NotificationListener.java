@@ -88,7 +88,7 @@ public class NotificationListener extends NotificationListenerService {
                         }
                     }
                     // CheckingStatusBarNotification:
-                    if (state && !msg.equals(firstChar + " new messages") && !msg.equals(firstChar + " رسائل جديدة")  && !msg.equals("رسالتان ٢ جديدتان") && deletedMsgState) {
+                    if (state && !msg.equals(firstChar + " new messages") && !msg.equals(firstChar + " رسائل جديدة") && !msg.equals("رسالتان ٢ جديدتان") && deletedMsgState) {
                         // Initializing(Replay):
                         Notification.WearableExtender extender = new Notification.WearableExtender(sbn.getNotification());
                         List<Notification.Action> actions = new ArrayList<>(extender.getActions());
@@ -148,16 +148,52 @@ public class NotificationListener extends NotificationListenerService {
                                     if (!chat.getMessages().isEmpty()) {
                                         // Checking(MessagesSizeForRemovingDuplicates):
                                         if (!chat.getMessages().get(chat.getMessages().size() - 1).getMessage().equals(messages.get(0).getMessage())) {
-                                            // Adding:
-                                            chat.getMessages().addAll(messages);
+                                            // Operations:
+                                            if (msg.equals("null")) {
+                                                chat.setTag(Chat.GROUP_CHAT);
+                                                // Clearing:
+                                                chat.getMessages().clear();
+                                                // Adding:
+                                                chat.getMessages().addAll(messages);
+                                            } else if (sender.contains(": ")) {
+                                                chat.setTag(Chat.GROUP_USER);
+                                                for (int index = 0; index < chats.size(); index++) {
+                                                    if (chat.getSender().contains(chats.get(index).getSender())) {
+                                                        // This is the group for this chat:
+                                                        chats.get(index).getMessages().add(new Chat.Messages(msg.trim(), date, true));
+                                                    }
+                                                }
+                                            } else {
+                                                chat.setTag(Chat.SINGLE_CHAT);
+                                                // Adding:
+                                                chat.getMessages().addAll(messages);
+                                            }
                                             // SettingNewMessage:
                                             chat.setHasNewMessage(true);
                                             chat.setNewMessage(true);
                                             ARPreferencesManager.sender = chat.getSender();
                                         }
                                     } else {
-                                        // Adding:
-                                        chat.getMessages().addAll(messages);
+                                        // Operations:
+                                        if (msg.equals("null")) {
+                                            chat.setTag(Chat.GROUP_CHAT);
+                                            // Clearing:
+                                            chat.getMessages().clear();
+                                            // Adding:
+                                            chat.getMessages().addAll(messages);
+                                        } else if (sender.contains(": ")) {
+                                            chat.setTag(Chat.GROUP_USER);
+                                            for (int index = 0; index < chats.size(); index++) {
+                                                if (chat.getSender().contains(chats.get(index).getSender())) {
+                                                    // This is the group for this chat:
+                                                    chats.get(index).getMessages().add(new Chat.Messages(msg.trim(), date, true));
+                                                }
+                                            }
+                                        } else {
+                                            chat.setTag(Chat.SINGLE_CHAT);
+                                            // Adding:
+                                            chat.getMessages().addAll(messages);
+                                        }
                                         chat.setHasNewMessage(true);
                                     }
                                     // AddingSender($Preferences):
@@ -174,16 +210,46 @@ public class NotificationListener extends NotificationListenerService {
                                 // Initializing:
                                 Chat chat = new Chat(sender, getCurrentDate(), messages);
                                 chat.setHasNewMessage(true);
-                                // AddingTheNewChat:
-                                chats.add(chat);
+                                // Operations:
+                                if (msg.equals("null")) {
+                                    chat.setTag(Chat.GROUP_CHAT);
+                                    // Clearing:
+                                    chat.getMessages().clear();
+                                    // AddingTheNewChat:
+                                    chats.add(chat);
+                                } else if (sender.contains(": ")) {
+                                    chat.setTag(Chat.GROUP_USER);
+                                    for (int index = 0; index < chats.size(); index++) {
+                                        if (chat.getSender().contains(chats.get(index).getSender())) {
+                                            // This is the group for this chat:
+                                            chats.get(index).getMessages().add(new Chat.Messages(msg.trim(), date, true));
+                                        }
+                                    }
+                                } else {
+                                    chat.setTag(Chat.SINGLE_CHAT);
+                                    // AddingTheNewChat:
+                                    chats.add(chat);
+                                }
                             }
                         } else {
                             // Initializing:
                             chats = new ArrayList<>();
                             Chat chat = new Chat(sender, getCurrentDate(), messages);
                             chat.setHasNewMessage(true);
-                            // Developing:
-                            chats.add(chat);
+                            // Operations:
+                            if (msg.equals("null")) {
+                                chat.setTag(Chat.GROUP_CHAT);
+                                // Clearing:
+                                chat.getMessages().clear();
+                                // Developing:
+                                chats.add(chat);
+                            } else if (sender.contains(": ")) {
+                                chat.setTag(Chat.GROUP_USER);
+                            } else {
+                                chat.setTag(Chat.SINGLE_CHAT);
+                                // Developing:
+                                chats.add(chat);
+                            }
                         }
                         // SettingPreferences:
                         manager.setStringPreferences(ARPreferencesManager.WHATSAPP_CHATS, ARUtils.fromChatsToJson(chats));

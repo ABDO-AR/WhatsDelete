@@ -63,8 +63,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         Icon sendIcon = null;
         // Developing:
         holder.binding.senderNameTextView.setText(chat.getSender());
-        holder.binding.dateTextView.setText(chat.getMessages().get(chat.getMessages().size() - 1).getMessageDate());
-        holder.binding.lastMessageTextView.setText(chat.getMessages().get(chat.getMessages().size() - 1).getMessage());
+        if (chat.getMessages().size() != 0){
+            holder.binding.dateTextView.setText(chat.getMessages().get(chat.getMessages().size() - 1).getMessageDate());
+            holder.binding.lastMessageTextView.setText(chat.getMessages().get(chat.getMessages().size() - 1).getMessage());
+        }else {
+            holder.binding.dateTextView.setText("");
+            holder.binding.lastMessageTextView.setText("");
+        }
         // PlaceHolderIcon:
         holder.binding.senderImageView.setImageResource(R.drawable.ic_placeholder);
         // Looping:
