@@ -28,7 +28,7 @@ public class ARDocumentsAccess {
     }
 
     // Method(Static):
-    public static List<Document> getDocumentsWithDirs(Context context) {
+    public synchronized static List<Document> getDocumentsWithDirs(Context context) {
         // Control:
         HomeActivity.setDocumentsObserver(false);
         // Initializing:
@@ -135,7 +135,7 @@ public class ARDocumentsAccess {
         File[] backupFiles = new File(finalPath2).listFiles();
         File[] files = new File(finalPath).listFiles();
         // Checking:
-        if (files == null || files.length <= 0) files = backupFiles;
+        if (files == null) files = backupFiles;
         // Returning:
         return files;
     }
