@@ -49,8 +49,18 @@ public class ShowChatActivity extends AppCompatActivity implements SharedPrefere
         chat = ARUtils.fromJsonToChat(getIntent().getExtras().getString("Chat"));
         icon = getIntent().getParcelableExtra("Icon");
         layoutManager = new LinearLayoutManager(this);
-
-
+        /////////////////
+        List<Chat> chats = ARUtils.fromJsonToChats(manager.getStringPreferences(ARPreferencesManager.WHATSAPP_CHATS));
+        for (int index = 0; index < chats.size(); index++) {
+            if (chats.get(index).getSender().equals(chat.getSender())) {
+                for (int subIndex = 0; subIndex < chats.get(index).getMessages().size(); subIndex++) {
+                    chats.get(index).getMessages().get(subIndex).setSeenMes(true);
+                }
+                chat = chats.get(index);
+            }
+        }
+        manager.setStringPreferences(ARPreferencesManager.WHATSAPP_CHATS, ARUtils.fromChatsToJson(chats));
+        /////////////////
         // Preparing:
         layoutManager.setStackFromEnd(true);
         // Developing(Main-UI):
@@ -60,16 +70,11 @@ public class ShowChatActivity extends AppCompatActivity implements SharedPrefere
         if (icon != null) binding.senderImageView.setImageDrawable(icon.loadDrawable(this));
         else binding.senderImageView.setImageResource(R.drawable.ic_placeholder);
         // Developing(RecyclerView):
-        if (chat!=null)
-        {
+        if (chat != null) {
             adapter = new ShowChatAdapter(this, chat);
             binding.showChatRecyclerView.setAdapter(adapter);
             binding.showChatRecyclerView.setLayoutManager(layoutManager);
-
-
-
         }
-
         binding.chatSendButton.setOnClickListener(this::sendMethod);
         // Developing(Manager):
         manager.getPreferences().registerOnSharedPreferenceChangeListener(this);
@@ -112,11 +117,9 @@ public class ShowChatActivity extends AppCompatActivity implements SharedPrefere
         if (!binding.chatEditText.getText().toString().isEmpty()) {
             // CatchingErrors:
             try {
-
                 // SendingResponse:
                 Chat refreshingChat = clicked.eventClick(chat.getSender(), binding.chatEditText.getText().toString());
-                if (refreshingChat!=null)
-                {
+                if (refreshingChat != null) {
                     // Refreshing(Adapter):
                     adapter = new ShowChatAdapter(this, refreshingChat);
                     // Refreshing(RecyclerView):
@@ -126,7 +129,7 @@ public class ShowChatActivity extends AppCompatActivity implements SharedPrefere
                 }
 
             } catch (Exception e) {
-             //   Toasty.error(this, "Unable to reach the person, please try again", Toast.LENGTH_LONG).show();
+                //Toasty.error(this, "Unable to reach the person, please try again", Toast.LENGTH_LONG).show();
             }
             // EmptyChatInput:
             binding.chatEditText.setText("");

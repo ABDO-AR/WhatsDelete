@@ -19,6 +19,7 @@ import com.ar.team.company.app.socialdelete.model.Chat;
 import com.ar.team.company.app.socialdelete.ar.utils.ARUtils;
 import com.ar.team.company.app.socialdelete.ui.activity.home.HomeActivity;
 import com.ar.team.company.app.socialdelete.ui.activity.show.chat.ShowChatActivity;
+import com.ar.team.company.app.socialdelete.ui.interfaces.ChatListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -33,6 +34,8 @@ public class NotificationListener extends NotificationListenerService {
     public static final String WHATSAPP_PACKAGE_NAME = "com.whatsapp";
     public static final List<Notification.Action> finalActions = new ArrayList<>();
     public static final List<ARIcon> icons = new ArrayList<>();
+    // Listeners:
+    public static ChatListener listener;
     // Channels:
     public static final String CHANNEL_ID = "AutoRDMDeletedMessage";
     // TAGS:
@@ -120,14 +123,18 @@ public class NotificationListener extends NotificationListenerService {
                                         // Checking:
                                         if (chat.getSender().equals(senderName)) {
                                             // Setting:
+                                            Chat.Messages messages13 = new Chat.Messages(mes.trim(), getCurrentDate(), false);
+                                            messages13.setSeenMes(true);
+                                            chat.getMessages().add(messages13);
                                             tempChat = chat;
-                                            chat.getMessages().add(new Chat.Messages(mes.trim(), getCurrentDate(), false));
                                         }
                                     }
                                     // SettingChatsAgain:
                                     manager.setStringPreferences(ARPreferencesManager.WHATSAPP_CHATS, ARUtils.fromChatsToJson(savedChats));
                                     // Replaying:
                                     ARUtils.reply(getApplicationContext(), action, mes);
+                                    // Debug:
+                                    ARUtils.debug(TAG, NP_FIELD, manager.getStringPreferences(ARPreferencesManager.WHATSAPP_CHATS));
                                     // ResponseToTemps:
                                     sentTemp.set(true);
                                 }
@@ -136,7 +143,9 @@ public class NotificationListener extends NotificationListenerService {
                             return tempChat;
                         };
                         // AddingData:
-                        messages.add(new Chat.Messages(msg.trim(), date, true));
+                        Chat.Messages messages1 = new Chat.Messages(msg.trim(), date, true);
+                        messages1.setSeenMes(false);
+                        messages.add(messages1);
                         // Developing:
                         if (manager.getPreferences().contains(ARPreferencesManager.WHATSAPP_CHATS)) {
                             // Initializing:
@@ -160,7 +169,9 @@ public class NotificationListener extends NotificationListenerService {
                                                 for (int index = 0; index < chats.size(); index++) {
                                                     if (chat.getSender().contains(chats.get(index).getSender())) {
                                                         // This is the group for this chat:
-                                                        chats.get(index).getMessages().add(new Chat.Messages(msg.trim(), date, true));
+                                                        Chat.Messages tempMes = new Chat.Messages(msg.trim(), date, true);
+                                                        tempMes.setSeenMes(false);
+                                                        chats.get(index).getMessages().add(tempMes);
                                                     }
                                                 }
                                             } else {
@@ -186,7 +197,9 @@ public class NotificationListener extends NotificationListenerService {
                                             for (int index = 0; index < chats.size(); index++) {
                                                 if (chat.getSender().contains(chats.get(index).getSender())) {
                                                     // This is the group for this chat:
-                                                    chats.get(index).getMessages().add(new Chat.Messages(msg.trim(), date, true));
+                                                    Chat.Messages tempMes = new Chat.Messages(msg.trim(), date, true);
+                                                    tempMes.setSeenMes(false);
+                                                    chats.get(index).getMessages().add(tempMes);
                                                 }
                                             }
                                         } else {
@@ -222,7 +235,9 @@ public class NotificationListener extends NotificationListenerService {
                                     for (int index = 0; index < chats.size(); index++) {
                                         if (chat.getSender().contains(chats.get(index).getSender())) {
                                             // This is the group for this chat:
-                                            chats.get(index).getMessages().add(new Chat.Messages(msg.trim(), date, true));
+                                            Chat.Messages tempMes = new Chat.Messages(msg.trim(), date, true);
+                                            tempMes.setSeenMes(false);
+                                            chats.get(index).getMessages().add(tempMes);
                                         }
                                     }
                                 } else {
@@ -273,6 +288,8 @@ public class NotificationListener extends NotificationListenerService {
                         // notificationId is a unique int for each notification that you must define
                         notificationManager.notify(881231, builder.build());
                     }
+                    // SettingLis:
+                    if (listener != null) listener.onChatUpdate();
                     // Debugging:
                     ARUtils.debug(TAG, NP_FIELD, "Whatsapp Package Was Founded In Preferences");
                     // Debugging:

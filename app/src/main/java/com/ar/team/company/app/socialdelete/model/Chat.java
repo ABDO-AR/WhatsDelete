@@ -33,6 +33,7 @@ public class Chat {
         private final String message;
         private final String messageDate;
         private final boolean sender;
+        private boolean seenMes = false;
 
         // Constructor:
         public Messages(String message, String messageDate, boolean sender) {
@@ -40,6 +41,14 @@ public class Chat {
             this.messageDate = messageDate;
             this.sender = sender;
 
+        }
+
+        public boolean isSeenMes() {
+            return seenMes;
+        }
+
+        public void setSeenMes(boolean seenMes) {
+            this.seenMes = seenMes;
         }
 
         // Getters:

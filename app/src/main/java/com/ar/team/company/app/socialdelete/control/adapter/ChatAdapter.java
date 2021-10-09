@@ -63,11 +63,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         Icon sendIcon = null;
         // Developing:
         holder.binding.senderNameTextView.setText(chat.getSender());
-        if (chat.getMessages().size() != 0){
+        if (chat.getMessages().size() != 0) {
             holder.binding.dateTextView.setText(chat.getMessages().get(chat.getMessages().size() - 1).getMessageDate());
             holder.binding.lastMessageTextView.setText(chat.getMessages().get(chat.getMessages().size() - 1).getMessage());
-        }else {
+        } else {
             holder.binding.dateTextView.setText("");
+            holder.binding.materialCardView2.setVisibility(View.GONE);
             holder.binding.lastMessageTextView.setText("");
         }
         // PlaceHolderIcon:
@@ -88,20 +89,31 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
             }
         }
         // Checking:
-        if (chat.isHasNewMessage()) {
-            // Setting:
-            holder.binding.materialCardView2.setVisibility(View.VISIBLE);
-            holder.binding.messagesNumberTextView.setText(String.valueOf(chat.getMessages().size()));
+        if (chat.isHasNewMessage() && chat.getMessages().size() != 0) {
+            // Initializing:
+            int tempCounter = 0;
+            // Preparing:
+            for (int index = 0; index < chat.getMessages().size(); index++) {
+                // Checking:
+                if (!chat.getMessages().get(index).isSeenMes()) tempCounter++;
+            }
+            // Checking:
+            if (tempCounter != 0) {
+                // Checking
+                holder.binding.messagesNumberTextView.setText(String.valueOf(tempCounter));
+                // Setting:
+                holder.binding.materialCardView2.setVisibility(View.VISIBLE);
+            }
         } else {
             // Setting:
             holder.binding.materialCardView2.setVisibility(View.GONE);
         }
         // OnClickChat:
         Icon finalSendIcon = sendIcon;
-        holder.binding.getRoot().setOnClickListener(v -> chatClicked(chat, finalSendIcon));
+        holder.binding.getRoot().setOnClickListener(v -> chatClicked(chat, finalSendIcon, position));
     }
 
-    private void chatClicked(Chat chat, Icon icon) {
+    private void chatClicked(Chat chat, Icon icon, int pos) {
         // PreparingChat:
         List<Chat> sharedChats = ARUtils.fromJsonToChats(manager.getStringPreferences(ARPreferencesManager.WHATSAPP_CHATS));
         // Looping:

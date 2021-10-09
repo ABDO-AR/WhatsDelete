@@ -27,11 +27,13 @@ import com.ar.team.company.app.socialdelete.ar.access.ARAccess;
 import com.ar.team.company.app.socialdelete.ar.observer.ARFilesObserver;
 import com.ar.team.company.app.socialdelete.control.adapter.HomeItemsAdapter;
 import com.ar.team.company.app.socialdelete.control.adapter.PagerAdapter;
+import com.ar.team.company.app.socialdelete.control.notifications.NotificationListener;
 import com.ar.team.company.app.socialdelete.control.preferences.ARPreferencesManager;
 
 import com.ar.team.company.app.socialdelete.databinding.ActivityHomeBinding;
 import com.ar.team.company.app.socialdelete.ui.activity.applications.ApplicationsActivity;
 import com.ar.team.company.app.socialdelete.ui.activity.settings.SettingsActivity;
+import com.ar.team.company.app.socialdelete.ui.interfaces.ChatListener;
 import com.ar.team.company.app.socialdelete.ui.interfaces.HomeItemClickListener;
 import com.ar.team.company.app.socialdelete.ar.utils.ARUtils;
 import com.google.android.material.snackbar.Snackbar;
@@ -42,7 +44,7 @@ import com.mxn.soul.flowingdrawer_core.ElasticDrawer;
 import java.util.Objects;
 
 @SuppressWarnings({"FieldCanBeLocal", "unused"})
-public class HomeActivity extends AppCompatActivity implements HomeItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class HomeActivity extends AppCompatActivity implements HomeItemClickListener, SharedPreferences.OnSharedPreferenceChangeListener, ChatListener {
 
     // This For Control The XML-Main Views:
     private ActivityHomeBinding binding;
@@ -172,7 +174,7 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
         tempThread.interrupt();
     }
 
-    private void initUiThread(){
+    private void initUiThread() {
         // Hiding(Dialog):
         dialog.hide();
         // Init(App):
@@ -242,22 +244,29 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
         settingSize();
         // ManagerListener:
         manager.getPreferences().registerOnSharedPreferenceChangeListener(this);
+        // SettingLis:
+        NotificationListener.listener = this;
     }
 
     // SharedPreferencesChangeListener:
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String keyName) {
         // Checking:
-        if (keyName.equals(ARPreferencesManager.WHATSAPP_CHATS)){
+        if (keyName.equals(ARPreferencesManager.WHATSAPP_CHATS)) {
             // Initializing(APP):
             initApp();
         }
     }
 
     @Override
+    public void onChatUpdate() {
+        initApp();
+    }
+
+    @Override
     protected void onResume() {
         // Initializing(APP):
-        initApp();
+        //initApp();
         // Super:
         super.onResume();
     }
