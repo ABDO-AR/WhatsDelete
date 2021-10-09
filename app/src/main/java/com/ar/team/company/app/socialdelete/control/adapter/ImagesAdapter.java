@@ -49,6 +49,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImagesView
         // Developing:
         holder.binding.imageViewItem.setImageBitmap(bitmap);
         holder.binding.imageViewItem.setOnClickListener(view -> slidingImage(position));
+
     }
 
     // RunningSlidingImage:

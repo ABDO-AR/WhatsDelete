@@ -17,9 +17,10 @@
         app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:backgroundTint="@color/grey_light"
+
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginEnd="@dimen/_5sdp"
+        style="?attr/mr_item_chat"
         >
 
         <LinearLayout
@@ -27,11 +28,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@color/grey_light"
+
             android:paddingLeft="12dp"
             android:paddingTop="8dp"
             android:paddingRight="12dp"
             android:paddingBottom="8dp"
+            style="?attr/mr_item_chat"
 
             >
 

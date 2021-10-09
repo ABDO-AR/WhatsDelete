@@ -74,4 +74,6 @@ public class ShowImageActivity extends AppCompatActivity {
         // Developing:
         startActivity(Intent.createChooser(intent, "Share"));
     }
+
+
 }
