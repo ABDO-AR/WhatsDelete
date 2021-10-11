@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ar.team.company.app.socialdelete.databinding.SlideImageViewItemBinding;
+import com.ar.team.company.app.socialdelete.model.ARImage;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -18,12 +19,12 @@ public class SliderImageAdapter extends RecyclerView.Adapter<SliderImageAdapter.
 
     // Fields:
     private final Context context;
-    private final List<Bitmap> bitmaps;
+    private final List<ARImage> images;
 
     // Constructor:
-    public SliderImageAdapter(Context context, List<Bitmap> bitmaps) {
+    public SliderImageAdapter(Context context, List<ARImage> bitmaps) {
         this.context = context;
-        this.bitmaps = bitmaps;
+        this.images = bitmaps;
     }
 
     // Adapter:
@@ -41,14 +42,14 @@ public class SliderImageAdapter extends RecyclerView.Adapter<SliderImageAdapter.
     @Override
     public void onBindViewHolder(@NonNull @NotNull SliderImageAdapter.SliderImageViewHolder holder, int position) {
         // Initializing:
-        Bitmap bitmap = bitmaps.get(position);
+        Bitmap bitmap = images.get(position).getImageBitmap();
         // Developing:
         holder.binding.slidingImageView.setImageBitmap(bitmap);
     }
 
     @Override
     public int getItemCount() {
-        return bitmaps.size();
+        return images.size();
     }
 
     // Holder:
@@ -73,7 +74,7 @@ public class SliderImageAdapter extends RecyclerView.Adapter<SliderImageAdapter.
         return context;
     }
 
-    public List<Bitmap> getBitmaps() {
-        return bitmaps;
+    public List<ARImage> getImages() {
+        return images;
     }
 }

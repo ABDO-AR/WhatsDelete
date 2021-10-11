@@ -75,6 +75,8 @@ public class ShowChatActivity extends AppCompatActivity implements SharedPrefere
             binding.showChatRecyclerView.setAdapter(adapter);
             binding.showChatRecyclerView.setLayoutManager(layoutManager);
         }
+        if (icon == null) binding.chatMaterialCardView.setVisibility(View.GONE);
+        else binding.chatMaterialCardView.setVisibility(View.VISIBLE);
         binding.chatSendButton.setOnClickListener(this::sendMethod);
         // Developing(Manager):
         manager.getPreferences().registerOnSharedPreferenceChangeListener(this);
@@ -112,7 +114,9 @@ public class ShowChatActivity extends AppCompatActivity implements SharedPrefere
         // WarningMessage:
         String warningMes = "We need your friend send notification again if you need to send him messages";
         // WarningToast:
-        if (icon == null) Toasty.warning(this, warningMes, Toasty.LENGTH_LONG).show();
+        if (icon == null) binding.chatMaterialCardView.setVisibility(View.GONE);
+        else binding.chatMaterialCardView.setVisibility(View.VISIBLE);
+        //if (icon == null) Toasty.warning(this, warningMes, Toasty.LENGTH_LONG).show();
         // Checking:
         if (!binding.chatEditText.getText().toString().isEmpty()) {
             // CatchingErrors:

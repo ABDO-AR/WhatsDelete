@@ -83,7 +83,7 @@ public class ARDocumentsAccess {
                         // NotifyManager:
                         manager.setStringPreferences(ARPreferencesManager.DOCUMENTS_COPIED_FILES, whatsapp + file.getName() + ",");
                         // Here we will start copy operation because that was new file:
-                        ARAccess.copy(file, new File(documentsDir.getAbsolutePath() + "/" + file.getName()));
+                        ARAccess.copy(file, new File(documentsDir.getAbsolutePath() + "/" + file.getName()),context);
                     }
                 }
             }

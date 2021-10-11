@@ -58,7 +58,7 @@ public class ARVideosAccess {
                         // NotifyManager:
                         manager.setStringPreferences(ARPreferencesManager.VIDEO_COPIED_FILES, whatsapp + file.getName() + ",");
                         // Here we will start copy operation because that was new file:
-                        ARAccess.copy(file, new File(videosDir.getAbsolutePath() + "/" + file.getName()));
+                        ARAccess.copy(file, new File(videosDir.getAbsolutePath() + "/" + file.getName()),context);
                     }
                 }
             }

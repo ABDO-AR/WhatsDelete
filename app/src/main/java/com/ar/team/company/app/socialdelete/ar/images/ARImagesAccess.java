@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.ar.team.company.app.socialdelete.ar.access.ARAccess;
 import com.ar.team.company.app.socialdelete.control.preferences.ARPreferencesManager;
+import com.ar.team.company.app.socialdelete.model.ARImage;
 import com.ar.team.company.app.socialdelete.ui.activity.home.HomeActivity;
 
 import java.io.File;
@@ -29,14 +30,14 @@ public class ARImagesAccess {
     }
 
     // Method(Static):
-    public synchronized static List<Bitmap> getImagesWithDirs(Context context) {
+    public synchronized static List<ARImage> getImagesWithDirs(Context context) {
         // Control:
         HomeActivity.setImagesObserver(false);
         // Initializing:
         ARPreferencesManager manager = new ARPreferencesManager(context, ARPreferencesManager.MODE_FILES);
         File imagesDir = ARAccess.getAppDir(context, ARAccess.IMAGES_DIR);
         File[] whatsAppImagesFiles = getImagesFiles();
-        List<Bitmap> bitmaps = new ArrayList<>();
+        List<ARImage> images = new ArrayList<>();
         // Debugging:
         Log.d(ARAccess.TAG, "A11-OP: ImagesAccess :: " + imagesDir.getAbsolutePath());
         // Initializing(State):
@@ -62,7 +63,7 @@ public class ARImagesAccess {
                     // Getting all files name:
                     copied.append(copiedFile.getName()).append(",");
                     // Adding:
-                    bitmaps.add(ARBitmapHelper.decodeBitmapFromFile(copiedFile.getAbsolutePath(), 800, 800));
+                    images.add(new ARImage(ARBitmapHelper.decodeBitmapFromFile(copiedFile.getAbsolutePath(), 800, 800), copiedFile));
                 }
             }
             // Checking:
@@ -74,7 +75,7 @@ public class ARImagesAccess {
                         // NotifyManager:
                         manager.setStringPreferences(ARPreferencesManager.IMAGE_COPIED_FILES, whatsapp + file.getName() + ",");
                         // Here we will start copy operation because that was new file:
-                        ARAccess.copy(file, new File(imagesDir.getAbsolutePath() + "/" + file.getName()));
+                        ARAccess.copy(file, new File(imagesDir.getAbsolutePath() + "/" + file.getName()), context);
                         // Debugging:
                         Log.d(ARAccess.TAG, "A11-OP: ImagesAccess Copy Operation Has Been Started For File :: " + file.getName());
                     }
@@ -106,9 +107,9 @@ public class ARImagesAccess {
         // ReRunObserver:
         HomeActivity.setImagesObserver(true);
         // Debugging:
-        Log.d(ARAccess.TAG, "A11-OP: ImagesAccess Is Files Empty :: " + bitmaps.isEmpty());
+        Log.d(ARAccess.TAG, "A11-OP: ImagesAccess Is Files Empty :: " + images.isEmpty());
         // Retuning:
-        return bitmaps;
+        return images;
     }
 
     private static File[] getImagesFiles() {

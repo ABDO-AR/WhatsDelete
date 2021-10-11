@@ -49,7 +49,7 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
     // This For Control The XML-Main Views:
     private ActivityHomeBinding binding;
     private HomeViewModel model;
-    // Drawer(&TabLayout):
+    // Drawer(&TabLayout):A
     private PagerAdapter adapter;
     private ARPreferencesManager manager;
     // TabMediator:

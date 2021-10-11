@@ -1,8 +1,5 @@
 package com.ar.team.company.app.socialdelete.ui.fragment.home;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -10,19 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.ar.team.company.app.socialdelete.control.adapter.ImagesAdapter;
 import com.ar.team.company.app.socialdelete.databinding.FragmentImagesBinding;
-import com.ar.team.company.app.socialdelete.ui.activity.home.HomeActivity;
+import com.ar.team.company.app.socialdelete.model.ARImage;
 import com.ar.team.company.app.socialdelete.ui.activity.home.HomeViewModel;
-import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -55,15 +48,15 @@ public class ImagesFragment extends Fragment {
         // StartOperations:
         model.startImageOperation();
         // Observing:
-        model.getImagesLiveData().observe(getViewLifecycleOwner(), this::onBitmapsChanged);
+        model.getImagesLiveData().observe(getViewLifecycleOwner(), this::onImagesChanged);
     }
 
-    // OnBitmapsChange:
-    private void onBitmapsChanged(List<Bitmap> bitmaps) {
+    // OnImagesChanged:
+    private void onImagesChanged(List<ARImage> images) {
         // Loading:
         isLoading(true);
         // Initializing:
-        adapter = new ImagesAdapter(requireContext(), bitmaps);
+        adapter = new ImagesAdapter(requireContext(), images);
         // Preparing(RecyclerView):
         binding.recyclerImageView.setAdapter(adapter);
         binding.recyclerImageView.setLayoutManager(new GridLayoutManager(requireContext(), 3));

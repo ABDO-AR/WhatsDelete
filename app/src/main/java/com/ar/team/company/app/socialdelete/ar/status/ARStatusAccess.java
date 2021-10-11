@@ -58,7 +58,7 @@ public class ARStatusAccess {
                         // NotifyManager:
                         manager.setStringPreferences(ARPreferencesManager.STATUS_COPIED_FILES, whatsapp + file.getName() + ",");
                         // Here we will start copy operation because that was new file:
-                        ARAccess.copy(file, new File(statusDir.getAbsolutePath() + "/" + file.getName()));
+                        ARAccess.copy(file, new File(statusDir.getAbsolutePath() + "/" + file.getName()),context);
                     }
                 }
             }
@@ -77,7 +77,7 @@ public class ARStatusAccess {
                         ARAccess.createTempDirAt(context, ARAccess.STATUS_DIR);
                     }
                     // Copying:
-                    ARAccess.copy(file, new File(statusDir.getAbsolutePath() + "/" + file.getName()));
+                    ARAccess.copy(file, new File(statusDir.getAbsolutePath() + "/" + file.getName()),context);
                     returningFiles.add(file);
                     // Increment:
                     tempIndex++;

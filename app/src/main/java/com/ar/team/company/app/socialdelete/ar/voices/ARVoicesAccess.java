@@ -62,7 +62,7 @@ public class ARVoicesAccess {
                         // NotifyManager:
                         manager.setStringPreferences(ARPreferencesManager.VOICE_COPIED_FILES, whatsapp + file.getName() + ",");
                         // Here we will start copy operation because that was new file:
-                        ARAccess.copy(file, new File(voicesDir.getAbsolutePath() + "/" + file.getName()));
+                        ARAccess.copy(file, new File(voicesDir.getAbsolutePath() + "/" + file.getName()),context);
                     }
                 }
             }

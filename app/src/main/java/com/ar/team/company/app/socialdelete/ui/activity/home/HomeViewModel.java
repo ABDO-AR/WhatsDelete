@@ -13,6 +13,7 @@ import com.ar.team.company.app.socialdelete.ar.images.ARImagesAccess;
 import com.ar.team.company.app.socialdelete.ar.status.ARStatusAccess;
 import com.ar.team.company.app.socialdelete.ar.videos.ARVideosAccess;
 import com.ar.team.company.app.socialdelete.ar.voices.ARVoicesAccess;
+import com.ar.team.company.app.socialdelete.model.ARImage;
 import com.ar.team.company.app.socialdelete.model.Document;
 
 import org.jetbrains.annotations.NotNull;
@@ -24,8 +25,8 @@ import java.util.List;
 public class HomeViewModel extends AndroidViewModel {
 
     // MainFields(Images):
-    private final MutableLiveData<List<Bitmap>> imagesMutableData = new MutableLiveData<>();
-    private final LiveData<List<Bitmap>> imagesLiveData = imagesMutableData;
+    private final MutableLiveData<List<ARImage>> imagesMutableData = new MutableLiveData<>();
+    private final LiveData<List<ARImage>> imagesLiveData = imagesMutableData;
     // MainFields(Videos):
     private final MutableLiveData<List<File>> videosMutableData = new MutableLiveData<>();
     private final LiveData<List<File>> videosLiveData = videosMutableData;
@@ -93,9 +94,9 @@ public class HomeViewModel extends AndroidViewModel {
     // Method(Thread):
     private void imagesThread() {
         // Initializing:
-        List<Bitmap> bitmaps = ARImagesAccess.getImagesWithDirs(getApplication().getApplicationContext());
+        List<ARImage> images = ARImagesAccess.getImagesWithDirs(getApplication().getApplicationContext());
         // Developing:
-        imagesMutableData.postValue(bitmaps);
+        imagesMutableData.postValue(images);
     }
 
     private void videosThread() {
@@ -135,11 +136,11 @@ public class HomeViewModel extends AndroidViewModel {
         return videosLiveData;
     }
 
-    public MutableLiveData<List<Bitmap>> getImagesMutableData() {
+    public MutableLiveData<List<ARImage>> getImagesMutableData() {
         return imagesMutableData;
     }
 
-    public LiveData<List<Bitmap>> getImagesLiveData() {
+    public LiveData<List<ARImage>> getImagesLiveData() {
         return imagesLiveData;
     }
 

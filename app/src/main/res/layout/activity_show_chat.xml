@@ -2,11 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="?attr/mr_background_chat2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activity.show.chat.ShowChatActivity"
-    style="?attr/mr_background_chat2"
-    >
+    tools:context=".ui.activity.show.chat.ShowChatActivity">
 
 
     <View
@@ -15,11 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/_50sdp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-
-
-        />
-
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_details_user"
@@ -78,11 +73,11 @@
 
                 <TextView
                     android:id="@+id/sender_name_text_view"
+                    style="?attr/mr_text_color"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/articulat_cf_bold"
                     android:text="@string/sender_demo"
-                    style="?attr/mr_text_color"
                     android:textSize="@dimen/_15sdp" />
 
             </HorizontalScrollView>
@@ -105,12 +100,12 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
+        style="?attr/mr_background_chat2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-      style="?attr/mr_background_chat2"
         app:cardElevation="0dp"
 
-        app:layout_constraintBottom_toTopOf="@+id/materialCardView"
+        app:layout_constraintBottom_toTopOf="@+id/chat_material_card_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cv_details_user">
@@ -130,7 +125,7 @@
 
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/materialCardView"
+        android:id="@+id/chat_material_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"

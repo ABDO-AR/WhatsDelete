@@ -15,6 +15,7 @@ import com.ar.team.company.app.socialdelete.annotations.UnderDevelopment;
 import com.ar.team.company.app.socialdelete.ar.images.ARImagesAccess;
 import com.ar.team.company.app.socialdelete.databinding.ImageViewItemBinding;
 import com.ar.team.company.app.socialdelete.databinding.VideoItemViewBinding;
+import com.ar.team.company.app.socialdelete.model.ARImage;
 import com.ar.team.company.app.socialdelete.ui.activity.show.image.ShowImageActivity;
 import com.ar.team.company.app.socialdelete.ui.activity.show.video.ShowVideoActivity;
 
@@ -29,7 +30,7 @@ public class StatusAdapter extends RecyclerView.Adapter {
     // Fields:
     private final Context context;
     private final List<File> files;
-    public static List<Bitmap> staticBitmaps = new ArrayList<>();
+    public static List<ARImage> staticImages = new ArrayList<>();
     // ViewTypes:
     public static final int VIEW_TYPE_IMAGE = 0;
     public static final int VIEW_TYPE_VIDEO = 1;
@@ -103,22 +104,22 @@ public class StatusAdapter extends RecyclerView.Adapter {
         Intent intent = new Intent(context, ShowImageActivity.class);
         int realPos = 0;
         List<File> bitmapsFiles = new ArrayList<>();
-        List<Bitmap> bitmaps = new ArrayList<>();
+        List<ARImage> images = new ArrayList<>();
         // Clearing:
-        if (!staticBitmaps.isEmpty()) staticBitmaps.clear();
+        if (!staticImages.isEmpty()) staticImages.clear();
         // Looping:
         for (File file : files) {
             // Checking:
             if (!file.getAbsolutePath().endsWith(".mp4")) {
                 // Setting:
                 bitmapsFiles.add(file);
-                bitmaps.add(ARImagesAccess.ARBitmapHelper.decodeBitmapFromFile(file.getAbsolutePath(), 800, 800));
+                images.add(new ARImage(ARImagesAccess.ARBitmapHelper.decodeBitmapFromFile(file.getAbsolutePath(), 800, 800), files.get(pos)));
             }
         }
         // AddingStatic:
-        staticBitmaps = bitmaps;
+        staticImages = images;
         // Looping:
-        for (int index = 0; index < bitmaps.size(); index++) {
+        for (int index = 0; index < images.size(); index++) {
             // Checking:
             if (bitmapsFiles.get(index).getName().equals(files.get(pos).getName())) realPos = index;
         }

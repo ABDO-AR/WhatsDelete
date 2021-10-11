@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ar.team.company.app.socialdelete.databinding.ImageViewItemBinding;
+import com.ar.team.company.app.socialdelete.model.ARImage;
 import com.ar.team.company.app.socialdelete.ui.activity.show.image.ShowImageActivity;
 
 import org.jetbrains.annotations.NotNull;
@@ -22,14 +23,14 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImagesView
 
     // Fields:
     private final Context context;
-    private final List<Bitmap> bitmaps;
-    public static List<Bitmap> staticBitmaps = new ArrayList<>();
+    private final List<ARImage> images;
+    public static List<ARImage> staticImages = new ArrayList<>();
 
     // Constructor:
-    public ImagesAdapter(Context context, List<Bitmap> bitmaps) {
+    public ImagesAdapter(Context context, List<ARImage> images) {
         this.context = context;
-        this.bitmaps = bitmaps;
-        staticBitmaps = bitmaps;
+        this.images = images;
+        staticImages = images;
         notifyDataSetChanged();
     }
 
@@ -45,7 +46,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImagesView
     @Override
     public void onBindViewHolder(@NonNull @NotNull ImagesAdapter.ImagesViewHolder holder, int position) {
         // Initializing:
-        Bitmap bitmap = bitmaps.get(position);
+        Bitmap bitmap = images.get(position).getImageBitmap();
         // Developing:
         holder.binding.imageViewItem.setImageBitmap(bitmap);
         holder.binding.imageViewItem.setOnClickListener(view -> slidingImage(position));
@@ -65,7 +66,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImagesView
 
     @Override
     public int getItemCount() {
-        return bitmaps.size();
+        return images.size();
     }
 
     // ViewHolder:
@@ -90,7 +91,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImagesView
         return context;
     }
 
-    public List<Bitmap> getBitmaps() {
-        return bitmaps;
+    public List<ARImage> getBitmaps() {
+        return images;
     }
 }
