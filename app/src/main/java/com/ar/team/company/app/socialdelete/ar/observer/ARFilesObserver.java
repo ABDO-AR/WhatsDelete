@@ -1,5 +1,6 @@
 package com.ar.team.company.app.socialdelete.ar.observer;
 
+import android.content.Context;
 import android.os.FileObserver;
 import android.util.Log;
 
@@ -12,6 +13,7 @@ import com.ar.team.company.app.socialdelete.ui.activity.home.HomeViewModel;
 public class ARFilesObserver extends FileObserver {
 
     // Fields:
+    private final Context context;
     private final HomeViewModel model;
     private final String path;
     // TempData:
@@ -20,10 +22,11 @@ public class ARFilesObserver extends FileObserver {
     private static final String TAG = "ARFilesObserver";
 
     // Constructor:
-    public ARFilesObserver(String path, HomeViewModel model) {
+    public ARFilesObserver(Context context, String path, HomeViewModel model) {
         // Super:
         super(path);
         // Initializing:
+        this.context = context;
         this.model = model;
         this.path = path;
     }
@@ -49,7 +52,7 @@ public class ARFilesObserver extends FileObserver {
                 // Debugging:
                 Log.d(TAG, "onEventCreate: " + s);
                 // StartOperations:
-                model.startVoiceOperation();
+                model.startVoiceOperation(context);
                 // Increment:
                 tempVoices++;
             }
@@ -59,17 +62,30 @@ public class ARFilesObserver extends FileObserver {
     // Method(Run):
     private void runOperations() {
         // Checking(IF):
-        if (path.equals(ARAccess.WHATSAPP_IMAGES_PATH)) model.startImageOperation();
-            // Checking(ELSE-IF):
-        else if (path.equals(ARAccess.WHATSAPP_VIDEOS_PATH)) model.startVideoOperation();
-        else if (path.equals(ARAccess.WHATSAPP_VOICES_PATH)) model.startVoiceOperation();
-        else if (path.equals(ARAccess.WHATSAPP_STATUS_PATH)) model.startStatusOperation();
-        else if (path.equals(ARAccess.WHATSAPP_DOCUMENTS_PATH)) model.startDocumentOperation();
+        if (path.equals(ARAccess.WHATSAPP_IMAGES_PATH)) model.startImageOperation(context);
+        // Checking(ELSE-IF):
+        else if (path.equals(ARAccess.WHATSAPP_VIDEOS_PATH)) model.startVideoOperation(context);
+        else if (path.equals(ARAccess.WHATSAPP_VOICES_PATH)) model.startVoiceOperation(context);
+        else if (path.equals(ARAccess.WHATSAPP_STATUS_PATH)) model.startStatusOperation(context);
+        else if (path.equals(ARAccess.WHATSAPP_DOCUMENTS_PATH)) model.startDocumentOperation(context);
     }
 
     // Methods(Reset):
     public static void resetTempVoices() {
         // Resting:
         tempVoices = 0;
+    }
+
+    // Getters:
+    public Context getContext() {
+        return context;
+    }
+
+    public HomeViewModel getModel() {
+        return model;
+    }
+
+    public String getPath() {
+        return path;
     }
 }

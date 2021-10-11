@@ -50,7 +50,7 @@ public class StatusFragment extends Fragment {
         // Initializing:
         model = new ViewModelProvider(this).get(HomeViewModel.class);
         // StartOperations:
-        model.startStatusOperation();
+        model.startStatusOperation(requireContext());
         // Observing:
         model.getStatusLiveData().observe(getViewLifecycleOwner(), this::onStatusChanged);
     }

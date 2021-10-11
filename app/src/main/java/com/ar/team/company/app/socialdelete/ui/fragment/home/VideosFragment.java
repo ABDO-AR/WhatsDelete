@@ -46,7 +46,7 @@ public class VideosFragment extends Fragment {
         // Initializing:
         model = new ViewModelProvider(this).get(HomeViewModel.class);
         // StartOperations:
-        model.startVideoOperation();
+        model.startVideoOperation(requireContext());
         // Observing:
         model.getVideosLiveData().observe(getViewLifecycleOwner(), this::onVideosChanged);
     }
