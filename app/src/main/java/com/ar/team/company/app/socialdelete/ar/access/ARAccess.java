@@ -8,8 +8,18 @@ import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 
+import androidx.activity.ComponentActivity;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -105,12 +115,7 @@ public class ARAccess {
     @SuppressWarnings({"ResultOfMethodCallIgnored", "UnusedReturnValue"})
     public static File createAccessDir(Context context, String dir) {
         // Initializing:
-        File env = Environment.getExternalStorageDirectory();
-        // Checking:
-        checkAccess(context);
-        // Initializing:
-        File accessDir = new File(env.getAbsolutePath() + "/" + dir + "/");
-        // File accessDir = new File(context.getExternalFilesDir(null), dir);
+        File accessDir = new File(context.getExternalFilesDir(null), dir);
         // Debugging:
         Log.d(TAG, "createAccessDir: " + accessDir.getAbsolutePath());
         // Checking:
@@ -124,8 +129,6 @@ public class ARAccess {
                     // Debugging:
                     Log.d(TAG, "A11-OP: Media Dir Has Been Created At :: " + accessDir.getAbsolutePath());
                 } catch (IOException e) {
-                    // Creating:
-                    accessDir.mkdir();
                     // Debugging:
                     Log.d(TAG, "createAccessDir: " + e.toString());
                 }
@@ -135,28 +138,15 @@ public class ARAccess {
         return accessDir;
     }
 
-    // Method(Access):
-    public static void checkAccess(Context context) {
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 55);
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 55);
-    }
-
     // Methods(AccessDirs):
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public static Map<String, File> createAccessDirs(Context context, String... dirs) {
-        // Initializing:
-        File env = Environment.getExternalStorageDirectory();
-        // Checking:
-        checkAccess(context);
         // Initializing:
         Map<String, File> fileMap = new HashMap<>();
         // Looping:
         for (String dir : dirs) {
             // Initializing:
-            File accessDir = new File(env.getAbsolutePath() + "/" + ROOT_DIR + "/" + dir + "/");
-            // File accessDir = new File(context.getExternalFilesDir(null), ROOT_DIR + "/" + dir);
+            File accessDir = new File(context.getExternalFilesDir(null), ROOT_DIR + "/" + dir);
             // Checking:
             if (!accessDir.exists()) {
                 // Checking:
@@ -185,15 +175,10 @@ public class ARAccess {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void createTempDirAt(Context context, String dir) {
-        // Initializing:
-        File env = Environment.getExternalStorageDirectory();
-        // Checking:
-        checkAccess(context);
         // Debugging:
         Log.d(TAG, "A11-OP: Start Creating TEMP-DIR At :: " + dir);
         // Initializing:
-        File tempDir = new File(env.getAbsolutePath() + "/" + ROOT_DIR + "/" + dir + "/" + TEMP_DIR + "/");
-        // File tempDir = new File(context.getExternalFilesDir(null), ROOT_DIR + "/" + dir + "/" + TEMP_DIR);
+        File tempDir = new File(context.getExternalFilesDir(null), ROOT_DIR + "/" + dir + "/" + TEMP_DIR);
         // Checking:
         if (!tempDir.exists()) {
             // Checking:
@@ -205,8 +190,6 @@ public class ARAccess {
                     // Debugging:
                     Log.d(TAG, "A11-OP: TEMP-DIR Has Been Created At :: " + tempDir.getAbsolutePath());
                 } catch (IOException e) {
-                    // Creating:
-                    tempDir.mkdir();
                     // Debugging:
                     Log.d(TAG, "createAccessDir: " + e.toString());
                     // Debugging:
@@ -222,8 +205,6 @@ public class ARAccess {
     }
 
     public static void copy(File src, File dst, Context context) {
-        // Checking:
-        checkAccess(context);
         // Debugging:
         Log.d(TAG, "A11-OP: Files Start Copy Operations");
         // Trying:

@@ -1,7 +1,7 @@
 package com.ar.team.company.app.socialdelete.ui.activity.home;
 
 import android.app.Application;
-import android.content.Context;
+import android.graphics.Bitmap;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -52,77 +52,77 @@ public class HomeViewModel extends AndroidViewModel {
     }
 
     // Images:
-    public void startImageOperation(Context context) {
+    public void startImageOperation() {
         // Working:
-        imagesThread = new Thread(() -> imagesThread(context));
+        imagesThread = new Thread(this::imagesThread);
         // StartWorkingThread:
         imagesThread.start();
     }
 
     // Videos:
-    public void startVideoOperation(Context context) {
+    public void startVideoOperation() {
         // Working:
-        videosThread = new Thread(() -> videosThread(context));
+        videosThread = new Thread(this::videosThread);
         // StartWorkingThread:
         videosThread.start();
     }
 
     // Voices:
-    public void startVoiceOperation(Context context) {
+    public void startVoiceOperation() {
         // Working:
-        voicesThread = new Thread(() -> voicesThread(context));
+        voicesThread = new Thread(this::voicesThread);
         // StartWorkingThread:
         voicesThread.start();
     }
 
     // Status:
-    public void startStatusOperation(Context context) {
+    public void startStatusOperation() {
         // Working:
-        statusThread = new Thread(() -> statusThread(context));
+        statusThread = new Thread(this::statusThread);
         // StartWorkingThread:
         statusThread.start();
     }
 
     // Documents:
-    public void startDocumentOperation(Context context) {
+    public void startDocumentOperation() {
         // Working:
-        documentsThread = new Thread(() -> documentsThread(context));
+        documentsThread = new Thread(this::documentsThread);
         // StartWorkingThread:
         documentsThread.start();
     }
 
     // Method(Thread):
-    private void imagesThread(Context context) {
+    private void imagesThread() {
         // Initializing:
-        List<ARImage> images = ARImagesAccess.getImagesWithDirs(context);
+        List<ARImage> images = ARImagesAccess.getImagesWithDirs(getApplication().getApplicationContext());
         // Developing:
         imagesMutableData.postValue(images);
     }
 
-    private void videosThread(Context context) {
+    private void videosThread() {
         // Initializing:
-        List<File> videos = ARVideosAccess.getVideosWithDirs(context);
+        List<File> videos = ARVideosAccess.getVideosWithDirs(getApplication().getApplicationContext());
         // Developing:
         videosMutableData.postValue(videos);
     }
 
-    private void voicesThread(Context context) {
+    private void voicesThread() {
         // Initializing:
-        List<File> voices = ARVoicesAccess.getVoicesWithDirs(context);
+        List<File> voices = ARVoicesAccess.getVoicesWithDirs(getApplication().getApplicationContext());
         // Developing:
         voicesMutableData.postValue(voices);
     }
 
-    private void statusThread(Context context) {
+    private void statusThread() {
         // Initializing:
-        List<File> statuses = ARStatusAccess.getStatusWithDirs(context);
+        List<File> statuses = ARStatusAccess.getStatusWithDirs(getApplication().getApplicationContext());
         // Developing:
         statusMutableData.postValue(statuses);
     }
 
-    private void documentsThread(Context context) {
+    private void documentsThread() {
         // Initializing:
-        List<Document> documents = ARDocumentsAccess.getDocumentsWithDirs(context);
+        List<Document> documents = ARDocumentsAccess.getDocumentsWithDirs(getApplication().getApplicationContext());
         // Developing:
         documentsMutableData.postValue(documents);
     }

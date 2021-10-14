@@ -1,18 +1,35 @@
 package com.ar.team.company.app.socialdelete.control.notifications;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.Icon;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
+import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
 import com.ar.team.company.app.socialdelete.R;
+import com.ar.team.company.app.socialdelete.control.icons.ARIconsAccess;
 import com.ar.team.company.app.socialdelete.control.preferences.ARPreferencesManager;
 import com.ar.team.company.app.socialdelete.model.ARIcon;
 import com.ar.team.company.app.socialdelete.model.Chat;
@@ -21,10 +38,16 @@ import com.ar.team.company.app.socialdelete.ui.activity.home.HomeActivity;
 import com.ar.team.company.app.socialdelete.ui.activity.show.chat.ShowChatActivity;
 import com.ar.team.company.app.socialdelete.ui.interfaces.ChatListener;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @SuppressWarnings("unused")
@@ -92,6 +115,9 @@ public class NotificationListener extends NotificationListenerService {
                     }
                     // CheckingStatusBarNotification:
                     if (state && !msg.equals(firstChar + " new messages") && !msg.equals(firstChar + " رسائل جديدة") && !msg.equals("رسالتان ٢ جديدتان") && deletedMsgState) {
+                        // Checking(IconState):
+                        if (!sender.isEmpty() && sbn.getNotification().getLargeIcon() != null)
+                            saveIcon(sender, sbn.getNotification().getLargeIcon());
                         // Initializing(Replay):
                         Notification.WearableExtender extender = new Notification.WearableExtender(sbn.getNotification());
                         List<Notification.Action> actions = new ArrayList<>(extender.getActions());
@@ -297,6 +323,14 @@ public class NotificationListener extends NotificationListenerService {
                 }
             }
         }
+    }
+
+    // Method(SaveIcon):
+    private void saveIcon(String sender, Icon icon) {
+        // Initializing:
+        ARIconsAccess access = new ARIconsAccess(getApplication().getApplicationContext(), sender, icon);
+        // Developing:
+        access.createUserIcon();
     }
 
     // Method(Notification):

@@ -47,7 +47,7 @@ public class DocumentFragment extends Fragment {
         // Initializing:
         model = new ViewModelProvider(this).get(HomeViewModel.class);
         // StartOperations:
-        model.startDocumentOperation(requireContext());
+        model.startDocumentOperation();
         // Observing:
         model.getDocumentsLiveData().observe(getViewLifecycleOwner(), this::onDocumentsChanged);
     }

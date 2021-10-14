@@ -31,63 +31,58 @@ public class ARStatusAccess {
         File statusDir = ARAccess.getAppDir(context, ARAccess.STATUS_DIR);
         File[] whatsAppStatusFiles = getStatusFiles();
         List<File> returningFiles = new ArrayList<>();
-        // Checking:
-        if (statusDir != null){
-            // Initializing(State):
-            // boolean state1 = Objects.requireNonNull(statusDir.listFiles()).length != 0;
-            boolean state1 = statusDir.listFiles() != null;
-            // Looping:
-            if (state1) {
-                // Checking(Fields):
-                String whatsapp = manager.getStringPreferences(ARPreferencesManager.STATUS_COPIED_FILES);
-                StringBuilder copied = new StringBuilder();
-                // If it reached to here that's mean that there are already copied images.
-                // Now we will start a simple for loop and checking each file by name:
-                for (File copiedFile : Objects.requireNonNull(statusDir.listFiles())) {
-                    // Checking:
-                    if (!copiedFile.isDirectory()) {
-                        // Getting all files name:
-                        copied.append(copiedFile.getName()).append(",");
-                        // Adding:
-                        returningFiles.add(copiedFile);
-                    }
-                }
+        // Initializing(State):
+        boolean state1 = Objects.requireNonNull(statusDir.listFiles()).length != 0;
+        // Looping:
+        if (state1) {
+            // Checking(Fields):
+            String whatsapp = manager.getStringPreferences(ARPreferencesManager.STATUS_COPIED_FILES);
+            StringBuilder copied = new StringBuilder();
+            // If it reached to here that's mean that there are already copied images.
+            // Now we will start a simple for loop and checking each file by name:
+            for (File copiedFile : Objects.requireNonNull(statusDir.listFiles())) {
                 // Checking:
-                if (whatsAppStatusFiles != null && whatsAppStatusFiles.length != 0) {
-                    // We will start checking if file contains this new file or not:
-                    for (File file : whatsAppStatusFiles) {
-                        // Checking:
-                        if (!whatsapp.contains(file.getName()) && !copied.toString().contains(file.getName()) && !file.isDirectory()) {
-                            // NotifyManager:
-                            manager.setStringPreferences(ARPreferencesManager.STATUS_COPIED_FILES, whatsapp + file.getName() + ",");
-                            // Here we will start copy operation because that was new file:
-                            ARAccess.copy(file, new File(statusDir.getAbsolutePath() + "/" + file.getName()),context);
-                        }
-                    }
+                if (!copiedFile.isDirectory()) {
+                    // Getting all files name:
+                    copied.append(copiedFile.getName()).append(",");
+                    // Adding:
+                    returningFiles.add(copiedFile);
                 }
-            } else {
-                // Initializing:
-                int tempIndex = 0;
-                // Checking:
-                if (whatsAppStatusFiles != null && whatsAppStatusFiles.length != 0) {
-                    // Looping:
-                    for (File file : whatsAppStatusFiles) {
-                        // NotifyManager:
-                        manager.setStringPreferences(ARPreferencesManager.STATUS_COPIED_FILES, manager.getStringPreferences(ARPreferencesManager.STATUS_COPIED_FILES) + file.getName() + ",");
-                        // Getting first 3 images:
-                        if (tempIndex <= 1) {
-                            // Start creating temp dir:
-                            ARAccess.createTempDirAt(context, ARAccess.STATUS_DIR);
-                        }
-                        // Copying:
-                        ARAccess.checkAccess(context);
-                        ARAccess.copy(file, new File(statusDir.getAbsolutePath() + "/" + file.getName()),context);
-                        returningFiles.add(file);
-                        // Increment:
-                        tempIndex++;
-                    }
-                } else ARAccess.createTempDirAt(context, ARAccess.STATUS_DIR);
             }
+            // Checking:
+            if (whatsAppStatusFiles != null && whatsAppStatusFiles.length != 0) {
+                // We will start checking if file contains this new file or not:
+                for (File file : whatsAppStatusFiles) {
+                    // Checking:
+                    if (!whatsapp.contains(file.getName()) && !copied.toString().contains(file.getName()) && !file.isDirectory()) {
+                        // NotifyManager:
+                        manager.setStringPreferences(ARPreferencesManager.STATUS_COPIED_FILES, whatsapp + file.getName() + ",");
+                        // Here we will start copy operation because that was new file:
+                        ARAccess.copy(file, new File(statusDir.getAbsolutePath() + "/" + file.getName()),context);
+                    }
+                }
+            }
+        } else {
+            // Initializing:
+            int tempIndex = 0;
+            // Checking:
+            if (whatsAppStatusFiles != null && whatsAppStatusFiles.length != 0) {
+                // Looping:
+                for (File file : whatsAppStatusFiles) {
+                    // NotifyManager:
+                    manager.setStringPreferences(ARPreferencesManager.STATUS_COPIED_FILES, manager.getStringPreferences(ARPreferencesManager.STATUS_COPIED_FILES) + file.getName() + ",");
+                    // Getting first 3 images:
+                    if (tempIndex <= 1) {
+                        // Start creating temp dir:
+                        ARAccess.createTempDirAt(context, ARAccess.STATUS_DIR);
+                    }
+                    // Copying:
+                    ARAccess.copy(file, new File(statusDir.getAbsolutePath() + "/" + file.getName()),context);
+                    returningFiles.add(file);
+                    // Increment:
+                    tempIndex++;
+                }
+            } else ARAccess.createTempDirAt(context, ARAccess.STATUS_DIR);
         }
         // ReRunObserver:
         HomeActivity.setStatusObserver(true);

@@ -46,7 +46,7 @@ public class ImagesFragment extends Fragment {
         // Initializing:
         model = new ViewModelProvider(this).get(HomeViewModel.class);
         // StartOperations:
-        model.startImageOperation(requireContext());
+        model.startImageOperation();
         // Observing:
         model.getImagesLiveData().observe(getViewLifecycleOwner(), this::onImagesChanged);
     }

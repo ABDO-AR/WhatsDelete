@@ -3,20 +3,17 @@ package com.ar.team.company.app.socialdelete.ui.activity.home;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.FileObserver;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -44,7 +41,6 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.mxn.soul.flowingdrawer_core.ElasticDrawer;
 
-import java.io.File;
 import java.util.Objects;
 
 @SuppressWarnings({"FieldCanBeLocal", "unused"})
@@ -128,15 +124,15 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
         // Initializing(ImagesObserver):
-        imagesObserver = new ARFilesObserver(this, ARAccess.WHATSAPP_IMAGES_PATH, model);
+        imagesObserver = new ARFilesObserver(ARAccess.WHATSAPP_IMAGES_PATH, model);
         // Initializing(VideosObserver):
-        videosObserver = new ARFilesObserver(this, ARAccess.WHATSAPP_VIDEOS_PATH, model);
+        videosObserver = new ARFilesObserver(ARAccess.WHATSAPP_VIDEOS_PATH, model);
         // Initializing(VoicesObserver):
-        voicesObserver = new ARFilesObserver(this, ARAccess.WHATSAPP_VOICES_PATH, model);
+        voicesObserver = new ARFilesObserver(ARAccess.WHATSAPP_VOICES_PATH, model);
         // Initializing(StatusObserver):
-        statusObserver = new ARFilesObserver(this, ARAccess.WHATSAPP_STATUS_PATH, model);
+        statusObserver = new ARFilesObserver(ARAccess.WHATSAPP_STATUS_PATH, model);
         // Initializing(DocumentsObserver):
-        documentsObserver = new ARFilesObserver(this, ARAccess.WHATSAPP_DOCUMENTS_PATH, model);
+        documentsObserver = new ARFilesObserver(ARAccess.WHATSAPP_DOCUMENTS_PATH, model);
         // Debugging:
         Log.d(TAG, "onEventCreate: " + ARAccess.WHATSAPP_IMAGES_PATH);
         Log.d(TAG, "onEventCreate: " + ARAccess.WHATSAPP_VIDEOS_PATH);
@@ -166,11 +162,11 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
             // Setting:
             manager.setBooleanPreferences(ARPreferencesManager.INIT_TEMP_DIR, true);
             // StartInitializing:
-            model.startImageOperation(this);
-            model.startVideoOperation(this);
-            model.startVoiceOperation(this);
-            model.startStatusOperation(this);
-            model.startDocumentOperation(this);
+            model.startImageOperation();
+            model.startVideoOperation();
+            model.startVoiceOperation();
+            model.startStatusOperation();
+            model.startDocumentOperation();
         }
         // Hiding(Dialog):
         runOnUiThread(this::initUiThread);
@@ -264,6 +260,7 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
 
     @Override
     public void onChatUpdate() {
+        // Initializing(App):
         initApp();
     }
 
@@ -330,13 +327,10 @@ public class HomeActivity extends AppCompatActivity implements HomeItemClickList
     @Override
     protected void onStart() {
         super.onStart();
-        // Checking:
-        if (manager != null) {
-            // DefState:
-            boolean state = manager.getBooleanPreferences(ARPreferencesManager.APP_INIT);
-            // Developing:
-            if (!state) startActivity(new Intent(this, ApplicationsActivity.class));
-        }
+        // DefState:
+        boolean state = manager.getBooleanPreferences(ARPreferencesManager.APP_INIT);
+        // Developing:
+        if (!state) startActivity(new Intent(this, ApplicationsActivity.class));
     }
 
 

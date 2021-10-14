@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ar.team.company.app.socialdelete.R;
+import com.ar.team.company.app.socialdelete.control.icons.ARIconsAccess;
 import com.ar.team.company.app.socialdelete.control.notifications.NotificationListener;
 import com.ar.team.company.app.socialdelete.control.preferences.ARPreferencesManager;
 import com.ar.team.company.app.socialdelete.model.ARIcon;
@@ -83,11 +84,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
                     Drawable drawable = icon.getIcon().loadDrawable(context);
                     sendIcon = icon.getIcon();
                     // Developing:
-                    holder.binding.senderImageView.setImageDrawable(drawable);
+                    // holder.binding.senderImageView.setImageDrawable(drawable);
                 }
 
             }
         }
+        holder.binding.senderImageView.setImageBitmap(ARIconsAccess.getUserIcon(context, chat.getSender()));
         // Checking:
         if (chat.isHasNewMessage() && chat.getMessages().size() != 0) {
             // Initializing:

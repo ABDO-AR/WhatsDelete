@@ -38,79 +38,72 @@ public class ARImagesAccess {
         File imagesDir = ARAccess.getAppDir(context, ARAccess.IMAGES_DIR);
         File[] whatsAppImagesFiles = getImagesFiles();
         List<ARImage> images = new ArrayList<>();
-        // Checking:
-        if (imagesDir != null) {
-            // Debugging:
-            Log.d(ARAccess.TAG, "A11-OP: ImagesAccess :: " + imagesDir.getAbsolutePath());
-            // Initializing(State):
-            // boolean state1 = Objects.requireNonNull(imagesDir.listFiles()).length != 0;
-            boolean state1 = imagesDir.listFiles() != null;
-            // Looping:
-            if (state1) {
-                // Checking(Fields):
-                String whatsapp = manager.getStringPreferences(ARPreferencesManager.IMAGE_COPIED_FILES);
-                StringBuilder copied = new StringBuilder();
-                // If it reached to here that's mean that there are already copied images.
-                // Now we will start a simple for loop and checking each file by name:
-                int tempDebug = 0;
-                for (File copiedFile : Objects.requireNonNull(imagesDir.listFiles())) {
-                    // Checking:
-                    if (tempDebug == 0) {
-                        // Debugging:
-                        Log.d(ARAccess.TAG, "A11-OP: ImagesAccess First Copied File :: " + copiedFile.getAbsolutePath());
-                        // Increment:
-                        tempDebug++;
-                    }
-                    // Checking:
-                    if (!copiedFile.isDirectory()) {
-                        // Getting all files name:
-                        copied.append(copiedFile.getName()).append(",");
-                        // Adding:
-                        images.add(new ARImage(ARBitmapHelper.decodeBitmapFromFile(copiedFile.getAbsolutePath(), 800, 800), copiedFile));
-                    }
+        // Debugging:
+        Log.d(ARAccess.TAG, "A11-OP: ImagesAccess :: " + imagesDir.getAbsolutePath());
+        // Initializing(State):
+        boolean state1 = Objects.requireNonNull(imagesDir.listFiles()).length != 0;
+        // Looping:
+        if (state1) {
+            // Checking(Fields):
+            String whatsapp = manager.getStringPreferences(ARPreferencesManager.IMAGE_COPIED_FILES);
+            StringBuilder copied = new StringBuilder();
+            // If it reached to here that's mean that there are already copied images.
+            // Now we will start a simple for loop and checking each file by name:
+            int tempDebug = 0;
+            for (File copiedFile : Objects.requireNonNull(imagesDir.listFiles())) {
+                // Checking:
+                if (tempDebug == 0) {
+                    // Debugging:
+                    Log.d(ARAccess.TAG, "A11-OP: ImagesAccess First Copied File :: " + copiedFile.getAbsolutePath());
+                    // Increment:
+                    tempDebug++;
                 }
                 // Checking:
-                if (whatsAppImagesFiles != null && whatsAppImagesFiles.length != 0) {
-                    // We will start checking if file contains this new file or not:
-                    for (File file : whatsAppImagesFiles) {
-                        // Checking:
-                        if (!whatsapp.contains(file.getName()) && !copied.toString().contains(file.getName()) && !file.isDirectory()) {
-                            // NotifyManager:
-                            manager.setStringPreferences(ARPreferencesManager.IMAGE_COPIED_FILES, whatsapp + file.getName() + ",");
-                            // Here we will start copy operation because that was new file:
-                            ARAccess.copy(file, new File(imagesDir.getAbsolutePath() + "/" + file.getName()), context);
-                            // Debugging:
-                            Log.d(ARAccess.TAG, "A11-OP: ImagesAccess Copy Operation Has Been Started For File :: " + file.getName());
-                        }
-                    }
+                if (!copiedFile.isDirectory()) {
+                    // Getting all files name:
+                    copied.append(copiedFile.getName()).append(",");
+                    // Adding:
+                    images.add(new ARImage(ARBitmapHelper.decodeBitmapFromFile(copiedFile.getAbsolutePath(), 800, 800), copiedFile));
                 }
-            } else {
-                // Initializing:
-                int tempIndex = 0;
-                // Checking:
-                if (whatsAppImagesFiles != null && whatsAppImagesFiles.length != 0) {
-                    // Looping:
-                    for (File file : whatsAppImagesFiles) {
-                        // NotifyManager:
-                        manager.setStringPreferences(ARPreferencesManager.IMAGE_COPIED_FILES, manager.getStringPreferences(ARPreferencesManager.IMAGE_COPIED_FILES) + file.getName() + ",");
-                        // Getting first 3 images:
-                        if (tempIndex <= 1) {
-                            // Start creating temp dir:
-                            ARAccess.createTempDirAt(context, ARAccess.IMAGES_DIR);
-                            // Debugging:
-                            Log.d(ARAccess.TAG, "A11-OP: ImagesAccess Temp Dir Has Been Created");
-                        }
-                        // Increment:
-                        tempIndex++;
-                    }
-                } else ARAccess.createTempDirAt(context, ARAccess.IMAGES_DIR);
             }
             // Checking:
-            if (imagesDir.listFiles() != null) {
-                // AddStaticFiles:
-                staticFiles = Arrays.asList(Objects.requireNonNull(imagesDir.listFiles()));
+            if (whatsAppImagesFiles != null && whatsAppImagesFiles.length != 0) {
+                // We will start checking if file contains this new file or not:
+                for (File file : whatsAppImagesFiles) {
+                    // Checking:
+                    if (!whatsapp.contains(file.getName()) && !copied.toString().contains(file.getName()) && !file.isDirectory()) {
+                        // NotifyManager:
+                        manager.setStringPreferences(ARPreferencesManager.IMAGE_COPIED_FILES, whatsapp + file.getName() + ",");
+                        // Here we will start copy operation because that was new file:
+                        ARAccess.copy(file, new File(imagesDir.getAbsolutePath() + "/" + file.getName()), context);
+                        // Debugging:
+                        Log.d(ARAccess.TAG, "A11-OP: ImagesAccess Copy Operation Has Been Started For File :: " + file.getName());
+                    }
+                }
             }
+        } else {
+            // Initializing:
+            int tempIndex = 0;
+            // Checking:
+            if (whatsAppImagesFiles != null && whatsAppImagesFiles.length != 0) {
+                // Looping:
+                for (File file : whatsAppImagesFiles) {
+                    // NotifyManager:
+                    manager.setStringPreferences(ARPreferencesManager.IMAGE_COPIED_FILES, manager.getStringPreferences(ARPreferencesManager.IMAGE_COPIED_FILES) + file.getName() + ",");
+                    // Getting first 3 images:
+                    if (tempIndex <= 1) {
+                        // Start creating temp dir:
+                        ARAccess.createTempDirAt(context, ARAccess.IMAGES_DIR);
+                        // Debugging:
+                        Log.d(ARAccess.TAG, "A11-OP: ImagesAccess Temp Dir Has Been Created");
+                    }
+                    // Increment:
+                    tempIndex++;
+                }
+            } else ARAccess.createTempDirAt(context, ARAccess.IMAGES_DIR);
         }
+        // AddStaticFiles:
+        staticFiles = Arrays.asList(Objects.requireNonNull(imagesDir.listFiles()));
         // ReRunObserver:
         HomeActivity.setImagesObserver(true);
         // Debugging:
